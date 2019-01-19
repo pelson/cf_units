@@ -1,5 +1,4 @@
-import sys
-from antlr4 import *
+from antlr4 import InputStream, CommonTokenStream
 from _udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
 from _udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
 from _udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
@@ -187,5 +186,7 @@ def main(argv):
     print('AST:', repr(repr_walk_ast(ast)))
     print(ast)
 
+
 if __name__ == '__main__':
+    import sys
     main(sys.argv)

@@ -27,6 +27,9 @@ cf_units/_udunits2.c
 #config
 cf_units/etc/site.cfg
 
+# Grammar related files
+cf_units/_udunits2_p/*.jar
+
 # Created by editors
 *~
 \#*

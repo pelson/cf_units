@@ -3,16 +3,24 @@ import cf_units
 from cf_units._parse_udunits2 import normalize
 
 testdata = [
-    # '',
-    # '1',
-    # '1.2',
-    # '-1',
-    # '-1.2',
+    '',
+    '1',
+    '1.2',
+    '+1',
+    '+1.2',
+    '-1',
+    '-1.2',
+    '-1.2e0',
+    '2e6',
+    '2e-6',
+    '2.e-6',
+    '.1e2',
+    #    '2e',  # <- TODO: Assert this isn't 2e1
     'm',
     'meter',
     # '1m',
     # '1*m',
-    # '1 m',
+    #'1 m',
     # 'm-1',
     #    'm^-1',
     #    'm--1',
@@ -21,6 +29,7 @@ testdata = [
 
 invalid = [
     '-m',
+    '.1e2.',
 ]
 
 

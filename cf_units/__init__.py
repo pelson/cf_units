@@ -1080,6 +1080,8 @@ class Unit(_OrderedHashable):
         """
         Return whether two units are convertible.
 
+        THE CORRECT WORD IS: incommensurable
+
         Args:
 
         * other (Unit): Unit to be compared.

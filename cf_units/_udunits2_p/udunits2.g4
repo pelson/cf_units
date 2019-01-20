@@ -2,9 +2,9 @@ grammar udunits2;
 
 
 unit_spec:
-       basic_unit EOF
+//    (basic_unit (WS+ basic_unit)?)? EOF
+    shift_spec? EOF
 ;
-
 
 shift_spec:
        product_spec
@@ -19,34 +19,78 @@ product_spec:
 ;
 
 power_spec:
-      basic_spec INT    // m2
-      | negative_exponent // "s-1"
-//      | SIGNED_NUMBER SPACE+ basic_spec    // 2 km
+      basic_spec
+//      | basic_spec INT    // m2
+//      | negative_exponent // "s-1"
+      | SCI_NUMBER basic_spec    // 2 km
       | exponent_unicode
       | exponent
-      | basic_spec
 ;
 
 basic_spec:
-       id_
+       base_unit
        | '(' shift_spec ')'
 //       | LOGREF product_spec ')'
-       | number
+       | SCI_NUMBER
 ;
 
 id_: ID;
 
-basic_unit: ID;
+basic_unit: base_unit;
+base_unit: ID;
+
+
+SCI_NUMBER:
+    SCIENTIFIC_NUMBER
+    | SIGNED_SCI_NUMBER
+;
+
+
+SIGNED_SCI_NUMBER:
+//    SIGN+ number   // Allow +1, -1, --1, -+-1, etc. (UDUNITS DOES NOT SUPPORT THIS)
+   SIGN SCIENTIFIC_NUMBER
+;
+
+fragment SIGN
+   : (PLUS | MINUS)
+   ;
+
+fragment PLUS: '+';
+fragment MINUS: '-';
+
+SCIENTIFIC_NUMBER
+   : DECIMAL (E SIGN? INTEGER)?
+   ;
+
+fragment INTEGER
+   : ('0' .. '9')+
+   ;
+
+fragment DECIMAL: LEADING_DECIMAL | NO_LEADING_DECIMAL;
+
+fragment LEADING_DECIMAL
+   : ('0' .. '9')+ ('.' ('0' .. '9')*)?
+   ;
+fragment NO_LEADING_DECIMAL:
+     ('0' .. '9')? '.' ('0' .. '9')+
+   ;
+
+
+fragment E
+   : 'E' | 'e'
+   ;
+
 
 number: 
          INT
       |  REAL
 ;
 
-SIGNED_NUMBER : [+-]+ (REAL | INT) ;
+
+fragment DIGIT: '0'..'9';
 REAL : INT* '.' INT+ ;
-UINT: INT;
 INT : '0'..'9'+ ;
+
 
 // Timestamp: one of
 //         DATE

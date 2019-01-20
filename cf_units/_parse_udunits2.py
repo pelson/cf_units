@@ -41,6 +41,15 @@ class Leaf(Node):
 class Operand(Leaf):
     pass
 
+class Root(Node):
+    def __init__(self, *units):
+        self.units = units
+
+    def _items(self):
+        return self.units
+
+    def __str__(self):
+        return ' '.join(str(u) for u in self.units)
 
 class BinaryOp(Node):
     def __init__(self, op, lhs, rhs):
@@ -56,10 +65,10 @@ class BinaryOp(Node):
 
 
 class ExprVisitor(LabeledExprVisitor):
-    #  def __getattribute__(self, attr):
-    #      # Useful to debug what is getting called.
-    #      print('GET:', attr)
-    #      return super().__getattribute__(attr)
+    # def __getattribute__(self, attr):
+    #     # Useful to debug what is getting called.
+    #     print('GET:', attr)
+    #     return super().__getattribute__(attr)
 
     def defaultResult(self):
         # Called once per ``visitChildren`` call.
@@ -81,13 +90,56 @@ class ExprVisitor(LabeledExprVisitor):
             return result
 
     def visitTerminal(self, ctx):
-        print('CTX TERM:', ctx.__dict__)
         r = ctx.getText()
+        # print(ctx)
+        # print(ctx.__dict__)
+        # print(ctx.symbol)
+        # print(ctx.symbol.__dict__)
+        # print(dir(ctx.symbol))
+        # print('IDX:', ctx.symbol.tokenIndex)
+        # print(ctx.symbol.type)
+
+        symbol_idx = ctx.symbol.type - 1
+        if symbol_idx < 0:
+            # EOF
+            pass
+        else:
+            lexer = ctx.symbol.source[0]
+            rule = lexer.ruleNames[symbol_idx]
+            # print('RULE__________:', rule)
+
         # TODO: This should be removed once the grammar is fixed
         # up. (xref: space between "x * 2")
         if not r.strip():
             return None
         return Leaf(r)
+
+    def visitNumber(self, ctx):
+        # TODO: Make this visitRational.
+        [node] = super().visitChildren(ctx)
+        print("DEC:", repr(node))
+        import decimal
+        return Leaf(decimal.Decimal(str(node)))
+
+    def visitSigned_number(self, ctx):
+        # nb: Supports multiple signs, e.g. "--3.1", and returns a single node.
+        nodes = super().visitChildren(ctx)
+        
+
+        # Turn the signs into a multiplier, e.g. "--1".
+        mul = '{signs}1'.format(signs=''.join(str(n) for n in nodes[:-1]))
+        while len(mul) > 2:
+            mul = mul.replace('+', '')
+            mul = mul.replace('--', '')
+        print('COMPUTE:', mul, nodes[-1].content)
+        r = int(mul) * nodes[-1].content
+        print(type(nodes[-1].content))
+
+        return Leaf(int(mul) * nodes[-1].content)
+        
+        print(len(nodes))
+        print(nodes[0])
+        return number
 
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
@@ -146,15 +198,20 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitUnit_spec(self, ctx):
         call_through = super().visitShift(ctx)
+        
         # Drop the EOF
-        if str(call_through[-1]) != '<EOF>':
-            print(call_through)
-            print([str(n) for n in call_through])
-            raise RuntimeError('EOF not found at end.')
-
-        # print(self._walk_ast(call_through[0]))
-        assert len(call_through) == 2
-        return call_through[0]
+        if isinstance(call_through, Node):
+            node = Root()
+            assert str(call_through) == '<EOF>'
+#            call_through = [[], []]
+        else:
+            assert len(call_through) == 2
+            assert isinstance(call_through, list)
+            if isinstance(call_through[0], Node):
+                node = Root(call_through[0])
+            else:
+                node = Root(*call_through[0])
+        return node
 
 
 def repr_walk_ast(node):
@@ -187,6 +244,7 @@ def normalize(unit_str):
     return str(parse(unit_str))
 
 
+
 def parse(unit_str):
     # nb: The definition (C code) says to strip the unit string first.
     unit_str = unit_str.strip()
@@ -196,8 +254,22 @@ def parse(unit_str):
 
     parser._listeners = [ErrorListener(unit_str)]
 
+
     # The top level concept.
     tree = parser.unit_spec()
+
+
+    token_lookup = {getattr(lexer, rule, -1): rule for rule in lexer.ruleNames}
+#    print(token_lookup)
+
+    if True:
+        # NOTE, because of the parser._listeners error handler, this only works if we have a valid grammar in the first place.
+        for token in stream.tokens:
+            if token.text != '<EOF>':
+                token_type_idx = token.type 
+                rule = token_lookup[token_type_idx]
+                print("%s: %s" % (token.text, rule))
+        print('END')
 
     visitor = ExprVisitor()
     return visitor.visit(tree)

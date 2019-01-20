@@ -44,6 +44,11 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#base_unit.
+    def visitBase_unit(self, ctx:udunits2Parser.Base_unitContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#number.
     def visitNumber(self, ctx:udunits2Parser.NumberContext):
         return self.visitChildren(ctx)

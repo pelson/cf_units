@@ -1,4 +1,26 @@
+# (C) British Crown Copyright 2019, Met Office
+#
+# This file is part of cf-units.
+#
+# cf-units is free software: you can redistribute it and/or modify it under
+# the terms of the GNU Lesser General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# cf-units is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with cf-units.  If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import (absolute_import, division, print_function)
+from six.moves import (filter, input, map, range, zip)  # noqa
+
 from antlr4 import InputStream, CommonTokenStream
+from antlr4.error.ErrorListener import ErrorListener
+
 from _udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
 from _udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
 from _udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
@@ -6,6 +28,7 @@ from _udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
 
 class Node:
     pass
+
 
 class Leaf(Node):
     def __init__(self, content):
@@ -32,13 +55,11 @@ class BinaryOp(Node):
         return '{self.lhs}{self.op}{self.rhs}'.format(self=self)
 
 
-
 class ExprVisitor(LabeledExprVisitor):
-#    def __getattribute__(self, attr):
-#        # Useful to debug what is getting called.
-#        print('GET:', attr)
-#        return super().__getattribute__(attr)
-
+    #  def __getattribute__(self, attr):
+    #      # Useful to debug what is getting called.
+    #      print('GET:', attr)
+    #      return super().__getattribute__(attr)
 
     def defaultResult(self):
         # Called once per ``visitChildren`` call.
@@ -62,20 +83,22 @@ class ExprVisitor(LabeledExprVisitor):
     def visitTerminal(self, ctx):
         print('CTX TERM:', ctx.__dict__)
         r = ctx.getText()
-        # TODO: This should be removed once the grammar is fixed up. (xref: space between "x * 2")
+        # TODO: This should be removed once the grammar is fixed
+        # up. (xref: space between "x * 2")
         if not r.strip():
             return None
         return Leaf(r)
 
     def visitProduct_spec(self, ctx):
-        # UDUNITS grammar makes no parse distinction for these types, so we have
-        # to do the grunt work here.
+        # UDUNITS grammar makes no parse distinction for these types,
+        # so we have to do the grunt work here.
         children = super().visitMultiply(ctx)
 
         if isinstance(children, Node):
             node = children
         elif len(children) == 3 and isinstance(children[1], Operand):
-            # TODO: This should be removed once the grammar is fixed up. (xref: space between "x * 2")
+            # TODO: This should be removed once the grammar is fixed
+            # up. (xref: space between "x * 2")
             if children[0] is None:
                 node = children[2]
             elif children[2] is None:
@@ -100,11 +123,11 @@ class ExprVisitor(LabeledExprVisitor):
         return node
 
     def visitDivide(self, ctx):
-        call_through = super().visitDivide(ctx)
+        _ = super().visitDivide(ctx)  # noqa: F841
         return Operand('/')
 
     def visitMultiply(self, ctx):
-        call_through = super().visitMultiply(ctx)
+        _ = super().visitMultiply(ctx)  # noqa: F841
         # Multiply is just the symbol (for now), so reach out to the parent.
         return Operand('*')
 
@@ -118,7 +141,7 @@ class ExprVisitor(LabeledExprVisitor):
         return BinaryOp('^', call_through[0], call_through[2])
 
     def visitShift(self, ctx):
-        call_through = super().visitShift(ctx)
+        _ = super().visitShift(ctx)  # noqa: F841
         return '@'
 
     def visitUnit_spec(self, ctx):
@@ -129,9 +152,10 @@ class ExprVisitor(LabeledExprVisitor):
             print([str(n) for n in call_through])
             raise RuntimeError('EOF not found at end.')
 
-        #print(self._walk_ast(call_through[0]))
+        # print(self._walk_ast(call_through[0]))
         assert len(call_through) == 2
         return call_through[0]
+
 
 def repr_walk_ast(node):
     if isinstance(node, Leaf):
@@ -144,40 +168,38 @@ def repr_walk_ast(node):
         #            print("DEAL WITH:", node)
 
 
-
-from antlr4.error.ErrorListener import ErrorListener
-
-class MyErrorListener( ErrorListener ):
-
+class ErrorListener(ErrorListener):
     def __init__(self, the_string):
         # At the time of writing, I didn't find a better way of getting
         # the string being parsed. There definitely will be though.
         self.the_string = the_string
-        super(MyErrorListener, self).__init__()
+        super(ErrorListener, self).__init__()
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         # https://stackoverflow.com/a/36367357/741316
-        raise SyntaxError(msg, (("inline", line, column+2, "'{}'".format(self.the_string)))) from None
+
+        context = ("inline", line, column+2, "'{}'".format(self.the_string))
+        syntax_error = SyntaxError(msg, context)
+        raise syntax_error from None
 
 
 def normalize(unit_str):
     return str(parse(unit_str))
 
+
 def parse(unit_str):
     # nb: The definition (C code) says to strip the unit string first.
     unit_str = unit_str.strip()
-    input = InputStream(unit_str)
-    lexer = LabeledExprLexer(input)
+    lexer = LabeledExprLexer(InputStream(unit_str))
     stream = CommonTokenStream(lexer)
     parser = LabeledExprParser(stream)
 
-    parser._listeners = [MyErrorListener(unit_str)]
+    parser._listeners = [ErrorListener(unit_str)]
 
     # The top level concept.
     tree = parser.unit_spec()
 
     visitor = ExprVisitor()
-    r = visitor.visit(tree)
     return visitor.visit(tree)
 
 

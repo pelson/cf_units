@@ -120,6 +120,10 @@ class TestCodeFormat(unittest.TestCase):
         pep8style = pep8.StyleGuide(quiet=False,
                                     reporter=StandardReportWithExclusions)
 
+        pep8style.options.exclude.extend([
+            '*/cf_units/_udunits2_p/*.py'
+        ])
+
         # Allow users to add their own exclude list.
         extra_exclude_file = os.path.join(os.path.dirname(__file__),
                                           '.pep8_test_exclude.txt')
@@ -239,7 +243,8 @@ class TestLicenseHeaders(unittest.TestCase):
                             'build/*',
                             'dist/*',
                             'versioneer.py',
-                            'cf_units/_version.py')
+                            'cf_units/_version.py',
+                            'cf_units/_udunits2_p/*')
 
         try:
             last_change_by_fname = self.last_change_by_fname()
@@ -273,7 +278,11 @@ class TestLicenseHeaders(unittest.TestCase):
 
 
 class TestFutureImports(unittest.TestCase):
-    excluded = ('*/_version.py')
+    excluded = [
+        '*/_version.py',
+        '*/_udunits2_p/*.py',
+        '*.py',
+    ]
 
     future_imports_pattern = re.compile(
         r"^from __future__ import \(absolute_import,\s*division,\s*"

@@ -21,9 +21,9 @@ from six.moves import (filter, input, map, range, zip)  # noqa
 from antlr4 import InputStream, CommonTokenStream
 from antlr4.error.ErrorListener import ErrorListener
 
-from _udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
-from _udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
-from _udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
+from ._udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
+from ._udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
+from ._udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
 
 
 class Node:

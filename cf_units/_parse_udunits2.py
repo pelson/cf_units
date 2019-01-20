@@ -37,6 +37,9 @@ class Leaf(Node):
     def __str__(self):
         return '{}'.format(self.content)
 
+    def __repr__(self):
+        return '<{}>'.format(self)
+
 
 class Operand(Leaf):
     pass
@@ -50,6 +53,7 @@ class Root(Node):
 
     def __str__(self):
         return ' '.join(str(u) for u in self.units)
+
 
 class BinaryOp(Node):
     def __init__(self, op, lhs, rhs):
@@ -77,7 +81,8 @@ class ExprVisitor(LabeledExprVisitor):
     def aggregateResult(self, aggregate, nextResult):
         # Always result a list from visitChildren
         # (default behaviour is to return the last element).
-        aggregate.append(nextResult)
+        if nextResult is not None:
+            aggregate.append(nextResult)
         return aggregate
 
     def visitChildren(self, node):
@@ -99,19 +104,27 @@ class ExprVisitor(LabeledExprVisitor):
         # print('IDX:', ctx.symbol.tokenIndex)
         # print(ctx.symbol.type)
 
-        symbol_idx = ctx.symbol.type - 1
+        symbol_idx = ctx.symbol.type
         if symbol_idx < 0:
             # EOF
             pass
         else:
             lexer = ctx.symbol.source[0]
-            rule = lexer.ruleNames[symbol_idx]
-            # print('RULE__________:', rule)
+
+            print('INT:', lexer.INT, symbol_idx)
+            consumers = {lexer.INT: int,
+                         lexer.FLOAT: float,
+                         lexer.WS: lambda n: None,
+                         lexer.ID: str}
+            if symbol_idx in consumers:
+                r = consumers[symbol_idx](r)
+            else:
+                print('UNHANDLED TERMINAL:', repr(r))
 
         # TODO: This should be removed once the grammar is fixed
         # up. (xref: space between "x * 2")
-        if not r.strip():
-            return None
+#        if not r.strip():
+#            return None
         return Leaf(r)
 
     def visitNumber(self, ctx):
@@ -140,6 +153,15 @@ class ExprVisitor(LabeledExprVisitor):
         print(len(nodes))
         print(nodes[0])
         return number
+
+    def strip_whitespace(self, nodes):
+        return [n for n in nodes if n.content is not None]
+
+    def visitJuxtaposed_multiplication(self, ctx):
+        nodes = super().visitJuxtaposed_multiplication(ctx)
+        print('NODES:', self.strip_whitespace(nodes))
+        lhs, rhs = self.strip_whitespace(nodes)
+        return BinaryOp('*', lhs, rhs)
 
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
@@ -187,6 +209,26 @@ class ExprVisitor(LabeledExprVisitor):
         call_through = super().visitMultiply(ctx)
         return BinaryOp('^-', call_through[0], call_through[2])
         return [call_through[0], '^-', call_through[2]]
+
+    def visitJuxtaposed_raise(self, ctx):
+        nodes = super().visitJuxtaposed_raise(ctx)
+        print("RAISE!")
+        lhs, rhs = self.strip_whitespace(nodes)
+        return BinaryOp('^', lhs, rhs)
+
+    def visitSci_number(self, ctx):
+        nodes = super().visitSci_number(ctx)
+        print('NUMBERS:', nodes)
+        if isinstance(nodes, list):
+            assert len(nodes) == 2
+            sign, number = nodes
+            number = number.content
+            if sign.content == '-':
+                number = -number
+        else:
+            number = nodes.content
+        number = Leaf(number)
+        return number
 
     def visitExponent(self, ctx):
         call_through = super().visitMultiply(ctx)
@@ -255,21 +297,29 @@ def parse(unit_str):
     parser._listeners = [ErrorListener(unit_str)]
 
 
-    # The top level concept.
-    tree = parser.unit_spec()
 
 
     token_lookup = {getattr(lexer, rule, -1): rule for rule in lexer.ruleNames}
 #    print(token_lookup)
 
     if True:
+        lexer2 = LabeledExprLexer(InputStream(unit_str))
+        stream2 = CommonTokenStream(lexer2)
+
+        parser2 = LabeledExprParser(stream2)
+        # The top level concept.
+        tree = parser2.unit_spec()
+
         # NOTE, because of the parser._listeners error handler, this only works if we have a valid grammar in the first place.
-        for token in stream.tokens:
+        for token in stream2.tokens:
             if token.text != '<EOF>':
                 token_type_idx = token.type 
                 rule = token_lookup[token_type_idx]
                 print("%s: %s" % (token.text, rule))
         print('END')
+
+    # The top level concept.
+    tree = parser.unit_spec()
 
     visitor = ExprVisitor()
     return visitor.visit(tree)

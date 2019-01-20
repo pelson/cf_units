@@ -20,9 +20,9 @@ product_spec:
 
 power_spec:
       basic_spec
-//      | basic_spec INT    // m2
+      | juxtaposed_raise
 //      | negative_exponent // "s-1"
-      | SCI_NUMBER basic_spec    // 2 km
+      | juxtaposed_multiplication
       | exponent_unicode
       | exponent
 ;
@@ -31,49 +31,56 @@ basic_spec:
        base_unit
        | '(' shift_spec ')'
 //       | LOGREF product_spec ')'
-       | SCI_NUMBER
+       | sci_number
 ;
 
-id_: ID;
 
 basic_unit: base_unit;
 base_unit: ID;
 
 
-SCI_NUMBER:
-    SCIENTIFIC_NUMBER
-    | SIGNED_SCI_NUMBER
+sci_number:
+    SIGN? (FLOAT | INT)
 ;
 
 
-SIGNED_SCI_NUMBER:
-//    SIGN+ number   // Allow +1, -1, --1, -+-1, etc. (UDUNITS DOES NOT SUPPORT THIS)
-   SIGN SCIENTIFIC_NUMBER
+juxtaposed_multiplication:
+    //SCI_NUMBER basic_spec  // 2km. TODO: "2 km"
+    any_number WS* basic_spec
 ;
 
-fragment SIGN
+SIGN
    : (PLUS | MINUS)
    ;
 
-fragment PLUS: '+';
-fragment MINUS: '-';
-
-SCIENTIFIC_NUMBER
-   : DECIMAL (E SIGN? INTEGER)?
-   ;
+PLUS: '+';
+MINUS: '-';
 
 fragment INTEGER
    : ('0' .. '9')+
    ;
 
-fragment DECIMAL: LEADING_DECIMAL | NO_LEADING_DECIMAL;
+any_number:
+    FLOAT | INT
+;
 
-fragment LEADING_DECIMAL
-   : ('0' .. '9')+ ('.' ('0' .. '9')*)?
+INT : '0'..'9'+ ;
+
+FLOAT: 
+     (FLOAT_LEADING_DIGIT | FLOAT_LEADING_PERIOD | INTEGER) E_POWER?  // 1.2e-5, 1e2
    ;
-fragment NO_LEADING_DECIMAL:
+
+fragment FLOAT_LEADING_DIGIT:
+     ('0' .. '9')+ '.' ('0' .. '9')*
+;
+
+fragment FLOAT_LEADING_PERIOD:
      ('0' .. '9')? '.' ('0' .. '9')+
-   ;
+;
+
+fragment E_POWER:
+     (E SIGN? INTEGER)?
+;
 
 
 fragment E
@@ -89,7 +96,6 @@ number:
 
 fragment DIGIT: '0'..'9';
 REAL : INT* '.' INT+ ;
-INT : '0'..'9'+ ;
 
 
 // Timestamp: one of
@@ -135,7 +141,11 @@ exponent_unicode:  // m²
 
 exponent:  // TODO: m2
     basic_spec RAISE INT  //km^2
-    | id_ INT   // NOTE: Not basic_spec, because that could be a number.
+    | ID INT   // NOTE: Not basic_spec, because that could be a number.
+;
+
+juxtaposed_raise:
+    base_unit INT    // m2
 ;
 
 negative_exponent:

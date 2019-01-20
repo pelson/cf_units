@@ -34,11 +34,6 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#id_.
-    def visitId_(self, ctx:udunits2Parser.Id_Context):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by udunits2Parser#basic_unit.
     def visitBasic_unit(self, ctx:udunits2Parser.Basic_unitContext):
         return self.visitChildren(ctx)
@@ -46,6 +41,21 @@ class udunits2Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by udunits2Parser#base_unit.
     def visitBase_unit(self, ctx:udunits2Parser.Base_unitContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#sci_number.
+    def visitSci_number(self, ctx:udunits2Parser.Sci_numberContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#juxtaposed_multiplication.
+    def visitJuxtaposed_multiplication(self, ctx:udunits2Parser.Juxtaposed_multiplicationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#any_number.
+    def visitAny_number(self, ctx:udunits2Parser.Any_numberContext):
         return self.visitChildren(ctx)
 
 
@@ -71,6 +81,11 @@ class udunits2Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by udunits2Parser#exponent.
     def visitExponent(self, ctx:udunits2Parser.ExponentContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#juxtaposed_raise.
+    def visitJuxtaposed_raise(self, ctx:udunits2Parser.Juxtaposed_raiseContext):
         return self.visitChildren(ctx)
 
 

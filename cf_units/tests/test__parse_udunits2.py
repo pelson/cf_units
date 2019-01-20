@@ -15,13 +15,16 @@ testdata = [
     '2e-6',
     '2.e-6',
     '.1e2',
-    #    '2e',  # <- TODO: Assert this isn't 2e1
+    '2e',  # <- TODO: Assert this isn't 2e1, but is infact the unit e *2
     'm',
     'meter',
-    # '1m',
-    # '1*m',
-    #'1 m',
-    # 'm-1',
+    '1m',
+    '1*m',
+    '1 m',
+    '1   m',
+    'm1',
+    'm2',
+    #'m-1',
     #    'm^-1',
     #    'm--1',
 

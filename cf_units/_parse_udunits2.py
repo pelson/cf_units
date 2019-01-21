@@ -154,6 +154,9 @@ class ExprVisitor(LabeledExprVisitor):
         print(nodes[0])
         return number
 
+    def visitSigned_int(self, ctx):
+        return self.visitSigned_number(ctx)
+
     def strip_whitespace(self, nodes):
         return [n for n in nodes if n.content is not None]
 

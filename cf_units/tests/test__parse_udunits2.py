@@ -24,17 +24,27 @@ testdata = [
     '1   m',
     'm1',
     'm2',
-    #'m-1',
-    #    'm^-1',
-    #    'm--1',
+    'm+2',
+    'm-1',
+    'm^2',
+    'm^+2',
+    'm^-1',
 
 ]
 
 invalid = [
     '-m',
     '.1e2.',
+    'm+-1',
 ]
 
+not_done = [
+    'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
+
+    'm¹',
+    'm²',
+    'm³',
+]
 
 @pytest.mark.parametrize("_, unit_str", enumerate(testdata))
 def test_normed_unit(_, unit_str):

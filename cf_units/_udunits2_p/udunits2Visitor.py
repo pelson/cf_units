@@ -49,6 +49,11 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#signed_int.
+    def visitSigned_int(self, ctx:udunits2Parser.Signed_intContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#juxtaposed_multiplication.
     def visitJuxtaposed_multiplication(self, ctx:udunits2Parser.Juxtaposed_multiplicationContext):
         return self.visitChildren(ctx)

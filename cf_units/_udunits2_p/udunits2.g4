@@ -43,6 +43,9 @@ sci_number:
     SIGN? (FLOAT | INT)
 ;
 
+signed_int:
+    SIGN? INT
+;
 
 juxtaposed_multiplication:
     //SCI_NUMBER basic_spec  // 2km. TODO: "2 km"
@@ -140,12 +143,12 @@ exponent_unicode:  // m²
 ;
 
 exponent:  // TODO: m2
-    basic_spec RAISE INT  //km^2
+    basic_spec RAISE signed_int  //km^2, km^-1, km^+2
     | ID INT   // NOTE: Not basic_spec, because that could be a number.
 ;
 
 juxtaposed_raise:
-    base_unit INT    // m2
+    base_unit signed_int    // m2, m+2, s-1
 ;
 
 negative_exponent:
@@ -162,7 +165,9 @@ divide:
 
 EXPONENT:
 //         ISO-8859-9 or UTF-8 encoded exponent characters
-    '\u00B2'  // ²
+    '\n00B9'       // ¹
+    '\n00B2'  // ²
+    '\n00B3'  // ³
 ; 
 
 RAISE :

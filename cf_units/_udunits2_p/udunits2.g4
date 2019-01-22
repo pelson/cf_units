@@ -47,10 +47,6 @@ signed_int:
     SIGN? INT
 ;
 
-multiplication_operator:
-    power_spec multiply power_spec
-;
-
 juxtaposed_multiplication:
     (sci_number WS* basic_spec)    // "2km", "2  km"
     | (basic_spec WS+ any_signed_number)  // "km 2", "km -2"
@@ -100,12 +96,10 @@ fragment E
    : 'E' | 'e'
    ;
 
-
 number: 
          INT
       |  REAL
 ;
-
 
 fragment DIGIT: '0'..'9';
 REAL : INT* '.' INT+ ;
@@ -141,10 +135,10 @@ SHIFT_OP :
 //         the usual integer format
 
 multiply:
-      //(SPACE+ '-')  // This is a complete lie, and what about m+2?
+      //(SPACE+ '-')  // This is now handled in juxtaposed_multiply
 //      |  (SPACE* '.' SPACE*)
 //      |  (SPACE* '*' SPACE*)
-       '*'
+      | '*'
       | SPACE+
 ;
 
@@ -195,3 +189,7 @@ RAISE :
 ID:  [A-Za-z_]+ ;
 
 
+
+
+// handle characters which failed to match any other token
+ErrorCharacter : . ;

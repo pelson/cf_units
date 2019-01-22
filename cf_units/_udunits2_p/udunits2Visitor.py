@@ -54,11 +54,6 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#multiplication_operator.
-    def visitMultiplication_operator(self, ctx:udunits2Parser.Multiplication_operatorContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by udunits2Parser#juxtaposed_multiplication.
     def visitJuxtaposed_multiplication(self, ctx:udunits2Parser.Juxtaposed_multiplicationContext):
         return self.visitChildren(ctx)

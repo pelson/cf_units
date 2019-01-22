@@ -182,16 +182,10 @@ class ExprVisitor(LabeledExprVisitor):
 
         if isinstance(children, Node):
             node = children
+        elif len(children) == 1:
+            node = children[0]
         elif len(children) == 3 and isinstance(children[1], Operand):
-            # TODO: This should be removed once the grammar is fixed
-            # up. (xref: space between "x * 2")
-            if children[0] is None:
-                node = children[2]
-            elif children[2] is None:
-                node = children[0]
-
-            else:
-                node = BinaryOp(children[1], children[0], children[2])
+            node = BinaryOp(children[1], children[0], children[2])
         elif not children:
             return []
         elif len(children) == 2:
@@ -207,18 +201,6 @@ class ExprVisitor(LabeledExprVisitor):
                 print(type(c), c.__dict__)
             node = children[0]
         return node
-
-    def visitPower_spec(self, ctx):
-        nodes = super().visitChildren(ctx)
-        print("POWER!")
-        print(nodes)
-        if len(nodes) == 1:
-            nodes = nodes[0]
-
-        elif len(nodes) == 3 and nodes[1].content == '*':
-            nodes = BinaryOp('*', nodes[0], nodes[2])
-
-        return nodes
 
     def visitDivide(self, ctx):
         _ = super().visitDivide(ctx)  # noqa: F841
@@ -312,6 +294,11 @@ class ErrorListener(ErrorListener):
         context = ("inline", line, column+2, "'{}'".format(self.the_string))
         syntax_error = SyntaxError(msg, context)
         raise syntax_error from None
+
+    def __getattribute__(self, attr):
+         # Useful to debug what is getting called.
+         print('GET ERROR HANDLER:', attr)
+         return super().__getattribute__(attr)
 
 
 def normalize(unit_str):

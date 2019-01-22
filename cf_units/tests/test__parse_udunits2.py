@@ -15,6 +15,7 @@ testdata = [
     '2e-6',
     '2.e-6',
     '.1e2',
+    '.1e2.2',
     '2e',  # <- TODO: Assert this isn't 2e1, but is infact the unit e *2
     'm',
     'meter',
@@ -43,6 +44,7 @@ testdata = [
 ]
 
 invalid = [
+    '1 * m',
     '-m',
     '.1e2.',
     'm+-1',
@@ -58,6 +60,28 @@ not_done = [
     'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
     'µ°F·Ω⁻¹',  # This is in the docs, so let's at least support that one!
     ]
+
+@pytest.mark.parametrize("_, unit_str", enumerate(invalid))
+def test_invalid_units(_, unit_str):
+    try:
+        cf_units.Unit(unit_str)
+        cf_valid = True
+    except ValueError:
+        cf_valid = False
+
+    # Double check that udunits2 can't parse this.
+    assert cf_valid is False
+
+    try:
+        unit_expr = normalize(unit_str)
+        can_parse = True
+    except SyntaxError:
+        can_parse = False
+
+    # Now confirm that we couldn't parse this either.
+    assert can_parse == False
+
+
 
 @pytest.mark.parametrize("_, unit_str", enumerate(testdata))
 def test_normed_unit(_, unit_str):

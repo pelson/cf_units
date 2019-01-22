@@ -14,15 +14,15 @@ shift_spec:
 
 product_spec:
        power_spec
-       | product_spec multiply power_spec  // km*2
+       | power_spec multiply power_spec  // km*2
        | product_spec divide power_spec  // km/2
 ;
 
 power_spec:
       basic_spec
+      | juxtaposed_multiplication
       | juxtaposed_raise
 //      | negative_exponent // "s-1"
-      | juxtaposed_multiplication
       | exponent_unicode
       | exponent
 ;
@@ -47,9 +47,13 @@ signed_int:
     SIGN? INT
 ;
 
+multiplication_operator:
+    power_spec multiply power_spec
+;
+
 juxtaposed_multiplication:
-    //SCI_NUMBER basic_spec  // 2km. TODO: "2 km"
-    any_number WS* basic_spec
+    (sci_number WS* basic_spec)    // "2km", "2  km"
+    | (basic_spec WS+ any_signed_number)  // "km 2", "km -2"
 ;
 
 SIGN
@@ -58,12 +62,18 @@ SIGN
 
 PLUS: '+';
 MINUS: '-';
+MULTIPLY: '*';
+DIVIDE: '/';
 
 fragment INTEGER
    : ('0' .. '9')+
    ;
 
-any_number:
+any_signed_number:
+    SIGN? any_unsigned_number
+;
+
+any_unsigned_number:
     FLOAT | INT
 ;
 
@@ -131,7 +141,7 @@ SHIFT_OP :
 //         the usual integer format
 
 multiply:
-      // '-'  // This is a complete lie, and what about m+2?
+      //(SPACE+ '-')  // This is a complete lie, and what about m+2?
 //      |  (SPACE* '.' SPACE*)
 //      |  (SPACE* '*' SPACE*)
        '*'
@@ -139,7 +149,7 @@ multiply:
 ;
 
 exponent_unicode:  // m²
-    basic_spec EXPONENT
+    basic_spec UNICODE_EXPONENT
 ;
 
 exponent:  // TODO: m2
@@ -163,11 +173,9 @@ divide:
         WS* '/' WS*
 ;
 
-EXPONENT:
-//         ISO-8859-9 or UTF-8 encoded exponent characters
-    '\n00B9'       // ¹
-    '\n00B2'  // ²
-    '\n00B3'  // ³
+UNICODE_EXPONENT:
+    // One or more ISO-8859-9 encoded exponent characters
+    ('⁻' | '⁺' | '¹' | '²' | '³' | '⁴' | '⁵' | '⁶' | '⁷' | '⁸' | '⁹' | '⁰')+
 ; 
 
 RAISE :

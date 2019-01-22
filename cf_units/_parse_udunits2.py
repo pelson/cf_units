@@ -112,10 +112,17 @@ class ExprVisitor(LabeledExprVisitor):
             lexer = ctx.symbol.source[0]
 
             print('INT:', lexer.INT, symbol_idx)
+            import unicodedata
             consumers = {lexer.INT: int,
                          lexer.FLOAT: float,
                          lexer.WS: lambda n: None,
-                         lexer.ID: str}
+                         lexer.ID: str,
+                         # Convert unicode to compatibility form
+                         lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
+                         lexer.SIGN: str,
+                         lexer.DIVIDE: str,
+                         lexer.MULTIPLY: str,
+                         }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
             else:
@@ -162,6 +169,7 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitJuxtaposed_multiplication(self, ctx):
         nodes = super().visitJuxtaposed_multiplication(ctx)
+        print(nodes)
         print('NODES:', self.strip_whitespace(nodes))
         lhs, rhs = self.strip_whitespace(nodes)
         return BinaryOp('*', lhs, rhs)
@@ -169,7 +177,8 @@ class ExprVisitor(LabeledExprVisitor):
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
-        children = super().visitMultiply(ctx)
+        children = super().visitChildren(ctx)
+
 
         if isinstance(children, Node):
             node = children
@@ -199,6 +208,18 @@ class ExprVisitor(LabeledExprVisitor):
             node = children[0]
         return node
 
+    def visitPower_spec(self, ctx):
+        nodes = super().visitChildren(ctx)
+        print("POWER!")
+        print(nodes)
+        if len(nodes) == 1:
+            nodes = nodes[0]
+
+        elif len(nodes) == 3 and nodes[1].content == '*':
+            nodes = BinaryOp('*', nodes[0], nodes[2])
+
+        return nodes
+
     def visitDivide(self, ctx):
         _ = super().visitDivide(ctx)  # noqa: F841
         return Operand('/')
@@ -219,9 +240,13 @@ class ExprVisitor(LabeledExprVisitor):
         lhs, rhs = self.strip_whitespace(nodes)
         return BinaryOp('^', lhs, rhs)
 
+    def visitExponent_unicode(self, ctx):
+        nodes = super().visitChildren(ctx)
+        lhs, rhs = nodes
+        return BinaryOp('^', lhs, rhs)
+
     def visitSci_number(self, ctx):
         nodes = super().visitSci_number(ctx)
-        print('NUMBERS:', nodes)
         if isinstance(nodes, list):
             assert len(nodes) == 2
             sign, number = nodes
@@ -230,8 +255,12 @@ class ExprVisitor(LabeledExprVisitor):
                 number = -number
         else:
             number = nodes.content
+        print('NODES NUMBER :', nodes, number)
         number = Leaf(number)
         return number
+
+    visitAny_unsigned_number = visitSci_number
+    visitAny_signed_number = visitSci_number
 
     def visitExponent(self, ctx):
         call_through = super().visitMultiply(ctx)

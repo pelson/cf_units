@@ -22,14 +22,24 @@ testdata = [
     '1*m',
     '1 m',
     '1   m',
+    'm -1',
+    'm -1.2',
+    'm 1',
+    'm 1.2',
     'm1',
     'm2',
     'm+2',
+    'm¹',
+    'm²',
+    'm³',
+    '2⁴',  # NOTE: Udunits can't do m⁴ for some reason. Bug?
+    '2⁵',
+    '2⁴²',
+    '3⁻²',  # Udunits can't handle this case.
     'm-1',
     'm^2',
     'm^+2',
     'm^-1',
-
 ]
 
 invalid = [
@@ -38,13 +48,16 @@ invalid = [
     'm+-1',
 ]
 
+
+udunits_bugs = [
+        '2¹²³⁴⁵⁶⁷⁸⁹⁰',
+        'm⁻²'
+]
+
 not_done = [
     'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
     'µ°F·Ω⁻¹',  # This is in the docs, so let's at least support that one!
-    'm¹',
-    'm²',
-    'm³',
-]
+    ]
 
 @pytest.mark.parametrize("_, unit_str", enumerate(testdata))
 def test_normed_unit(_, unit_str):

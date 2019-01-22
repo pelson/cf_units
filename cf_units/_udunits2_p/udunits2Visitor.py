@@ -54,13 +54,23 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#multiplication_operator.
+    def visitMultiplication_operator(self, ctx:udunits2Parser.Multiplication_operatorContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#juxtaposed_multiplication.
     def visitJuxtaposed_multiplication(self, ctx:udunits2Parser.Juxtaposed_multiplicationContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#any_number.
-    def visitAny_number(self, ctx:udunits2Parser.Any_numberContext):
+    # Visit a parse tree produced by udunits2Parser#any_signed_number.
+    def visitAny_signed_number(self, ctx:udunits2Parser.Any_signed_numberContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#any_unsigned_number.
+    def visitAny_unsigned_number(self, ctx:udunits2Parser.Any_unsigned_numberContext):
         return self.visitChildren(ctx)
 
 

@@ -40,7 +40,7 @@ invalid = [
 
 not_done = [
     'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
-
+    'µ°F·Ω⁻¹',  # This is in the docs, so let's at least support that one!
     'm¹',
     'm²',
     'm³',

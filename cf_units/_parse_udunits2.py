@@ -158,12 +158,12 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.ID: str,
                          # Convert unicode to compatibility form
                          lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
-                         lexer.SIGN: str,
+                         lexer.PLUS: str,
+                         lexer.MINUS: str,
                          lexer.DIVIDE: str,
                          lexer.MULTIPLY: str,
                          lexer.RAISE: str,
                          lexer.SHIFT_OP: str,
-                         lexer.DATE: self.prepareDATE,  # lambda arg: arg.split('-'),  #lambda *args: ' '.join(args),
                          lexer.CLOCK: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.TIMESTAMP: self.prepareTIMESTAMP
                          }
@@ -179,6 +179,12 @@ class ExprVisitor(LabeledExprVisitor):
     def prepareDATE(self, string):
         print("PREPARE DATE:", string)
         return Date(*string.split('-'))
+
+    def visitDate(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print(nodes)
+
+        return Date(*[node.content for node in nodes if node.content != '-'])
 
     def prepareCLOCK(self, string):
         print('PREPARE CLOCK', string)
@@ -197,6 +203,8 @@ class ExprVisitor(LabeledExprVisitor):
             d = packed_date[6:]
         d = int(d or 1)
 
+
+        # REF: https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L113-L126
         negative_hr = packed_clock[0] == '-'
         if packed_date[0] in ['-', '+']:
             packed_clock = packed_clock[1:]
@@ -221,6 +229,21 @@ class ExprVisitor(LabeledExprVisitor):
         nodes = self.visitChildren(ctx)
         lhs, rhs = self.strip_whitespace(nodes)
         return BinaryOp('*', lhs, rhs)
+
+    def visitPower_spec(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print('NODES:', nodes)
+        if isinstance(nodes, list):
+            print("POWER!", nodes, ctx)
+            last = nodes[-1]
+            new = []
+            # Walk the nodes backwards applying raise to each successivelyi.
+            for node in nodes[:-1][::-1]:
+                last = BinaryOp('^', node, last)
+            nodes = last
+#            if len(nodes) == 2:
+#                nodes = BinaryOp('^', *nodes)
+        return nodes
 
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,

@@ -5,6 +5,7 @@ from cf_units._parse_udunits2 import normalize
 testdata = [
     '',
     '1',
+    '12',
     '1.2',
     '+1',
     '+1.2',
@@ -19,6 +20,8 @@ testdata = [
     '2e',  # <- TODO: Assert this isn't 2e1, but is infact the unit e *2
     'm',
     'meter',
+#    '1 2 3',
+#    '1 -2 -3',
     '1m',
     '1*m',
     '1 m',
@@ -37,6 +40,9 @@ testdata = [
     '2⁵',
     '2⁴²',
     '3⁻²',
+
+    '1-2',
+#    '1-2-3',  # nb. looks a bit like a date, but it isn't!
     'm-1',
     'm^2',
     'm^+2',
@@ -60,6 +66,8 @@ testdata = [
     's since 19900102T5',  # Packed format (undocumented?)
 #    's since 199022T1',  # UGLY! (bug?)
 #   'hours from 1990-1-1 3+1'
+
+    'seconds from 1990-1-1 0:0:0 +2550',
 ]
 
 invalid = [
@@ -82,6 +90,7 @@ not_udunits = [
     ['foo', 'foo'],
     ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
+    ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
 ]
 
 udunits_bugs = [

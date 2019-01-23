@@ -18,11 +18,12 @@ product_spec:
 ;
 
 power_spec:
-      basic_spec
-      | juxtaposed_multiplication
-      | juxtaposed_raise  
+      (basic_spec
+       | juxtaposed_multiplication
+      | juxtaposed_raise
       | exponent_unicode
       | exponent
+      | negative_exponent) (signed_int)*
 ;
 
 basic_spec:
@@ -38,19 +39,21 @@ base_unit: ID;
 
 
 sci_number:
-    SIGN? (FLOAT | INT)
+    sign? (FLOAT | INT)
 ;
 
 signed_int:
-    SIGN? INT
+    sign? INT
 ;
 
 juxtaposed_multiplication:
     (sci_number WS* basic_spec)    // "2km", "2  km"
     | (basic_spec WS+ any_signed_number)  // "km 2", "km -2"
+    | (any_signed_number WS+ any_signed_number)  // "2 3"
 ;
 
-SIGN
+sign: (PLUS | MINUS);
+fragment SIGN
    : (PLUS | MINUS)
    ;
 
@@ -64,7 +67,7 @@ fragment INTEGER
    ;
 
 any_signed_number:
-    SIGN? any_unsigned_number
+    sign? any_unsigned_number
 ;
 
 any_unsigned_number:
@@ -86,7 +89,7 @@ fragment FLOAT_LEADING_PERIOD:
 ;
 
 fragment E_POWER:
-     (E SIGN? INTEGER)?
+     (E (PLUS | MINUS)? INTEGER)?
 ;
 
 
@@ -104,17 +107,17 @@ REAL : INT* '.' INT+ ;
 
 
 timestamp:
-    DATE
-//    | (DATE WS+ clock WS+ clock)
-    | (DATE WS+ CLOCK)
-    | (DATE WS+ CLOCK WS+ signed_int)  // Timezone offset.
-    | (DATE WS+ CLOCK WS+ CLOCK)       // Date + (Clock1 - Clock2)
+    date
+//    | (date WS+ clock WS+ clock)
+    | (date WS+ CLOCK)
+    | (date WS+ CLOCK WS+ signed_int)  // Timezone offset.
+    | (date WS+ CLOCK WS+ CLOCK)       // Date + (Clock1 - Clock2)
 
-    | (DATE WS+ signed_int)            // Date + packed_clock
-    | (DATE WS+ signed_int WS+ CLOCK)  // Date + (packed_clock - Clock2)
+    | (date WS+ signed_int)            // Date + packed_clock
+    | (date WS+ signed_int WS+ CLOCK)  // Date + (packed_clock - Clock2)
 
-    | (DATE WS+ signed_int WS+ signed_int)  // Date + packed_clock + Timezone Offset
-//    | (DATE WS+ CLOCK WS+ ID) // UNKNOWN!
+    | (date WS+ signed_int WS+ signed_int)  // Date + packed_clock + Timezone Offset
+//    | (date WS+ CLOCK WS+ ID) // UNKNOWN!
     | TIMESTAMP
 // ...   
 ;
@@ -123,9 +126,8 @@ clock:
     (CLOCK | signed_int)
 ;
 
+date: INT MINUS INT (MINUS INT)?;
 
-
-DATE: INT '-' INT ('-' INT)?;
 CLOCK: INT ':' INT (':' INT)?;
 TIMESTAMP: INT (MONTH INT?)? 'T' INT (INT INT?)?;
 
@@ -166,7 +168,7 @@ multiply:
       //(SPACE+ '-')  // This is now handled in juxtaposed_multiply
 //      |  (SPACE* '.' SPACE*)
 //      |  (SPACE* '*' SPACE*)
-      | '*'
+      '*'
 //      | SPACE+
 ;
 
@@ -180,7 +182,7 @@ exponent:  // TODO: m2
 ;
 
 juxtaposed_raise:
-    base_unit signed_int    // m2, m+2, s-1
+    (base_unit | signed_int) signed_int    // m2, m+2, s-1, 1+2, 2-3
 ;
 
 negative_exponent:

@@ -59,6 +59,11 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#sign.
+    def visitSign(self, ctx:udunits2Parser.SignContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#any_signed_number.
     def visitAny_signed_number(self, ctx:udunits2Parser.Any_signed_numberContext):
         return self.visitChildren(ctx)
@@ -81,6 +86,11 @@ class udunits2Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by udunits2Parser#clock.
     def visitClock(self, ctx:udunits2Parser.ClockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#date.
+    def visitDate(self, ctx:udunits2Parser.DateContext):
         return self.visitChildren(ctx)
 
 

@@ -11,19 +11,29 @@ shift_spec:
        | product_spec shift timestamp
 ;
 
-product_spec:
-       power_spec
-       | power_spec multiply power_spec  // km*2
-       | product_spec divide power_spec  // km/2
+product_spec:  
+      (power_spec
+       | mult  // km*2
+       | div  // km/2
+      ) power_spec*  // 
 ;
 
-power_spec:
-      (basic_spec
-       | juxtaposed_multiplication
+div:
+    power_spec divide power_spec
+;
+
+mult:
+    power_spec multiply power_spec
+;
+
+power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
+    (basic_spec
       | juxtaposed_raise
+      | juxtaposed_multiplication
       | exponent_unicode
       | exponent
-      | negative_exponent) (signed_int)*
+      | negative_exponent
+    )  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4
 ;
 
 basic_spec:

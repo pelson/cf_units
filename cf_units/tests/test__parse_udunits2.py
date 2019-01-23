@@ -30,6 +30,8 @@ testdata = [
     'm -1.2',
     'm 1',
     'm 1.2',
+
+    'm/2',
     'm1',
     'm2',
     'm+2',
@@ -41,12 +43,18 @@ testdata = [
     '2⁴²',
     '3⁻²',
 
+   
     '1-2',
-#    '1-2-3',  # nb. looks a bit like a date, but it isn't!
+    '1-2-3',  # nb. looks a bit like a date, but it isn't!
     'm-1',
     'm^2',
     'm^+2',
     'm^-1',
+    'm.2',  # This is 2*m
+    'm0.2', # But this is 2 m^0
+    'm2.5', # And this is 5m^2
+
+
     'm@10',
     'm @10',
     'm @ 10',

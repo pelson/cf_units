@@ -245,22 +245,42 @@ class ExprVisitor(LabeledExprVisitor):
 #                nodes = BinaryOp('^', *nodes)
         return nodes
 
+    def visitMult(self, ctx):
+        nodes = self.visitChildren(ctx)
+        lhs, op, rhs = self.strip_whitespace(nodes)
+        return BinaryOp('*', lhs, rhs)
+
+    def visitDiv(self, ctx):
+        nodes = self.visitChildren(ctx)
+        lhs, op, rhs = self.strip_whitespace(nodes)
+        return BinaryOp('/', lhs, rhs)
+
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
 
-        # power spec
-        if isinstance(nodes, Node):
-            node = nodes
-        elif len(nodes) == 3 and isinstance(nodes[1], Operand):
-            node = BinaryOp(nodes[1], nodes[0], nodes[2])
-        else:
-            raise RuntimeError('Unhandled product spec {}'.format(nodes))
-        return node
+        if isinstance(nodes, list):
+            last = nodes[-1]
+            print('PROD:', nodes)
+            # Walk the nodes backwards applying mult to each successively.
+            for node in nodes[:-1][::-1]:
+                last = BinaryOp('*', node, last)
+            nodes = last
+
+        if False:
+            # power spec
+            if isinstance(nodes, Node):
+                node = nodes
+            elif len(nodes) == 3 and isinstance(nodes[1], Operand):
+                node = BinaryOp(nodes[1], nodes[0], nodes[2])
+            else:
+                raise RuntimeError('Unhandled product spec {}'.format(nodes))
+            nodes = node
+        return nodes
 
     def visitDivide(self, ctx):
-        _ = self.visitDivide(ctx)  # noqa: F841
+        nodes = self.visitChildren(ctx)  # noqa: F841
         return Operand('/')
 
     def visitMultiply(self, ctx):

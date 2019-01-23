@@ -24,6 +24,16 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#div.
+    def visitDiv(self, ctx:udunits2Parser.DivContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by udunits2Parser#mult.
+    def visitMult(self, ctx:udunits2Parser.MultContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#power_spec.
     def visitPower_spec(self, ctx:udunits2Parser.Power_specContext):
         return self.visitChildren(ctx)

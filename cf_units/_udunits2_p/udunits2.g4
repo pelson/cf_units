@@ -119,27 +119,38 @@ fragment DIGIT: '0'..'9';
 
 timestamp:
     date
-//    | (date WS+ clock WS+ clock)
-    | (date WS+ CLOCK)
-    | (date WS+ CLOCK WS+ signed_int)  // Timezone offset. // TODO check 0:0:0+1
-    | (date WS+ CLOCK WS+ CLOCK)       // Date + (Clock1 - Clock2)
-
-    | (date WS+ signed_int)            // Date + packed_clock
-    | (date WS+ signed_int WS+ CLOCK)  // Date + (packed_clock - Clock2)
-
-    | (date WS+ signed_int ((WS+ INT) | signed_int))  // Date + packed_clock + Timezone Offset
-//    | (date WS+ CLOCK WS+ ID) // UNKNOWN!
+    | (date signed_clock signed_hour_minute?)
+//     | (date WS+ clock)
+//     | (date WS+ clock WS+ signed_int)  // Timezone offset. // TODO check 0:0:0+1
+//     | (date WS+ clock WS+ clock)       // Date + (Clock1 - Clock2)
+// 
+//     | (date WS+ signed_int)            // Date + packed_clock
+//     | (date WS+ signed_int WS+ clock)  // Date + (packed_clock - )
+//     | (date sign (INT|clock) WS+ hour_minute)  // Date + (packed_clock - tz offset)
+// 
+//     | (date WS+ signed_int ((WS+ INT) | (WS* signed_int)))  // Date + packed_clock + Timezone Offset
     | TIMESTAMP
-// ...   
-;
 
-clock:
-    (CLOCK | signed_int)
+//    | (date WS+ clock WS+ ID) // UNKNOWN!
+//    | (TIMESTAMP WS+ INT) // UNKNOWN!
+//    | (TIMESTAMP WS+ ID) // UNKNOWN!
 ;
 
 date: INT MINUS INT (MINUS INT)?;
 
-CLOCK: INT ':' INT (':' INT)?;
+signed_clock:
+    (WS+ | (WS* sign)) (clock | INT)    
+;
+
+signed_hour_minute:
+    (WS+ | (WS* sign)) (HOUR_MINUTE | INT) 
+;
+hour_minute: INT ':' INT;
+
+HOUR_MINUTE_SECOND: INT ':' INT ':' INT;
+HOUR_MINUTE: INT ':' INT;
+clock: HOUR_MINUTE | HOUR_MINUTE_SECOND;
+
 TIMESTAMP: INT (MONTH INT?)? 'T' INT (INT INT?)?;
 
 fragment MONTH: 

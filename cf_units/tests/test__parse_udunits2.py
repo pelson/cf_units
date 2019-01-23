@@ -72,13 +72,16 @@ testdata = [
     'hours from 1990-1-1 0',
     'hours from 1990-1-1 0:1:1',
     'hours from 1990-1-1 0:0:1 +2',
-#    'hours from 1990-1-1 -20:4:18 +2',
-#    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
+    's since 1990-1-2+5:2:2',
+    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
     's since 19900102T5',  # Packed format (undocumented?)
 #    's since 199022T1',  # UGLY! (bug?)
+
+    'hours from 1990-1-1 -19:4:2',
     'hours from 1990-1-1 3+1',
 
     'seconds from 1990-1-1 0:0:0 +2550',
+    's since 1990-1-2+5:2:2',
 ]
 
 invalid = [
@@ -102,6 +105,7 @@ not_udunits = [
     ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
     ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
+    ['hours from 1990-1-1 -20:4:18 +2', 'hours @ 1990-1-1 -20:4:18 2']  # TODO: We should try to exclude this one.
 ]
 
 udunits_bugs = [
@@ -141,9 +145,9 @@ def test_invalid_units(_, unit_str):
     assert can_parse == False, 'Parser unexpectedly able to deal with {}'.format(unit_str)
 
 
-@pytest.mark.parametrize("_, unit_str_and_expected", enumerate(not_udunits))
-def test_invalid_in_udunits_but_still_parses(_, unit_str_and_expected):
-    unit_str, expected = unit_str_and_expected
+@pytest.mark.parametrize("_, unit_str, expected", [[i, s, e] for i, (s, e) in enumerate(not_udunits)])
+def test_invalid_in_udunits_but_still_parses(_, unit_str, expected):
+    #    unit_str, expected = unit_str_and_expected
     try:
         cf_units.Unit(unit_str)
         cf_valid = True

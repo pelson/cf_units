@@ -68,6 +68,18 @@ class BinaryOp(Node):
         return '{self.lhs}{self.op}{self.rhs}'.format(self=self)
 
 
+class UnaryOp(Node):
+    def __init__(self, op, operand):
+        self.op = op
+        self.operand = operand
+
+    def _items(self):
+        return self.op, self.operand
+
+    def __str__(self):
+        # Probably "-" or "~"
+        return f'{self.op}{self.operand}'
+
 class Timestamp(Node):
     def __init__(self, date, clock, tz_offset=0):
         self.date = date
@@ -78,20 +90,8 @@ class Timestamp(Node):
         return self.date, self.clock, self.tz_offset
 
     def __str__(self):
-        return f'{self.date}T{self.clock}+{self.tz_offset}'
+        return f'{self.date} {self.clock} {self.tz_offset}'
 
-
-class ClockSubtract(Node):
-    def __init__(self, clock1, clock2):
-        self.clock1 = clock1
-        self.clock2 = clock2
-
-    def _items(self):
-        return self.clock1, self.clock2
-
-    def __str__(self):
-        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
-        return f'{self.clock1} {self.clock2}'
 
 class NaiveClock(Node):
     def __init__(self, hour=0, minute=0, second=0):
@@ -103,8 +103,25 @@ class NaiveClock(Node):
         return self.hour, self.minute, self.second
 
     def __str__(self):
-        return f'{self.hour}:{self.minute}:{self.second}'
+        if self.second != 0:
+            return f'{self.hour}:{self.minute}:{self.second}'
+        else:
+            return f'{self.hour}:{self.minute}'
 
+
+class NegativeNaiveClock(NaiveClock):
+    # Inheritance makes checks in the codebase for approximate types easier.
+    # There is test coverage if you choose to break this inheritance in the future.
+    def __init__(self, clock):
+        # NOTE: The implementation of this can be found at
+        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L49-L71
+        self.clock = clock
+
+    def _items(self):
+        return (self.clock, )
+
+    def __str__(self):
+        return f'-{self.clock}'
 
 
 class Date(Node):
@@ -176,7 +193,8 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.MULTIPLY: str,
                          lexer.RAISE: str,
                          lexer.SHIFT_OP: str,
-                         lexer.CLOCK: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
+                         lexer.HOUR_MINUTE_SECOND: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
+                         lexer.HOUR_MINUTE: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.TIMESTAMP: self.prepareTIMESTAMP,
                          lexer.PERIOD: str,
                          }
@@ -243,6 +261,41 @@ class ExprVisitor(LabeledExprVisitor):
     def visitSigned_int(self, ctx):
         print('SIGNED INT:', self.visitAny_signed_number(ctx))
         return self.visitAny_signed_number(ctx)
+
+    def visitSigned_hour_minute(self, ctx):
+        nodes = self.visitChildren(ctx)
+        nodes = self.strip_whitespace(nodes)
+        if isinstance(nodes, list):
+            print('SIGNED HOUR:M', nodes)
+            if len(nodes) == 1:
+                nodes = nodes[0]
+            else:
+                assert len(nodes) == 2
+                if nodes[0].content == '-':
+                    nodes = UnaryOp(nodes[0].content, nodes[1])
+                else:
+                    nodes = nodes[1]
+
+        print("SIGN MINUTE", nodes)
+        return nodes
+
+    def visitSigned_clock(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print('SIGNING CLOCK PRE:', nodes)
+        nodes = self.strip_whitespace(nodes)
+        print(type(nodes))
+        if isinstance(nodes, list):
+            if len(nodes) == 1:
+                nodes = nodes[0]
+            else:
+                assert len(nodes) == 2
+                if nodes[0].content == '-':
+                    nodes = NegativeNaiveClock(nodes[1])
+                else:
+                    assert nodes[0].content == '+'
+                    nodes = nodes[1]
+        print('SIGNING CLOCK:', nodes)
+        return nodes
 
     def strip_whitespace(self, nodes):
         return [n for n in nodes if (isinstance(n, Node) and not (isinstance(n, Leaf) and n.content is None))]
@@ -325,13 +378,13 @@ class ExprVisitor(LabeledExprVisitor):
         [operand] = self.strip_whitespace(nodes)
         return operand
 
-    def visitClock(self, ctx):
-        nodes = self.visitChildren(ctx)
-        print('TICK TOCK CLOCK:', nodes, type(nodes))
-        if not isinstance(nodes.content, list):
-            # Signed integer.
-            nodes = Leaf([nodes])
-        return nodes
+#     def visitClock(self, ctx):
+#         nodes = self.visitChildren(ctx)
+#         print('TICK TOCK CLOCK:', nodes, type(nodes))
+#         if not isinstance(nodes.content, list):
+#             # Signed integer.
+#             nodes = Leaf([nodes])
+#         return nodes
 
 #    def prepareClock(self, clock_nodes):
 
@@ -349,20 +402,26 @@ class ExprVisitor(LabeledExprVisitor):
             types = [type(n) for n in nodes]
             print('t:', types)
 
-            if types == [Date, Leaf]:
+            def matches(specs):
+                if len(specs) != len(types):
+                    return False
+
+                return all(
+                    issubclass(node_type, spec)
+                    for spec, node_type in zip(specs, types)) 
+
+            if matches([Date, Leaf]):
                 # DATE + packed_time
                 return Timestamp(nodes[0], NaiveClock(nodes[1].content))
-            elif types == [Date, NaiveClock]:
+            elif matches([Date, NaiveClock]):
                 return Timestamp(*nodes)
-            elif types == [Date, NaiveClock, Leaf]:
+            elif matches([Date, NaiveClock, Leaf]):
                 return Timestamp(*nodes)
-            elif types == [Date, NaiveClock, NaiveClock]:
+            elif matches([Date, NaiveClock, NaiveClock]) or matches([Date, Leaf, NaiveClock]):
                 # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
                 # Ref
-                return Timestamp(nodes[0], ClockSubtract(nodes[1], nodes[2]))
-            elif types == [Date, Leaf, NaiveClock]:
-                raise RuntimeError('NEED TO IMPLEMENT CLOCK SUBTRACT')
-            elif types == [Date, Leaf, Leaf]:
+                return Timestamp(nodes[0], nodes[1], nodes[2])
+            elif matches([Date, Leaf, Leaf]):
                 # Date + packed_clock + tz_offset
                 hour = nodes[1].content
                 hour = NaiveClock(hour)

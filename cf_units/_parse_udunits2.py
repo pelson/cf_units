@@ -111,7 +111,6 @@ class ExprVisitor(LabeledExprVisitor):
         else:
             lexer = ctx.symbol.source[0]
 
-            print('INT:', lexer.INT, symbol_idx)
             import unicodedata
             consumers = {lexer.INT: int,
                          lexer.FLOAT: float,
@@ -122,151 +121,102 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.SIGN: str,
                          lexer.DIVIDE: str,
                          lexer.MULTIPLY: str,
+                         lexer.RAISE: str,
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
             else:
                 print('UNHANDLED TERMINAL:', repr(r))
 
-        # TODO: This should be removed once the grammar is fixed
-        # up. (xref: space between "x * 2")
-#        if not r.strip():
-#            return None
         return Leaf(r)
 
-    def visitNumber(self, ctx):
-        # TODO: Make this visitRational.
-        [node] = super().visitChildren(ctx)
-        print("DEC:", repr(node))
-        import decimal
-        return Leaf(decimal.Decimal(str(node)))
-
-    def visitSigned_number(self, ctx):
-        # nb: Supports multiple signs, e.g. "--3.1", and returns a single node.
-        nodes = super().visitChildren(ctx)
-        
-
-        # Turn the signs into a multiplier, e.g. "--1".
-        mul = '{signs}1'.format(signs=''.join(str(n) for n in nodes[:-1]))
-        while len(mul) > 2:
-            mul = mul.replace('+', '')
-            mul = mul.replace('--', '')
-        print('COMPUTE:', mul, nodes[-1].content)
-        r = int(mul) * nodes[-1].content
-        print(type(nodes[-1].content))
-
-        return Leaf(int(mul) * nodes[-1].content)
-        
-        print(len(nodes))
-        print(nodes[0])
-        return number
-
     def visitSigned_int(self, ctx):
-        return self.visitSigned_number(ctx)
+        return self.visitAny_signed_number(ctx)
 
     def strip_whitespace(self, nodes):
         return [n for n in nodes if n.content is not None]
 
     def visitJuxtaposed_multiplication(self, ctx):
-        nodes = super().visitJuxtaposed_multiplication(ctx)
-        print(nodes)
-        print('NODES:', self.strip_whitespace(nodes))
+        nodes = self.visitChildren(ctx)
         lhs, rhs = self.strip_whitespace(nodes)
         return BinaryOp('*', lhs, rhs)
 
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
-        children = super().visitChildren(ctx)
+        nodes = self.visitChildren(ctx)
 
-
-        if isinstance(children, Node):
-            node = children
-        elif len(children) == 1:
-            node = children[0]
-        elif len(children) == 3 and isinstance(children[1], Operand):
-            node = BinaryOp(children[1], children[0], children[2])
-        elif not children:
-            return []
-        elif len(children) == 2:
-            print("CAREFUL: could be mult/raise")
-            # A special case that the grammar doesn't pick out well.
-            node = BinaryOp('^', children[0], children[1])
+        # power spec
+        if isinstance(nodes, Node):
+            node = nodes
+        elif len(nodes) == 3 and isinstance(nodes[1], Operand):
+            node = BinaryOp(nodes[1], nodes[0], nodes[2])
         else:
-            node = 'UNKNOWN'
-            print(ctx.__dict__)
-            print('DEAL WITH ME:')
-            print(children)
-            for c in children:
-                print(type(c), c.__dict__)
-            node = children[0]
+            raise RuntimeError('Unhandled product spec {}'.format(nodes))
         return node
 
     def visitDivide(self, ctx):
-        _ = super().visitDivide(ctx)  # noqa: F841
+        _ = self.visitDivide(ctx)  # noqa: F841
         return Operand('/')
 
     def visitMultiply(self, ctx):
-        _ = super().visitMultiply(ctx)  # noqa: F841
+        _ = self.visitChildren(ctx)  # noqa: F841
         # Multiply is just the symbol (for now), so reach out to the parent.
         return Operand('*')
 
     def visitNegative_exponent(self, ctx):
-        call_through = super().visitMultiply(ctx)
-        return BinaryOp('^-', call_through[0], call_through[2])
-        return [call_through[0], '^-', call_through[2]]
+        nodes = self.visitChildren(ctx)
+        return BinaryOp('^-', nodes[0], nodes[2])
 
     def visitJuxtaposed_raise(self, ctx):
-        nodes = super().visitJuxtaposed_raise(ctx)
-        print("RAISE!")
+        nodes = self.visitChildren(ctx)
         lhs, rhs = self.strip_whitespace(nodes)
         return BinaryOp('^', lhs, rhs)
 
     def visitExponent_unicode(self, ctx):
-        nodes = super().visitChildren(ctx)
+        nodes = self.visitChildren(ctx)
         lhs, rhs = nodes
         return BinaryOp('^', lhs, rhs)
 
     def visitSci_number(self, ctx):
-        nodes = super().visitSci_number(ctx)
-        if isinstance(nodes, list):
+        nodes = self.visitChildren(ctx)
+        if isinstance(nodes, Leaf):
+            number = nodes
+        else:  
+            assert isinstance(nodes, list)
             assert len(nodes) == 2
             sign, number = nodes
             number = number.content
             if sign.content == '-':
                 number = -number
-        else:
-            number = nodes.content
-        print('NODES NUMBER :', nodes, number)
-        number = Leaf(number)
+            number = Leaf(number)
         return number
 
     visitAny_unsigned_number = visitSci_number
     visitAny_signed_number = visitSci_number
 
     def visitExponent(self, ctx):
-        call_through = super().visitMultiply(ctx)
-        return BinaryOp('^', call_through[0], call_through[2])
+        nodes = self.visitChildren(ctx)
+        return BinaryOp('^', nodes[0], nodes[2])
 
     def visitShift(self, ctx):
-        _ = super().visitShift(ctx)  # noqa: F841
+        _ = self.visitChildren(ctx)  # noqa: F841
         return '@'
 
     def visitUnit_spec(self, ctx):
-        call_through = super().visitShift(ctx)
+        nodes = self.visitChildren(ctx)
         
         # Drop the EOF
-        if isinstance(call_through, Node):
+        if isinstance(nodes, Node):
             node = Root()
-            assert str(call_through) == '<EOF>'
-#            call_through = [[], []]
+            assert str(nodes) == '<EOF>'
         else:
-            assert len(call_through) == 2
-            assert isinstance(call_through, list)
-            if isinstance(call_through[0], Node):
-                node = Root(call_through[0])
+            assert len(nodes) == 2
+            assert isinstance(nodes, list)
+            if isinstance(nodes[0], Node):
+                node = Root(nodes[0])
             else:
-                node = Root(*call_through[0])
+                node = Root(*nodes[0])
         return node
 
 
@@ -295,15 +245,9 @@ class ErrorListener(ErrorListener):
         syntax_error = SyntaxError(msg, context)
         raise syntax_error from None
 
-    def __getattribute__(self, attr):
-         # Useful to debug what is getting called.
-         print('GET ERROR HANDLER:', attr)
-         return super().__getattribute__(attr)
-
 
 def normalize(unit_str):
     return str(parse(unit_str))
-
 
 
 def parse(unit_str):
@@ -314,8 +258,6 @@ def parse(unit_str):
     parser = LabeledExprParser(stream)
 
     parser._listeners = [ErrorListener(unit_str)]
-
-
 
 
     token_lookup = {getattr(lexer, rule, -1): rule for rule in lexer.ruleNames}
@@ -330,12 +272,12 @@ def parse(unit_str):
         tree = parser2.unit_spec()
 
         # NOTE, because of the parser._listeners error handler, this only works if we have a valid grammar in the first place.
+        print()
         for token in stream2.tokens:
             if token.text != '<EOF>':
                 token_type_idx = token.type 
                 rule = token_lookup[token_type_idx]
                 print("%s: %s" % (token.text, rule))
-        print('END')
 
     # The top level concept.
     tree = parser.unit_spec()

@@ -2,7 +2,6 @@ grammar udunits2;
 
 
 unit_spec:
-//    (basic_unit (WS+ basic_unit)?)? EOF
     shift_spec? EOF
 ;
 
@@ -21,8 +20,7 @@ product_spec:
 power_spec:
       basic_spec
       | juxtaposed_multiplication
-      | juxtaposed_raise
-//      | negative_exponent // "s-1"
+      | juxtaposed_raise  
       | exponent_unicode
       | exponent
 ;

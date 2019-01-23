@@ -54,7 +54,7 @@ def serializedATN():
         buf.write(";<\7\2\2\3<\3\3\2\2\2=G\5\6\4\2>?\5\6\4\2?@\5.\30\2@A")
         buf.write("\5\22\n\2AG\3\2\2\2BC\5\6\4\2CD\5.\30\2DE\5\"\22\2EG\3")
         buf.write("\2\2\2F=\3\2\2\2F>\3\2\2\2FB\3\2\2\2G\5\3\2\2\2HI\5\20")
-        buf.write("\t\2IJ\7\n\2\2JK\5\24\13\2K^\3\2\2\2LS\5\n\6\2MN\5\n\6")
+        buf.write("\t\2IJ\7\n\2\2JK\5\22\n\2K^\3\2\2\2LS\5\n\6\2MN\5\n\6")
         buf.write("\2NO\5\60\31\2OP\5\n\6\2PS\3\2\2\2QS\5\b\5\2RL\3\2\2\2")
         buf.write("RM\3\2\2\2RQ\3\2\2\2SZ\3\2\2\2TV\7\21\2\2UT\3\2\2\2UV")
         buf.write("\3\2\2\2VW\3\2\2\2WY\5\6\4\2XU\3\2\2\2Y\\\3\2\2\2ZX\3")
@@ -381,8 +381,8 @@ class udunits2Parser ( Parser ):
         def PERIOD(self):
             return self.getToken(udunits2Parser.PERIOD, 0)
 
-        def signed_int(self):
-            return self.getTypedRuleContext(udunits2Parser.Signed_intContext,0)
+        def sci_number(self):
+            return self.getTypedRuleContext(udunits2Parser.Sci_numberContext,0)
 
 
         def power_spec(self, i:int=None):
@@ -441,7 +441,7 @@ class udunits2Parser ( Parser ):
                 self.state = 71
                 self.match(udunits2Parser.PERIOD)
                 self.state = 72
-                self.signed_int()
+                self.sci_number()
                 pass
 
             elif la_ == 2:

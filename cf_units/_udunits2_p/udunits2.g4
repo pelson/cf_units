@@ -12,7 +12,7 @@ shift_spec:
 
 
 product_spec:  
-      (base_unit PERIOD signed_int) // km.2 === 2*km (i.e. this trumps km * 0.2)
+      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2)
        |
       (power_spec
        //| power_spec PERIOD signed_int) // km.2 === 2*km

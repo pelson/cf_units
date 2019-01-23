@@ -58,6 +58,7 @@ testdata = [
     'm^+2',
     'm^-1',
     'm.2',  # This is 2*m
+    'm.2.4', # This is 2.4 * m
     'm0.2', # But this is 2 m^0
     'm2.5', # And this is 5m^2
 
@@ -122,7 +123,6 @@ udunits_bugs = [
 
 known_issues = [
     # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
-    ['m.2.4', 'm*2.4'], 
     ['m--2--3', SyntaxError], # -2 * -3 * m
 ]
 

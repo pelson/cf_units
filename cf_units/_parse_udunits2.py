@@ -190,6 +190,7 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.HOUR_MINUTE: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.TIMESTAMP: self.prepareTIMESTAMP,
                          lexer.PERIOD: str,
+                         lexer.E_POWER: str,
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
@@ -207,7 +208,8 @@ class ExprVisitor(LabeledExprVisitor):
         nodes = self.visitChildren(ctx)
         if not isinstance(nodes, Leaf):
             string = ''.join(str(n.content) for n in nodes)
-            nodes = Leaf(float(string))
+            # We don't cast this here in order to keep fidelity later on. Perhaps we should have a Float node.
+            nodes = Leaf(string)
         return nodes
 
     def visitDate(self, ctx):
@@ -314,8 +316,9 @@ class ExprVisitor(LabeledExprVisitor):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
-
+        print("PROD:", nodes)
         if isinstance(nodes, list):
+            nodes = self.strip_whitespace(nodes)
             last = nodes[-1]
             # Walk the nodes backwards applying mult to each successively.
             for node in nodes[:-1][::-1]:
@@ -428,7 +431,10 @@ class ExprVisitor(LabeledExprVisitor):
             sign, number = nodes
             number = number.content
             if sign.content == '-':
-                number = -number
+                if isinstance(number, str):
+                    number = '-' + number
+                else:
+                    number = -number
             number = Leaf(number)
         return number
 
@@ -490,7 +496,7 @@ def normalize(unit_str):
     return str(parse(unit_str))
 
 
-def parse(unit_str):
+def parse(unit_str, root='unit_spec'):
     # nb: The definition (C code) says to strip the unit string first.
     unit_str = unit_str.strip()
     lexer = LabeledExprLexer(InputStream(unit_str))
@@ -509,7 +515,7 @@ def parse(unit_str):
 
         parser2 = LabeledExprParser(stream2)
         # The top level concept.
-        tree = parser2.unit_spec()
+        tree = getattr(parser2, root)()
 
         # NOTE, because of the parser._listeners error handler, this only works if we have a valid grammar in the first place.
         print()
@@ -520,7 +526,7 @@ def parse(unit_str):
                 print("%s: %s" % (token.text, rule))
 
     # The top level concept.
-    tree = parser.unit_spec()
+    tree = getattr(parser, root)()
 
     visitor = ExprVisitor()
     return visitor.visit(tree)

@@ -1,6 +1,6 @@
 import pytest
 import cf_units
-from cf_units._parse_udunits2 import normalize
+from cf_units._parse_udunits2 import normalize, parse
 
 testdata = [
     '',
@@ -34,6 +34,8 @@ testdata = [
     'm-+2',
     'm--4',
 
+    # TODO: add some tests with brackets.
+
     'm/2',
     'm1',
     'm m',
@@ -46,7 +48,8 @@ testdata = [
     '2⁵',
     '2⁴²',
     '3⁻²',
-
+    'm2 s2',
+    'm^2*s^2',
    
     '1-2',
     '1-2-3',  # nb. looks a bit like a date, but it isn't!
@@ -213,3 +216,39 @@ def test_normed_unit(_, unit_str):
     # Whilst the symbolic form from udunits is ugly, it *is* acurate,
     # so check that the two represent the same unit.
     assert raw_symbol == parsed_expr_symbol
+
+@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
+    ['1.2', '1.2'],
+    ['m.m', 'm*m'],
+    ['m m', 'm*m'],
+    ['m -1.2', 'm*-1.2'],
+    ['km.2', 'km*2'],
+])])
+def test_product_spec(_, unit_str, expected):
+    n = str(parse(unit_str, root='product_spec'))
+    assert n == expected
+
+
+@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
+    ['2.3', '2.3'],
+    ['m2', 'm^2'],
+    ['2m', '2*m'],
+    ['m²', 'm^2'],
+    ['m**2', 'm^2'],
+    ['m-2', 'm^-2'],
+    ['m.m', 'm']  # <- no product happending, and no EOL in the rule. This is the right behaviour!
+])])
+def test_power_spec(_, unit_str, expected):
+    n = str(parse(unit_str, root='power_spec'))
+    assert n == expected
+
+
+@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
+    ['1.2', '1.2'],
+    ['m', 'm'],
+    ['+1e12', '1e12'],
+])])
+def test_basic_spec(_, unit_str, expected):
+    n = str(parse(unit_str, root='basic_spec'))
+    assert n == expected
+

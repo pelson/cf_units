@@ -17,7 +17,7 @@ product_spec:
        //| power_spec PERIOD signed_int) // km.2 === 2*km
        | power_spec multiply power_spec // km*2
        | div  // km/2
-      ) product_spec*  // "km.2 2km .2s" === "4km² 0.2s" 
+      ) (WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 
 ;
 
 div:

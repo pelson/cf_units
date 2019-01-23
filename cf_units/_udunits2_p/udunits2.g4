@@ -187,9 +187,9 @@ SHIFT_OP :
 //         the usual integer format
 
 multiply:
-      //(SPACE+ '-')  // This is now handled in juxtaposed_multiply
+      '-'  // m--1 === m * -1
 //      |  (SPACE* '*' SPACE*)
-      MULTIPLY
+      | MULTIPLY
       | PERIOD
       | WS+
 ;

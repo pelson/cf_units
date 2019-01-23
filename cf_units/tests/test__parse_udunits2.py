@@ -31,6 +31,8 @@ testdata = [
     'm -1.2',
     'm 1',
     'm 1.2',
+    'm-+2',
+    'm--4',
 
     'm/2',
     'm1',
@@ -86,6 +88,7 @@ testdata = [
 
 invalid = [
     '1 * m',
+    'm--m',
     '-m',
     '.1e2.',
     'm+-1',
@@ -111,6 +114,13 @@ not_udunits = [
 udunits_bugs = [
         '2¹²³⁴⁵⁶⁷⁸⁹⁰',
         'm⁻²'
+]
+
+
+known_issues = [
+    # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
+    ['m.2.4', 'm*2.4'], 
+    ['m--2--3', SyntaxError], # -2 * -3 * m
 ]
 
 not_done = [
@@ -167,6 +177,21 @@ def test_invalid_in_udunits_but_still_parses(_, unit_str, expected):
     assert can_parse == True
     assert unit_expr == expected
 
+
+@pytest.mark.parametrize("_, unit_str, expected", [[i, u, e] for i, (u, e) in enumerate(known_issues)])
+def test_known_issues(_, unit_str, expected):
+    # Unfortunately the grammar is not perfect.
+    # These are the cases that don't work yet.
+
+    # Get the udunits symbolic form for the raw unit.
+    raw_symbol = cf_units.Unit(unit_str).symbol
+
+    if isinstance(expected, type) and issubclass(expected, Exception):
+        with pytest.raises(SyntaxError):
+            unit_expr = normalize(unit_str)
+    else:
+        unit_expr = normalize(unit_str)
+        assert unit_expr != expected
 
 
 @pytest.mark.parametrize("_, unit_str", enumerate(testdata))

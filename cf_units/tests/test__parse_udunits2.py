@@ -36,11 +36,26 @@ testdata = [
     '2⁴',  # NOTE: Udunits can't do m⁴ for some reason. Bug?
     '2⁵',
     '2⁴²',
-    '3⁻²',  # Udunits can't handle this case.
+    '3⁻²',
     'm-1',
     'm^2',
     'm^+2',
     'm^-1',
+    'm@10',
+    'm @10',
+    'm @ 10',
+    'm@ 10',
+    'm from2',
+    'm from2e-1',
+
+    's from 1990',
+    'minutes since 1990',
+    'hour@1990',
+    'hours from 1990-1',
+    'hours from 1990-1-1',
+#    'hours from 1990-1-1 0',
+    'hours from 1990-1-1 0:1:1',
+    'hours from 1990-1-1 0:0:1',
 ]
 
 invalid = [
@@ -52,9 +67,18 @@ invalid = [
     '+-1',
     '--3.1',
     '$',
-    '£',
+    '£',  # TODO: What if udunits has this defined in its XML, does it work?
+    
+    #    'hours from 1990-1-1 0:1:60',
+    #    'hours from 1990-0-0 0:0:0',
 ]
 
+
+not_udunits = [
+    ['foo', 'foo'],
+    ['mfrom1', 'mfrom^1'],
+    ['m⁴', 'm^4'],  # udunits bug.
+]
 
 udunits_bugs = [
         '2¹²³⁴⁵⁶⁷⁸⁹⁰',
@@ -65,6 +89,12 @@ not_done = [
     'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
     'µ°F·Ω⁻¹',  # This is in the docs, so let's at least support that one!
     ]
+
+
+expansions = [
+    ['01', '1']
+]
+
 
 @pytest.mark.parametrize("_, unit_str", enumerate(invalid))
 def test_invalid_units(_, unit_str):
@@ -84,7 +114,30 @@ def test_invalid_units(_, unit_str):
         can_parse = False
 
     # Now confirm that we couldn't parse this either.
-    assert can_parse == False
+    assert can_parse == False, 'Parser unexpectedly able to deal with {}'.format(unit_str)
+
+
+@pytest.mark.parametrize("_, unit_str_and_expected", enumerate(not_udunits))
+def test_invalid_in_udunits_but_still_parses(_, unit_str_and_expected):
+    unit_str, expected = unit_str_and_expected
+    try:
+        cf_units.Unit(unit_str)
+        cf_valid = True
+    except ValueError:
+        cf_valid = False
+
+    # Double check that udunits2 can't parse this.
+    assert cf_valid is False
+
+    try:
+        unit_expr = normalize(unit_str)
+        can_parse = True
+    except SyntaxError:
+        can_parse = False
+
+    # Now confirm that we could.
+    assert can_parse == True
+    assert unit_expr == expected
 
 
 

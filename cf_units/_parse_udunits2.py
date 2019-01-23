@@ -122,6 +122,9 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.DIVIDE: str,
                          lexer.MULTIPLY: str,
                          lexer.RAISE: str,
+                         lexer.SHIFT_OP: str,
+                         lexer.DATE: lambda *args: ' '.join(args),
+                         lexer.CLOCK: lambda *args: ' '.join(args),
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
@@ -167,6 +170,20 @@ class ExprVisitor(LabeledExprVisitor):
     def visitNegative_exponent(self, ctx):
         nodes = self.visitChildren(ctx)
         return BinaryOp('^-', nodes[0], nodes[2])
+
+    def visitShift(self, ctx):
+        nodes = self.visitChildren(ctx)
+        [operand] = self.strip_whitespace(nodes)
+        return operand
+
+    def visitTimestamp(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print('TIMESTAMP', nodes)
+        print(type(nodes))
+        if not isinstance(nodes, Leaf):
+            nodes = self.strip_whitespace(nodes)
+            nodes = Leaf(' '.join(n.content for n in nodes))
+        return nodes
 
     def visitJuxtaposed_raise(self, ctx):
         nodes = self.visitChildren(ctx)

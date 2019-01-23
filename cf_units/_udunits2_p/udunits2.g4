@@ -7,8 +7,8 @@ unit_spec:
 
 shift_spec:
        product_spec
-//       | product_spec shift number
-//       | product_spec SHIFT Timestamp
+     | product_spec shift sci_number
+       | product_spec shift timestamp
 ;
 
 product_spec:
@@ -103,6 +103,21 @@ fragment DIGIT: '0'..'9';
 REAL : INT* '.' INT+ ;
 
 
+timestamp:
+    DATE
+    | (DATE WS+ CLOCK)
+    | (DATE WS+ CLOCK WS+ CLOCK)
+//    | (DATE WS+ CLOCK WS+ INT)  // TODO: What is this?
+//    | (DATE WS+ CLOCK WS+ ID)
+//  | TIMESTAMP
+// ...
+    
+;
+
+DATE: INT '-' INT ('-' INT)?;
+CLOCK: INT ':' INT (':' INT)?;
+TIMSTAMP: INT (INT INT?)? 'T' INT (INT INT?)?;
+
 // Timestamp: one of
 //         DATE
 //         DATE CLOCK
@@ -114,7 +129,7 @@ REAL : INT* '.' INT+ ;
 //         TIMESTAMP ID
 // 
 shift:
-         SPACE* SHIFT_OP SPACE*   // TODO: Test "afromb" - it should be a unit string, not "a from b", right?
+         WS* SHIFT_OP WS*
 ;
  
 SHIFT_OP :
@@ -137,7 +152,7 @@ multiply:
 //      |  (SPACE* '.' SPACE*)
 //      |  (SPACE* '*' SPACE*)
       | '*'
-      | SPACE+
+//      | SPACE+
 ;
 
 exponent_unicode:  // m²
@@ -159,7 +174,7 @@ negative_exponent:
     
 
 WS : [ ] ;
-SPACE      : (WS | [\t\r\n]);
+// SPACE      : (WS | [\t\r\n]);
 
 divide:
         WS* '/' WS*
@@ -185,8 +200,6 @@ RAISE :
 //
 
 ID:  [A-Za-z_]+ ;
-
-
 
 
 // handle characters which failed to match any other token

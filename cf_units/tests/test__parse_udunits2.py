@@ -20,8 +20,8 @@ testdata = [
     '2e',  # <- TODO: Assert this isn't 2e1, but is infact the unit e *2
     'm',
     'meter',
-#    '1 2 3',
-#    '1 -2 -3',
+    '1 2 3',
+    '1 -2 -3',
     '1m',
     '1*m',
     'm·m',
@@ -72,10 +72,11 @@ testdata = [
     'hours from 1990-1-1 0',
     'hours from 1990-1-1 0:1:1',
     'hours from 1990-1-1 0:0:1 +2',
+#    'hours from 1990-1-1 -20:4:18 +2',
 #    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
     's since 19900102T5',  # Packed format (undocumented?)
 #    's since 199022T1',  # UGLY! (bug?)
-#   'hours from 1990-1-1 3+1'
+    'hours from 1990-1-1 3+1',
 
     'seconds from 1990-1-1 0:0:0 +2550',
 ]

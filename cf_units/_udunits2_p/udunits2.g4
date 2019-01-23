@@ -18,7 +18,7 @@ product_spec:
        //| power_spec PERIOD signed_int) // km.2 === 2*km
        | power_spec multiply power_spec // km*2
        | div  // km/2
-      ) product_spec*  // 
+      ) product_spec*  // "km.2 2km .2s" === "4km² 0.2s" 
 ;
 
 div:
@@ -121,13 +121,13 @@ timestamp:
     date
 //    | (date WS+ clock WS+ clock)
     | (date WS+ CLOCK)
-    | (date WS+ CLOCK WS+ signed_int)  // Timezone offset.
+    | (date WS+ CLOCK WS+ signed_int)  // Timezone offset. // TODO check 0:0:0+1
     | (date WS+ CLOCK WS+ CLOCK)       // Date + (Clock1 - Clock2)
 
     | (date WS+ signed_int)            // Date + packed_clock
     | (date WS+ signed_int WS+ CLOCK)  // Date + (packed_clock - Clock2)
 
-    | (date WS+ signed_int WS+ signed_int)  // Date + packed_clock + Timezone Offset
+    | (date WS+ signed_int ((WS+ INT) | signed_int))  // Date + packed_clock + Timezone Offset
 //    | (date WS+ CLOCK WS+ ID) // UNKNOWN!
     | TIMESTAMP
 // ...   

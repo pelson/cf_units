@@ -81,6 +81,18 @@ class Timestamp(Node):
         return f'{self.date}T{self.clock}+{self.tz_offset}'
 
 
+class ClockSubtract(Node):
+    def __init__(self, clock1, clock2):
+        self.clock1 = clock1
+        self.clock2 = clock2
+
+    def _items(self):
+        return self.clock1, self.clock2
+
+    def __str__(self):
+        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
+        return f'{self.clock1} {self.clock2}'
+
 class NaiveClock(Node):
     def __init__(self, hour=0, minute=0, second=0):
         self.hour = hour
@@ -229,6 +241,7 @@ class ExprVisitor(LabeledExprVisitor):
         return node
 
     def visitSigned_int(self, ctx):
+        print('SIGNED INT:', self.visitAny_signed_number(ctx))
         return self.visitAny_signed_number(ctx)
 
     def strip_whitespace(self, nodes):
@@ -344,13 +357,20 @@ class ExprVisitor(LabeledExprVisitor):
             elif types == [Date, NaiveClock, Leaf]:
                 return Timestamp(*nodes)
             elif types == [Date, NaiveClock, NaiveClock]:
-                raise RuntimeError('NEED TO IMPLEMENT CLOCK SUBTRACT')
+                # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
+                # Ref
+                return Timestamp(nodes[0], ClockSubtract(nodes[1], nodes[2]))
             elif types == [Date, Leaf, NaiveClock]:
                 raise RuntimeError('NEED TO IMPLEMENT CLOCK SUBTRACT')
             elif types == [Date, Leaf, Leaf]:
+                # Date + packed_clock + tz_offset
                 hour = nodes[1].content
                 hour = NaiveClock(hour)
-                return Timestamp(nodes[0], hour, nodes[1])
+                return Timestamp(nodes[0], hour, nodes[2])
+            else:
+                for node in nodes:
+                    print(node)
+                raise RuntimeError('Unhandled timestamp form {}.'.format(types))
 
         return nodes
 

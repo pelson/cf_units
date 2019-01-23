@@ -1,6 +1,5 @@
 grammar udunits2;
 
-
 unit_spec:
     shift_spec? EOF
 ;
@@ -8,7 +7,7 @@ unit_spec:
 shift_spec:
        product_spec
      | product_spec shift sci_number
-       | product_spec shift timestamp
+     | product_spec shift timestamp
 ;
 
 product_spec:  
@@ -61,10 +60,11 @@ juxtaposed_multiplication:
     | (any_signed_number WS+ any_signed_number)  // "2 3"
 ;
 
+divide:
+    WS* DIVIDE WS*
+;
+
 sign: (PLUS | MINUS);
-fragment SIGN
-   : (PLUS | MINUS)
-   ;
 
 PLUS: '+';
 MINUS: '-';
@@ -94,27 +94,9 @@ float_t:
     ) E_POWER?  // 1.2e-5, 1e2
 ;
 
-//FLOAT: 
-//     (FLOAT_LEADING_DIGIT | FLOAT_LEADING_PERIOD | INTEGER) E_POWER?  // 1.2e-5, 1e2
-//   ;
-
-fragment FLOAT_LEADING_DIGIT:
-;
-
-fragment FLOAT_LEADING_PERIOD:
-     ('0' .. '9')? '.' ('0' .. '9')+
-;
-
 E_POWER:
      ('E' | 'e') (PLUS | MINUS)? INT
 ;
-
-
-fragment E
-   : 'E' | 'e'
-   ;
-
-fragment DIGIT: '0'..'9';
 
 
 timestamp:
@@ -157,16 +139,6 @@ fragment MONTH:
     ('0'? ('1'..'9')) | ('1' ('0'..'2'))
 ;
 
-// Timestamp: one of
-//         DATE
-//         DATE CLOCK
-//         DATE CLOCK CLOCK
-//         DATE CLOCK INT
-//         DATE CLOCK ID
-//         TIMESTAMP
-//         TIMESTAMP INT
-//         TIMESTAMP ID
-// 
 shift:
          WS* SHIFT_OP WS*
 ;
@@ -179,16 +151,8 @@ SHIFT_OP :
          | 'ref'
 ;
 
-// 
-// REAL:
-//         the usual float_ting_point format
-// 
-// INT:
-//         the usual integer format
-
 multiply:
       '-'  // m--1 === m * -1
-//      |  (SPACE* '*' SPACE*)
       | MULTIPLY
       | PERIOD
       | WS+
@@ -213,11 +177,8 @@ negative_exponent:
     
 
 WS : [ ] ;
-// SPACE      : (WS | [\t\r\n]);
 
-divide:
-        WS* '/' WS*
-;
+
 
 UNICODE_EXPONENT:
     // One or more ISO-8859-9 encoded exponent characters
@@ -237,9 +198,8 @@ RAISE :
 //        degree sign
 //        greek mu character
 //
-
 ID:  [A-Za-z_]+ ;
 
-
-// handle characters which failed to match any other token
-ErrorCharacter : . ;
+// Any characters which fail to match will raise an error.
+// nb. without this token, we don't get quite as good error messages. TODO: test for this!
+ERRORCHARACTER : . ;

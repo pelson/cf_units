@@ -64,6 +64,11 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#divide.
+    def visitDivide(self, ctx:udunits2Parser.DivideContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#sign.
     def visitSign(self, ctx:udunits2Parser.SignContext):
         return self.visitChildren(ctx)
@@ -141,11 +146,6 @@ class udunits2Visitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by udunits2Parser#negative_exponent.
     def visitNegative_exponent(self, ctx:udunits2Parser.Negative_exponentContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by udunits2Parser#divide.
-    def visitDivide(self, ctx:udunits2Parser.DivideContext):
         return self.visitChildren(ctx)
 
 

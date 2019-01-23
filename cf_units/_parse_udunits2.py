@@ -165,13 +165,6 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitTerminal(self, ctx):
         r = ctx.getText()
-        # print(ctx)
-        # print(ctx.__dict__)
-        # print(ctx.symbol)
-        # print(ctx.symbol.__dict__)
-        # print(dir(ctx.symbol))
-        # print('IDX:', ctx.symbol.tokenIndex)
-        # print(ctx.symbol.type)
 
         symbol_idx = ctx.symbol.type
         if symbol_idx < 0:
@@ -208,12 +201,10 @@ class ExprVisitor(LabeledExprVisitor):
         return r
 
     def prepareDATE(self, string):
-        print("PREPARE DATE:", string)
         return Date(*string.split('-'))
 
     def visitFloat_t(self, ctx):
         nodes = self.visitChildren(ctx)
-        print('FLOAT:', nodes)
         if not isinstance(nodes, Leaf):
             string = ''.join(str(n.content) for n in nodes)
             nodes = Leaf(float(string))
@@ -221,12 +212,9 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitDate(self, ctx):
         nodes = self.visitChildren(ctx)
-        print(nodes)
-
         return Date(*[node.content for node in nodes if node.content != '-'])
 
     def prepareCLOCK(self, string):
-        print('PREPARE CLOCK', string)
         return NaiveClock(*string.split(':'))
 
     def prepareTIMESTAMP(self, string):
@@ -259,14 +247,12 @@ class ExprVisitor(LabeledExprVisitor):
         return node
 
     def visitSigned_int(self, ctx):
-        print('SIGNED INT:', self.visitAny_signed_number(ctx))
         return self.visitAny_signed_number(ctx)
 
     def visitSigned_hour_minute(self, ctx):
         nodes = self.visitChildren(ctx)
         nodes = self.strip_whitespace(nodes)
         if isinstance(nodes, list):
-            print('SIGNED HOUR:M', nodes)
             if len(nodes) == 1:
                 nodes = nodes[0]
             else:
@@ -276,14 +262,11 @@ class ExprVisitor(LabeledExprVisitor):
                 else:
                     nodes = nodes[1]
 
-        print("SIGN MINUTE", nodes)
         return nodes
 
     def visitSigned_clock(self, ctx):
         nodes = self.visitChildren(ctx)
-        print('SIGNING CLOCK PRE:', nodes)
         nodes = self.strip_whitespace(nodes)
-        print(type(nodes))
         if isinstance(nodes, list):
             if len(nodes) == 1:
                 nodes = nodes[0]
@@ -294,7 +277,6 @@ class ExprVisitor(LabeledExprVisitor):
                 else:
                     assert nodes[0].content == '+'
                     nodes = nodes[1]
-        print('SIGNING CLOCK:', nodes)
         return nodes
 
     def strip_whitespace(self, nodes):
@@ -307,9 +289,7 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitPower_spec(self, ctx):
         nodes = self.visitChildren(ctx)
-        print('NODES:', nodes)
         if isinstance(nodes, list):
-            print("POWER!", nodes, ctx)
             last = nodes[-1]
             new = []
             # Walk the nodes backwards applying raise to each successivelyi.
@@ -337,7 +317,6 @@ class ExprVisitor(LabeledExprVisitor):
 
         if isinstance(nodes, list):
             last = nodes[-1]
-            print('PROD:', nodes)
             # Walk the nodes backwards applying mult to each successively.
             for node in nodes[:-1][::-1]:
                 if isinstance(node, Operand):
@@ -390,17 +369,13 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitTimestamp(self, ctx):
         nodes = self.visitChildren(ctx)
-        print('TIMESTAMP', nodes)
-        print(type(nodes))
         #if isinstance(nodes, Leaf):
         #    nodes = Timestamp(*nodes.content)
 
         if not isinstance(nodes, Node):
             nodes = self.strip_whitespace(nodes)
-            print('STRIPPED:', nodes)
 
             types = [type(n) for n in nodes]
-            print('t:', types)
 
             def matches(specs):
                 if len(specs) != len(types):

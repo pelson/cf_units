@@ -29,11 +29,6 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#mult.
-    def visitMult(self, ctx:udunits2Parser.MultContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by udunits2Parser#power_spec.
     def visitPower_spec(self, ctx:udunits2Parser.Power_specContext):
         return self.visitChildren(ctx)
@@ -84,8 +79,8 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#number.
-    def visitNumber(self, ctx:udunits2Parser.NumberContext):
+    # Visit a parse tree produced by udunits2Parser#float_t.
+    def visitFloat_t(self, ctx:udunits2Parser.Float_tContext):
         return self.visitChildren(ctx)
 
 

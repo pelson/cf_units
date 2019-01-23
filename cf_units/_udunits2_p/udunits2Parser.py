@@ -9,139 +9,164 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\23")
-        buf.write("\u0129\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\u0150\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
-        buf.write("\t\31\4\32\t\32\4\33\t\33\3\2\5\28\n\2\3\2\3\2\3\3\3\3")
-        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3E\n\3\3\4\3\4\3\4\5\4")
-        buf.write("J\n\4\3\4\7\4M\n\4\f\4\16\4P\13\4\3\5\3\5\3\5\3\5\3\6")
-        buf.write("\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\5\7`\n\7\3\7\5\7")
-        buf.write("c\n\7\3\b\3\b\3\b\3\b\3\b\3\b\5\bk\n\b\3\t\3\t\3\n\3\n")
-        buf.write("\3\13\5\13r\n\13\3\13\3\13\3\f\5\fw\n\f\3\f\3\f\3\r\3")
-        buf.write("\r\7\r}\n\r\f\r\16\r\u0080\13\r\3\r\3\r\3\r\3\r\6\r\u0086")
-        buf.write("\n\r\r\r\16\r\u0087\3\r\3\r\3\r\3\r\6\r\u008e\n\r\r\r")
-        buf.write("\16\r\u008f\3\r\3\r\5\r\u0094\n\r\3\16\3\16\3\17\5\17")
-        buf.write("\u0099\n\17\3\17\3\17\3\20\3\20\3\21\3\21\3\22\3\22\3")
-        buf.write("\22\6\22\u00a4\n\22\r\22\16\22\u00a5\3\22\3\22\3\22\3")
-        buf.write("\22\6\22\u00ac\n\22\r\22\16\22\u00ad\3\22\3\22\6\22\u00b2")
-        buf.write("\n\22\r\22\16\22\u00b3\3\22\3\22\3\22\3\22\6\22\u00ba")
-        buf.write("\n\22\r\22\16\22\u00bb\3\22\3\22\6\22\u00c0\n\22\r\22")
-        buf.write("\16\22\u00c1\3\22\3\22\3\22\3\22\6\22\u00c8\n\22\r\22")
-        buf.write("\16\22\u00c9\3\22\3\22\3\22\3\22\6\22\u00d0\n\22\r\22")
-        buf.write("\16\22\u00d1\3\22\3\22\6\22\u00d6\n\22\r\22\16\22\u00d7")
-        buf.write("\3\22\3\22\3\22\3\22\6\22\u00de\n\22\r\22\16\22\u00df")
-        buf.write("\3\22\3\22\6\22\u00e4\n\22\r\22\16\22\u00e5\3\22\3\22")
-        buf.write("\3\22\5\22\u00eb\n\22\3\23\3\23\5\23\u00ef\n\23\3\24\3")
-        buf.write("\24\3\24\3\24\3\24\5\24\u00f6\n\24\3\25\7\25\u00f9\n\25")
-        buf.write("\f\25\16\25\u00fc\13\25\3\25\3\25\7\25\u0100\n\25\f\25")
-        buf.write("\16\25\u0103\13\25\3\26\3\26\3\27\3\27\3\27\3\30\3\30")
-        buf.write("\3\30\3\30\3\30\3\30\5\30\u0110\n\30\3\31\3\31\5\31\u0114")
-        buf.write("\n\31\3\31\3\31\3\32\3\32\3\32\3\32\3\33\7\33\u011d\n")
-        buf.write("\33\f\33\16\33\u0120\13\33\3\33\3\33\7\33\u0124\n\33\f")
-        buf.write("\33\16\33\u0127\13\33\3\33\2\2\34\2\4\6\b\n\f\16\20\22")
-        buf.write("\24\26\30\32\34\36 \"$&(*,.\60\62\64\2\5\3\2\t\n\3\2\5")
-        buf.write("\6\4\2\t\t\13\13\2\u013d\2\67\3\2\2\2\4D\3\2\2\2\6I\3")
-        buf.write("\2\2\2\bQ\3\2\2\2\nU\3\2\2\2\f_\3\2\2\2\16j\3\2\2\2\20")
-        buf.write("l\3\2\2\2\22n\3\2\2\2\24q\3\2\2\2\26v\3\2\2\2\30\u0093")
-        buf.write("\3\2\2\2\32\u0095\3\2\2\2\34\u0098\3\2\2\2\36\u009c\3")
-        buf.write("\2\2\2 \u009e\3\2\2\2\"\u00ea\3\2\2\2$\u00ee\3\2\2\2&")
-        buf.write("\u00f0\3\2\2\2(\u00fa\3\2\2\2*\u0104\3\2\2\2,\u0106\3")
-        buf.write("\2\2\2.\u010f\3\2\2\2\60\u0113\3\2\2\2\62\u0117\3\2\2")
-        buf.write("\2\64\u011e\3\2\2\2\668\5\4\3\2\67\66\3\2\2\2\678\3\2")
-        buf.write("\2\289\3\2\2\29:\7\2\2\3:\3\3\2\2\2;E\5\6\4\2<=\5\6\4")
-        buf.write("\2=>\5(\25\2>?\5\24\13\2?E\3\2\2\2@A\5\6\4\2AB\5(\25\2")
-        buf.write("BC\5\"\22\2CE\3\2\2\2D;\3\2\2\2D<\3\2\2\2D@\3\2\2\2E\5")
-        buf.write("\3\2\2\2FJ\5\f\7\2GJ\5\n\6\2HJ\5\b\5\2IF\3\2\2\2IG\3\2")
-        buf.write("\2\2IH\3\2\2\2JN\3\2\2\2KM\5\f\7\2LK\3\2\2\2MP\3\2\2\2")
-        buf.write("NL\3\2\2\2NO\3\2\2\2O\7\3\2\2\2PN\3\2\2\2QR\5\f\7\2RS")
-        buf.write("\5\64\33\2ST\5\f\7\2T\t\3\2\2\2UV\5\f\7\2VW\5*\26\2WX")
-        buf.write("\5\f\7\2X\13\3\2\2\2Y`\5\16\b\2Z`\5\60\31\2[`\5\30\r\2")
-        buf.write("\\`\5,\27\2]`\5.\30\2^`\5\62\32\2_Y\3\2\2\2_Z\3\2\2\2")
-        buf.write("_[\3\2\2\2_\\\3\2\2\2_]\3\2\2\2_^\3\2\2\2`b\3\2\2\2ac")
-        buf.write("\5\26\f\2ba\3\2\2\2bc\3\2\2\2c\r\3\2\2\2dk\5\22\n\2ef")
-        buf.write("\7\3\2\2fg\5\4\3\2gh\7\4\2\2hk\3\2\2\2ik\5\24\13\2jd\3")
-        buf.write("\2\2\2je\3\2\2\2ji\3\2\2\2k\17\3\2\2\2lm\5\22\n\2m\21")
-        buf.write("\3\2\2\2no\7\22\2\2o\23\3\2\2\2pr\5\32\16\2qp\3\2\2\2")
-        buf.write("qr\3\2\2\2rs\3\2\2\2st\t\2\2\2t\25\3\2\2\2uw\5\32\16\2")
-        buf.write("vu\3\2\2\2vw\3\2\2\2wx\3\2\2\2xy\7\t\2\2y\27\3\2\2\2z")
-        buf.write("~\5\24\13\2{}\7\17\2\2|{\3\2\2\2}\u0080\3\2\2\2~|\3\2")
-        buf.write("\2\2~\177\3\2\2\2\177\u0081\3\2\2\2\u0080~\3\2\2\2\u0081")
-        buf.write("\u0082\5\16\b\2\u0082\u0094\3\2\2\2\u0083\u0085\5\16\b")
-        buf.write("\2\u0084\u0086\7\17\2\2\u0085\u0084\3\2\2\2\u0086\u0087")
-        buf.write("\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3\2\2\2\u0088")
-        buf.write("\u0089\3\2\2\2\u0089\u008a\5\34\17\2\u008a\u0094\3\2\2")
-        buf.write("\2\u008b\u008d\5\34\17\2\u008c\u008e\7\17\2\2\u008d\u008c")
-        buf.write("\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u008d\3\2\2\2\u008f")
-        buf.write("\u0090\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u0092\5\34\17")
-        buf.write("\2\u0092\u0094\3\2\2\2\u0093z\3\2\2\2\u0093\u0083\3\2")
-        buf.write("\2\2\u0093\u008b\3\2\2\2\u0094\31\3\2\2\2\u0095\u0096")
-        buf.write("\t\3\2\2\u0096\33\3\2\2\2\u0097\u0099\5\32\16\2\u0098")
-        buf.write("\u0097\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009a\3\2\2\2")
-        buf.write("\u009a\u009b\5\36\20\2\u009b\35\3\2\2\2\u009c\u009d\t")
-        buf.write("\2\2\2\u009d\37\3\2\2\2\u009e\u009f\t\4\2\2\u009f!\3\2")
-        buf.write("\2\2\u00a0\u00eb\5&\24\2\u00a1\u00a3\5&\24\2\u00a2\u00a4")
-        buf.write("\7\17\2\2\u00a3\u00a2\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5")
-        buf.write("\u00a3\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00a7\3\2\2\2")
-        buf.write("\u00a7\u00a8\7\f\2\2\u00a8\u00eb\3\2\2\2\u00a9\u00ab\5")
-        buf.write("&\24\2\u00aa\u00ac\7\17\2\2\u00ab\u00aa\3\2\2\2\u00ac")
-        buf.write("\u00ad\3\2\2\2\u00ad\u00ab\3\2\2\2\u00ad\u00ae\3\2\2\2")
-        buf.write("\u00ae\u00af\3\2\2\2\u00af\u00b1\7\f\2\2\u00b0\u00b2\7")
-        buf.write("\17\2\2\u00b1\u00b0\3\2\2\2\u00b2\u00b3\3\2\2\2\u00b3")
-        buf.write("\u00b1\3\2\2\2\u00b3\u00b4\3\2\2\2\u00b4\u00b5\3\2\2\2")
-        buf.write("\u00b5\u00b6\5\26\f\2\u00b6\u00eb\3\2\2\2\u00b7\u00b9")
-        buf.write("\5&\24\2\u00b8\u00ba\7\17\2\2\u00b9\u00b8\3\2\2\2\u00ba")
-        buf.write("\u00bb\3\2\2\2\u00bb\u00b9\3\2\2\2\u00bb\u00bc\3\2\2\2")
-        buf.write("\u00bc\u00bd\3\2\2\2\u00bd\u00bf\7\f\2\2\u00be\u00c0\7")
-        buf.write("\17\2\2\u00bf\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1")
-        buf.write("\u00bf\3\2\2\2\u00c1\u00c2\3\2\2\2\u00c2\u00c3\3\2\2\2")
-        buf.write("\u00c3\u00c4\7\f\2\2\u00c4\u00eb\3\2\2\2\u00c5\u00c7\5")
-        buf.write("&\24\2\u00c6\u00c8\7\17\2\2\u00c7\u00c6\3\2\2\2\u00c8")
-        buf.write("\u00c9\3\2\2\2\u00c9\u00c7\3\2\2\2\u00c9\u00ca\3\2\2\2")
-        buf.write("\u00ca\u00cb\3\2\2\2\u00cb\u00cc\5\26\f\2\u00cc\u00eb")
-        buf.write("\3\2\2\2\u00cd\u00cf\5&\24\2\u00ce\u00d0\7\17\2\2\u00cf")
-        buf.write("\u00ce\3\2\2\2\u00d0\u00d1\3\2\2\2\u00d1\u00cf\3\2\2\2")
-        buf.write("\u00d1\u00d2\3\2\2\2\u00d2\u00d3\3\2\2\2\u00d3\u00d5\5")
-        buf.write("\26\f\2\u00d4\u00d6\7\17\2\2\u00d5\u00d4\3\2\2\2\u00d6")
-        buf.write("\u00d7\3\2\2\2\u00d7\u00d5\3\2\2\2\u00d7\u00d8\3\2\2\2")
-        buf.write("\u00d8\u00d9\3\2\2\2\u00d9\u00da\7\f\2\2\u00da\u00eb\3")
-        buf.write("\2\2\2\u00db\u00dd\5&\24\2\u00dc\u00de\7\17\2\2\u00dd")
-        buf.write("\u00dc\3\2\2\2\u00de\u00df\3\2\2\2\u00df\u00dd\3\2\2\2")
-        buf.write("\u00df\u00e0\3\2\2\2\u00e0\u00e1\3\2\2\2\u00e1\u00e3\5")
-        buf.write("\26\f\2\u00e2\u00e4\7\17\2\2\u00e3\u00e2\3\2\2\2\u00e4")
-        buf.write("\u00e5\3\2\2\2\u00e5\u00e3\3\2\2\2\u00e5\u00e6\3\2\2\2")
-        buf.write("\u00e6\u00e7\3\2\2\2\u00e7\u00e8\5\26\f\2\u00e8\u00eb")
-        buf.write("\3\2\2\2\u00e9\u00eb\7\r\2\2\u00ea\u00a0\3\2\2\2\u00ea")
-        buf.write("\u00a1\3\2\2\2\u00ea\u00a9\3\2\2\2\u00ea\u00b7\3\2\2\2")
-        buf.write("\u00ea\u00c5\3\2\2\2\u00ea\u00cd\3\2\2\2\u00ea\u00db\3")
-        buf.write("\2\2\2\u00ea\u00e9\3\2\2\2\u00eb#\3\2\2\2\u00ec\u00ef")
-        buf.write("\7\f\2\2\u00ed\u00ef\5\26\f\2\u00ee\u00ec\3\2\2\2\u00ee")
-        buf.write("\u00ed\3\2\2\2\u00ef%\3\2\2\2\u00f0\u00f1\7\t\2\2\u00f1")
-        buf.write("\u00f2\7\6\2\2\u00f2\u00f5\7\t\2\2\u00f3\u00f4\7\6\2\2")
-        buf.write("\u00f4\u00f6\7\t\2\2\u00f5\u00f3\3\2\2\2\u00f5\u00f6\3")
-        buf.write("\2\2\2\u00f6\'\3\2\2\2\u00f7\u00f9\7\17\2\2\u00f8\u00f7")
-        buf.write("\3\2\2\2\u00f9\u00fc\3\2\2\2\u00fa\u00f8\3\2\2\2\u00fa")
-        buf.write("\u00fb\3\2\2\2\u00fb\u00fd\3\2\2\2\u00fc\u00fa\3\2\2\2")
-        buf.write("\u00fd\u0101\7\16\2\2\u00fe\u0100\7\17\2\2\u00ff\u00fe")
-        buf.write("\3\2\2\2\u0100\u0103\3\2\2\2\u0101\u00ff\3\2\2\2\u0101")
-        buf.write("\u0102\3\2\2\2\u0102)\3\2\2\2\u0103\u0101\3\2\2\2\u0104")
-        buf.write("\u0105\7\7\2\2\u0105+\3\2\2\2\u0106\u0107\5\16\b\2\u0107")
-        buf.write("\u0108\7\20\2\2\u0108-\3\2\2\2\u0109\u010a\5\16\b\2\u010a")
-        buf.write("\u010b\7\21\2\2\u010b\u010c\5\26\f\2\u010c\u0110\3\2\2")
-        buf.write("\2\u010d\u010e\7\22\2\2\u010e\u0110\7\t\2\2\u010f\u0109")
-        buf.write("\3\2\2\2\u010f\u010d\3\2\2\2\u0110/\3\2\2\2\u0111\u0114")
-        buf.write("\5\22\n\2\u0112\u0114\5\26\f\2\u0113\u0111\3\2\2\2\u0113")
-        buf.write("\u0112\3\2\2\2\u0114\u0115\3\2\2\2\u0115\u0116\5\26\f")
-        buf.write("\2\u0116\61\3\2\2\2\u0117\u0118\5\16\b\2\u0118\u0119\7")
-        buf.write("\6\2\2\u0119\u011a\7\t\2\2\u011a\63\3\2\2\2\u011b\u011d")
-        buf.write("\7\17\2\2\u011c\u011b\3\2\2\2\u011d\u0120\3\2\2\2\u011e")
-        buf.write("\u011c\3\2\2\2\u011e\u011f\3\2\2\2\u011f\u0121\3\2\2\2")
-        buf.write("\u0120\u011e\3\2\2\2\u0121\u0125\7\b\2\2\u0122\u0124\7")
-        buf.write("\17\2\2\u0123\u0122\3\2\2\2\u0124\u0127\3\2\2\2\u0125")
-        buf.write("\u0123\3\2\2\2\u0125\u0126\3\2\2\2\u0126\65\3\2\2\2\u0127")
-        buf.write("\u0125\3\2\2\2#\67DIN_bjqv~\u0087\u008f\u0093\u0098\u00a5")
-        buf.write("\u00ad\u00b3\u00bb\u00c1\u00c9\u00d1\u00d7\u00df\u00e5")
-        buf.write("\u00ea\u00ee\u00f5\u00fa\u0101\u010f\u0113\u011e\u0125")
+        buf.write("\t\31\4\32\t\32\3\2\5\2\66\n\2\3\2\3\2\3\3\3\3\3\3\3\3")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\5\3C\n\3\3\4\3\4\3\4\3\4\3\4\3\4")
+        buf.write("\3\4\3\4\3\4\3\4\5\4O\n\4\3\4\7\4R\n\4\f\4\16\4U\13\4")
+        buf.write("\5\4W\n\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\5\6")
+        buf.write("c\n\6\3\6\5\6f\n\6\3\7\3\7\3\7\3\7\3\7\3\7\5\7n\n\7\3")
+        buf.write("\b\3\b\3\t\3\t\3\n\5\nu\n\n\3\n\3\n\5\ny\n\n\3\13\5\13")
+        buf.write("|\n\13\3\13\3\13\3\f\3\f\7\f\u0082\n\f\f\f\16\f\u0085")
+        buf.write("\13\f\3\f\3\f\3\f\3\f\6\f\u008b\n\f\r\f\16\f\u008c\3\f")
+        buf.write("\3\f\3\f\3\f\6\f\u0093\n\f\r\f\16\f\u0094\3\f\3\f\5\f")
+        buf.write("\u0099\n\f\3\r\3\r\3\16\5\16\u009e\n\16\3\16\3\16\3\17")
+        buf.write("\3\17\5\17\u00a4\n\17\3\20\6\20\u00a7\n\20\r\20\16\20")
+        buf.write("\u00a8\3\20\3\20\7\20\u00ad\n\20\f\20\16\20\u00b0\13\20")
+        buf.write("\3\20\5\20\u00b3\n\20\3\20\3\20\6\20\u00b7\n\20\r\20\16")
+        buf.write("\20\u00b8\3\20\5\20\u00bc\n\20\3\20\5\20\u00bf\n\20\3")
+        buf.write("\21\3\21\3\21\6\21\u00c4\n\21\r\21\16\21\u00c5\3\21\3")
+        buf.write("\21\3\21\3\21\6\21\u00cc\n\21\r\21\16\21\u00cd\3\21\3")
+        buf.write("\21\6\21\u00d2\n\21\r\21\16\21\u00d3\3\21\3\21\3\21\3")
+        buf.write("\21\6\21\u00da\n\21\r\21\16\21\u00db\3\21\3\21\6\21\u00e0")
+        buf.write("\n\21\r\21\16\21\u00e1\3\21\3\21\3\21\3\21\6\21\u00e8")
+        buf.write("\n\21\r\21\16\21\u00e9\3\21\3\21\3\21\3\21\6\21\u00f0")
+        buf.write("\n\21\r\21\16\21\u00f1\3\21\3\21\6\21\u00f6\n\21\r\21")
+        buf.write("\16\21\u00f7\3\21\3\21\3\21\3\21\6\21\u00fe\n\21\r\21")
+        buf.write("\16\21\u00ff\3\21\3\21\6\21\u0104\n\21\r\21\16\21\u0105")
+        buf.write("\3\21\3\21\3\21\5\21\u010b\n\21\3\22\3\22\5\22\u010f\n")
+        buf.write("\22\3\23\3\23\3\23\3\23\3\23\5\23\u0116\n\23\3\24\7\24")
+        buf.write("\u0119\n\24\f\24\16\24\u011c\13\24\3\24\3\24\7\24\u0120")
+        buf.write("\n\24\f\24\16\24\u0123\13\24\3\25\3\25\3\25\6\25\u0128")
+        buf.write("\n\25\r\25\16\25\u0129\5\25\u012c\n\25\3\26\3\26\3\26")
+        buf.write("\3\27\3\27\3\27\3\27\3\27\3\27\5\27\u0137\n\27\3\30\3")
+        buf.write("\30\5\30\u013b\n\30\3\30\3\30\3\31\3\31\3\31\3\31\3\32")
+        buf.write("\7\32\u0144\n\32\f\32\16\32\u0147\13\32\3\32\3\32\7\32")
+        buf.write("\u014b\n\32\f\32\16\32\u014e\13\32\3\32\2\2\33\2\4\6\b")
+        buf.write("\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\2\3\3\2")
+        buf.write("\5\6\2\u0172\2\65\3\2\2\2\4B\3\2\2\2\6V\3\2\2\2\bX\3\2")
+        buf.write("\2\2\nb\3\2\2\2\fm\3\2\2\2\16o\3\2\2\2\20q\3\2\2\2\22")
+        buf.write("t\3\2\2\2\24{\3\2\2\2\26\u0098\3\2\2\2\30\u009a\3\2\2")
+        buf.write("\2\32\u009d\3\2\2\2\34\u00a3\3\2\2\2\36\u00bb\3\2\2\2")
+        buf.write(" \u010a\3\2\2\2\"\u010e\3\2\2\2$\u0110\3\2\2\2&\u011a")
+        buf.write("\3\2\2\2(\u012b\3\2\2\2*\u012d\3\2\2\2,\u0136\3\2\2\2")
+        buf.write(".\u013a\3\2\2\2\60\u013e\3\2\2\2\62\u0145\3\2\2\2\64\66")
+        buf.write("\5\4\3\2\65\64\3\2\2\2\65\66\3\2\2\2\66\67\3\2\2\2\67")
+        buf.write("8\7\2\2\38\3\3\2\2\29C\5\6\4\2:;\5\6\4\2;<\5&\24\2<=\5")
+        buf.write("\22\n\2=C\3\2\2\2>?\5\6\4\2?@\5&\24\2@A\5 \21\2AC\3\2")
+        buf.write("\2\2B9\3\2\2\2B:\3\2\2\2B>\3\2\2\2C\5\3\2\2\2DE\5\20\t")
+        buf.write("\2EF\7\t\2\2FG\5\24\13\2GW\3\2\2\2HO\5\n\6\2IJ\5\n\6\2")
+        buf.write("JK\5(\25\2KL\5\n\6\2LO\3\2\2\2MO\5\b\5\2NH\3\2\2\2NI\3")
+        buf.write("\2\2\2NM\3\2\2\2OS\3\2\2\2PR\5\6\4\2QP\3\2\2\2RU\3\2\2")
+        buf.write("\2SQ\3\2\2\2ST\3\2\2\2TW\3\2\2\2US\3\2\2\2VD\3\2\2\2V")
+        buf.write("N\3\2\2\2W\7\3\2\2\2XY\5\n\6\2YZ\5\62\32\2Z[\5\n\6\2[")
+        buf.write("\t\3\2\2\2\\c\5\f\7\2]c\5.\30\2^c\5\26\f\2_c\5*\26\2`")
+        buf.write("c\5,\27\2ac\5\60\31\2b\\\3\2\2\2b]\3\2\2\2b^\3\2\2\2b")
+        buf.write("_\3\2\2\2b`\3\2\2\2ba\3\2\2\2ce\3\2\2\2df\5\24\13\2ed")
+        buf.write("\3\2\2\2ef\3\2\2\2f\13\3\2\2\2gn\5\20\t\2hi\7\3\2\2ij")
+        buf.write("\5\4\3\2jk\7\4\2\2kn\3\2\2\2ln\5\22\n\2mg\3\2\2\2mh\3")
+        buf.write("\2\2\2ml\3\2\2\2n\r\3\2\2\2op\5\20\t\2p\17\3\2\2\2qr\7")
+        buf.write("\22\2\2r\21\3\2\2\2su\5\30\r\2ts\3\2\2\2tu\3\2\2\2ux\3")
+        buf.write("\2\2\2vy\5\36\20\2wy\7\n\2\2xv\3\2\2\2xw\3\2\2\2y\23\3")
+        buf.write("\2\2\2z|\5\30\r\2{z\3\2\2\2{|\3\2\2\2|}\3\2\2\2}~\7\n")
+        buf.write("\2\2~\25\3\2\2\2\177\u0083\5\22\n\2\u0080\u0082\7\17\2")
+        buf.write("\2\u0081\u0080\3\2\2\2\u0082\u0085\3\2\2\2\u0083\u0081")
+        buf.write("\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0086\3\2\2\2\u0085")
+        buf.write("\u0083\3\2\2\2\u0086\u0087\5\f\7\2\u0087\u0099\3\2\2\2")
+        buf.write("\u0088\u008a\5\f\7\2\u0089\u008b\7\17\2\2\u008a\u0089")
+        buf.write("\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008a\3\2\2\2\u008c")
+        buf.write("\u008d\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u008f\5\32\16")
+        buf.write("\2\u008f\u0099\3\2\2\2\u0090\u0092\5\32\16\2\u0091\u0093")
+        buf.write("\7\17\2\2\u0092\u0091\3\2\2\2\u0093\u0094\3\2\2\2\u0094")
+        buf.write("\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0096\3\2\2\2")
+        buf.write("\u0096\u0097\5\32\16\2\u0097\u0099\3\2\2\2\u0098\177\3")
+        buf.write("\2\2\2\u0098\u0088\3\2\2\2\u0098\u0090\3\2\2\2\u0099\27")
+        buf.write("\3\2\2\2\u009a\u009b\t\2\2\2\u009b\31\3\2\2\2\u009c\u009e")
+        buf.write("\5\30\r\2\u009d\u009c\3\2\2\2\u009d\u009e\3\2\2\2\u009e")
+        buf.write("\u009f\3\2\2\2\u009f\u00a0\5\34\17\2\u00a0\33\3\2\2\2")
+        buf.write("\u00a1\u00a4\5\36\20\2\u00a2\u00a4\7\n\2\2\u00a3\u00a1")
+        buf.write("\3\2\2\2\u00a3\u00a2\3\2\2\2\u00a4\35\3\2\2\2\u00a5\u00a7")
+        buf.write("\7\n\2\2\u00a6\u00a5\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8")
+        buf.write("\u00a6\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00aa\3\2\2\2")
+        buf.write("\u00aa\u00ae\7\t\2\2\u00ab\u00ad\7\n\2\2\u00ac\u00ab\3")
+        buf.write("\2\2\2\u00ad\u00b0\3\2\2\2\u00ae\u00ac\3\2\2\2\u00ae\u00af")
+        buf.write("\3\2\2\2\u00af\u00bc\3\2\2\2\u00b0\u00ae\3\2\2\2\u00b1")
+        buf.write("\u00b3\7\n\2\2\u00b2\u00b1\3\2\2\2\u00b2\u00b3\3\2\2\2")
+        buf.write("\u00b3\u00b4\3\2\2\2\u00b4\u00b6\7\t\2\2\u00b5\u00b7\7")
+        buf.write("\n\2\2\u00b6\u00b5\3\2\2\2\u00b7\u00b8\3\2\2\2\u00b8\u00b6")
+        buf.write("\3\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00bc\3\2\2\2\u00ba")
+        buf.write("\u00bc\7\n\2\2\u00bb\u00a6\3\2\2\2\u00bb\u00b2\3\2\2\2")
+        buf.write("\u00bb\u00ba\3\2\2\2\u00bc\u00be\3\2\2\2\u00bd\u00bf\7")
+        buf.write("\13\2\2\u00be\u00bd\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf")
+        buf.write("\37\3\2\2\2\u00c0\u010b\5$\23\2\u00c1\u00c3\5$\23\2\u00c2")
+        buf.write("\u00c4\7\17\2\2\u00c3\u00c2\3\2\2\2\u00c4\u00c5\3\2\2")
+        buf.write("\2\u00c5\u00c3\3\2\2\2\u00c5\u00c6\3\2\2\2\u00c6\u00c7")
+        buf.write("\3\2\2\2\u00c7\u00c8\7\f\2\2\u00c8\u010b\3\2\2\2\u00c9")
+        buf.write("\u00cb\5$\23\2\u00ca\u00cc\7\17\2\2\u00cb\u00ca\3\2\2")
+        buf.write("\2\u00cc\u00cd\3\2\2\2\u00cd\u00cb\3\2\2\2\u00cd\u00ce")
+        buf.write("\3\2\2\2\u00ce\u00cf\3\2\2\2\u00cf\u00d1\7\f\2\2\u00d0")
+        buf.write("\u00d2\7\17\2\2\u00d1\u00d0\3\2\2\2\u00d2\u00d3\3\2\2")
+        buf.write("\2\u00d3\u00d1\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4\u00d5")
+        buf.write("\3\2\2\2\u00d5\u00d6\5\24\13\2\u00d6\u010b\3\2\2\2\u00d7")
+        buf.write("\u00d9\5$\23\2\u00d8\u00da\7\17\2\2\u00d9\u00d8\3\2\2")
+        buf.write("\2\u00da\u00db\3\2\2\2\u00db\u00d9\3\2\2\2\u00db\u00dc")
+        buf.write("\3\2\2\2\u00dc\u00dd\3\2\2\2\u00dd\u00df\7\f\2\2\u00de")
+        buf.write("\u00e0\7\17\2\2\u00df\u00de\3\2\2\2\u00e0\u00e1\3\2\2")
+        buf.write("\2\u00e1\u00df\3\2\2\2\u00e1\u00e2\3\2\2\2\u00e2\u00e3")
+        buf.write("\3\2\2\2\u00e3\u00e4\7\f\2\2\u00e4\u010b\3\2\2\2\u00e5")
+        buf.write("\u00e7\5$\23\2\u00e6\u00e8\7\17\2\2\u00e7\u00e6\3\2\2")
+        buf.write("\2\u00e8\u00e9\3\2\2\2\u00e9\u00e7\3\2\2\2\u00e9\u00ea")
+        buf.write("\3\2\2\2\u00ea\u00eb\3\2\2\2\u00eb\u00ec\5\24\13\2\u00ec")
+        buf.write("\u010b\3\2\2\2\u00ed\u00ef\5$\23\2\u00ee\u00f0\7\17\2")
+        buf.write("\2\u00ef\u00ee\3\2\2\2\u00f0\u00f1\3\2\2\2\u00f1\u00ef")
+        buf.write("\3\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3")
+        buf.write("\u00f5\5\24\13\2\u00f4\u00f6\7\17\2\2\u00f5\u00f4\3\2")
+        buf.write("\2\2\u00f6\u00f7\3\2\2\2\u00f7\u00f5\3\2\2\2\u00f7\u00f8")
+        buf.write("\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\u00fa\7\f\2\2\u00fa")
+        buf.write("\u010b\3\2\2\2\u00fb\u00fd\5$\23\2\u00fc\u00fe\7\17\2")
+        buf.write("\2\u00fd\u00fc\3\2\2\2\u00fe\u00ff\3\2\2\2\u00ff\u00fd")
+        buf.write("\3\2\2\2\u00ff\u0100\3\2\2\2\u0100\u0101\3\2\2\2\u0101")
+        buf.write("\u0103\5\24\13\2\u0102\u0104\7\17\2\2\u0103\u0102\3\2")
+        buf.write("\2\2\u0104\u0105\3\2\2\2\u0105\u0103\3\2\2\2\u0105\u0106")
+        buf.write("\3\2\2\2\u0106\u0107\3\2\2\2\u0107\u0108\5\24\13\2\u0108")
+        buf.write("\u010b\3\2\2\2\u0109\u010b\7\r\2\2\u010a\u00c0\3\2\2\2")
+        buf.write("\u010a\u00c1\3\2\2\2\u010a\u00c9\3\2\2\2\u010a\u00d7\3")
+        buf.write("\2\2\2\u010a\u00e5\3\2\2\2\u010a\u00ed\3\2\2\2\u010a\u00fb")
+        buf.write("\3\2\2\2\u010a\u0109\3\2\2\2\u010b!\3\2\2\2\u010c\u010f")
+        buf.write("\7\f\2\2\u010d\u010f\5\24\13\2\u010e\u010c\3\2\2\2\u010e")
+        buf.write("\u010d\3\2\2\2\u010f#\3\2\2\2\u0110\u0111\7\n\2\2\u0111")
+        buf.write("\u0112\7\6\2\2\u0112\u0115\7\n\2\2\u0113\u0114\7\6\2\2")
+        buf.write("\u0114\u0116\7\n\2\2\u0115\u0113\3\2\2\2\u0115\u0116\3")
+        buf.write("\2\2\2\u0116%\3\2\2\2\u0117\u0119\7\17\2\2\u0118\u0117")
+        buf.write("\3\2\2\2\u0119\u011c\3\2\2\2\u011a\u0118\3\2\2\2\u011a")
+        buf.write("\u011b\3\2\2\2\u011b\u011d\3\2\2\2\u011c\u011a\3\2\2\2")
+        buf.write("\u011d\u0121\7\16\2\2\u011e\u0120\7\17\2\2\u011f\u011e")
+        buf.write("\3\2\2\2\u0120\u0123\3\2\2\2\u0121\u011f\3\2\2\2\u0121")
+        buf.write("\u0122\3\2\2\2\u0122\'\3\2\2\2\u0123\u0121\3\2\2\2\u0124")
+        buf.write("\u012c\7\7\2\2\u0125\u012c\7\t\2\2\u0126\u0128\7\17\2")
+        buf.write("\2\u0127\u0126\3\2\2\2\u0128\u0129\3\2\2\2\u0129\u0127")
+        buf.write("\3\2\2\2\u0129\u012a\3\2\2\2\u012a\u012c\3\2\2\2\u012b")
+        buf.write("\u0124\3\2\2\2\u012b\u0125\3\2\2\2\u012b\u0127\3\2\2\2")
+        buf.write("\u012c)\3\2\2\2\u012d\u012e\5\f\7\2\u012e\u012f\7\20\2")
+        buf.write("\2\u012f+\3\2\2\2\u0130\u0131\5\f\7\2\u0131\u0132\7\21")
+        buf.write("\2\2\u0132\u0133\5\24\13\2\u0133\u0137\3\2\2\2\u0134\u0135")
+        buf.write("\7\22\2\2\u0135\u0137\7\n\2\2\u0136\u0130\3\2\2\2\u0136")
+        buf.write("\u0134\3\2\2\2\u0137-\3\2\2\2\u0138\u013b\5\20\t\2\u0139")
+        buf.write("\u013b\5\24\13\2\u013a\u0138\3\2\2\2\u013a\u0139\3\2\2")
+        buf.write("\2\u013b\u013c\3\2\2\2\u013c\u013d\5\24\13\2\u013d/\3")
+        buf.write("\2\2\2\u013e\u013f\5\f\7\2\u013f\u0140\7\6\2\2\u0140\u0141")
+        buf.write("\7\n\2\2\u0141\61\3\2\2\2\u0142\u0144\7\17\2\2\u0143\u0142")
+        buf.write("\3\2\2\2\u0144\u0147\3\2\2\2\u0145\u0143\3\2\2\2\u0145")
+        buf.write("\u0146\3\2\2\2\u0146\u0148\3\2\2\2\u0147\u0145\3\2\2\2")
+        buf.write("\u0148\u014c\7\b\2\2\u0149\u014b\7\17\2\2\u014a\u0149")
+        buf.write("\3\2\2\2\u014b\u014e\3\2\2\2\u014c\u014a\3\2\2\2\u014c")
+        buf.write("\u014d\3\2\2\2\u014d\63\3\2\2\2\u014e\u014c\3\2\2\2.\65")
+        buf.write("BNSVbemtx{\u0083\u008c\u0094\u0098\u009d\u00a3\u00a8\u00ae")
+        buf.write("\u00b2\u00b8\u00bb\u00be\u00c5\u00cd\u00d3\u00db\u00e1")
+        buf.write("\u00e9\u00f1\u00f7\u00ff\u0105\u010a\u010e\u0115\u011a")
+        buf.write("\u0121\u0129\u012b\u0136\u013a\u0145\u014c")
         return buf.getvalue()
 
 
@@ -155,47 +180,46 @@ class udunits2Parser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'('", "')'", "'+'", "'-'", "'*'", "'/'" ]
+    literalNames = [ "<INVALID>", "'('", "')'", "'+'", "'-'", "<INVALID>", 
+                     "'/'", "'.'" ]
 
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "PLUS", "MINUS", 
-                      "MULTIPLY", "DIVIDE", "INT", "FLOAT", "REAL", "CLOCK", 
-                      "TIMESTAMP", "SHIFT_OP", "WS", "UNICODE_EXPONENT", 
+                      "MULTIPLY", "DIVIDE", "PERIOD", "INT", "E_POWER", 
+                      "CLOCK", "TIMESTAMP", "SHIFT_OP", "WS", "UNICODE_EXPONENT", 
                       "RAISE", "ID", "ErrorCharacter" ]
 
     RULE_unit_spec = 0
     RULE_shift_spec = 1
     RULE_product_spec = 2
     RULE_div = 3
-    RULE_mult = 4
-    RULE_power_spec = 5
-    RULE_basic_spec = 6
-    RULE_basic_unit = 7
-    RULE_base_unit = 8
-    RULE_sci_number = 9
-    RULE_signed_int = 10
-    RULE_juxtaposed_multiplication = 11
-    RULE_sign = 12
-    RULE_any_signed_number = 13
-    RULE_any_unsigned_number = 14
-    RULE_number = 15
-    RULE_timestamp = 16
-    RULE_clock = 17
-    RULE_date = 18
-    RULE_shift = 19
-    RULE_multiply = 20
-    RULE_exponent_unicode = 21
-    RULE_exponent = 22
-    RULE_juxtaposed_raise = 23
-    RULE_negative_exponent = 24
-    RULE_divide = 25
+    RULE_power_spec = 4
+    RULE_basic_spec = 5
+    RULE_basic_unit = 6
+    RULE_base_unit = 7
+    RULE_sci_number = 8
+    RULE_signed_int = 9
+    RULE_juxtaposed_multiplication = 10
+    RULE_sign = 11
+    RULE_any_signed_number = 12
+    RULE_any_unsigned_number = 13
+    RULE_float_t = 14
+    RULE_timestamp = 15
+    RULE_clock = 16
+    RULE_date = 17
+    RULE_shift = 18
+    RULE_multiply = 19
+    RULE_exponent_unicode = 20
+    RULE_exponent = 21
+    RULE_juxtaposed_raise = 22
+    RULE_negative_exponent = 23
+    RULE_divide = 24
 
-    ruleNames =  [ "unit_spec", "shift_spec", "product_spec", "div", "mult", 
-                   "power_spec", "basic_spec", "basic_unit", "base_unit", 
-                   "sci_number", "signed_int", "juxtaposed_multiplication", 
-                   "sign", "any_signed_number", "any_unsigned_number", "number", 
-                   "timestamp", "clock", "date", "shift", "multiply", "exponent_unicode", 
-                   "exponent", "juxtaposed_raise", "negative_exponent", 
-                   "divide" ]
+    ruleNames =  [ "unit_spec", "shift_spec", "product_spec", "div", "power_spec", 
+                   "basic_spec", "basic_unit", "base_unit", "sci_number", 
+                   "signed_int", "juxtaposed_multiplication", "sign", "any_signed_number", 
+                   "any_unsigned_number", "float_t", "timestamp", "clock", 
+                   "date", "shift", "multiply", "exponent_unicode", "exponent", 
+                   "juxtaposed_raise", "negative_exponent", "divide" ]
 
     EOF = Token.EOF
     T__0=1
@@ -204,9 +228,9 @@ class udunits2Parser ( Parser ):
     MINUS=4
     MULTIPLY=5
     DIVIDE=6
-    INT=7
-    FLOAT=8
-    REAL=9
+    PERIOD=7
+    INT=8
+    E_POWER=9
     CLOCK=10
     TIMESTAMP=11
     SHIFT_OP=12
@@ -257,15 +281,15 @@ class udunits2Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 53
+            self.state = 51
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.T__0) | (1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.INT) | (1 << udunits2Parser.FLOAT) | (1 << udunits2Parser.ID))) != 0):
-                self.state = 52
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.T__0) | (1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.PERIOD) | (1 << udunits2Parser.INT) | (1 << udunits2Parser.ID))) != 0):
+                self.state = 50
                 self.shift_spec()
 
 
-            self.state = 55
+            self.state = 53
             self.match(udunits2Parser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -315,32 +339,32 @@ class udunits2Parser ( Parser ):
         localctx = udunits2Parser.Shift_specContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_shift_spec)
         try:
-            self.state = 66
+            self.state = 64
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 57
+                self.state = 55
                 self.product_spec()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 58
+                self.state = 56
                 self.product_spec()
-                self.state = 59
+                self.state = 57
                 self.shift()
-                self.state = 60
+                self.state = 58
                 self.sci_number()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 62
+                self.state = 60
                 self.product_spec()
-                self.state = 63
+                self.state = 61
                 self.shift()
-                self.state = 64
+                self.state = 62
                 self.timestamp()
                 pass
 
@@ -360,6 +384,17 @@ class udunits2Parser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
+        def base_unit(self):
+            return self.getTypedRuleContext(udunits2Parser.Base_unitContext,0)
+
+
+        def PERIOD(self):
+            return self.getToken(udunits2Parser.PERIOD, 0)
+
+        def signed_int(self):
+            return self.getTypedRuleContext(udunits2Parser.Signed_intContext,0)
+
+
         def power_spec(self, i:int=None):
             if i is None:
                 return self.getTypedRuleContexts(udunits2Parser.Power_specContext)
@@ -367,12 +402,19 @@ class udunits2Parser ( Parser ):
                 return self.getTypedRuleContext(udunits2Parser.Power_specContext,i)
 
 
-        def mult(self):
-            return self.getTypedRuleContext(udunits2Parser.MultContext,0)
+        def multiply(self):
+            return self.getTypedRuleContext(udunits2Parser.MultiplyContext,0)
 
 
         def div(self):
             return self.getTypedRuleContext(udunits2Parser.DivContext,0)
+
+
+        def product_spec(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(udunits2Parser.Product_specContext)
+            else:
+                return self.getTypedRuleContext(udunits2Parser.Product_specContext,i)
 
 
         def getRuleIndex(self):
@@ -391,37 +433,58 @@ class udunits2Parser ( Parser ):
 
         localctx = udunits2Parser.Product_specContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_product_spec)
-        self._la = 0 # Token type
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 71
+            self.state = 84
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
             if la_ == 1:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 66
+                self.base_unit()
+                self.state = 67
+                self.match(udunits2Parser.PERIOD)
                 self.state = 68
-                self.power_spec()
+                self.signed_int()
                 pass
 
             elif la_ == 2:
-                self.state = 69
-                self.mult()
-                pass
-
-            elif la_ == 3:
-                self.state = 70
-                self.div()
-                pass
-
-
-            self.state = 76
-            self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.T__0) | (1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.INT) | (1 << udunits2Parser.FLOAT) | (1 << udunits2Parser.ID))) != 0):
-                self.state = 73
-                self.power_spec()
-                self.state = 78
+                self.enterOuterAlt(localctx, 2)
+                self.state = 76
                 self._errHandler.sync(self)
-                _la = self._input.LA(1)
+                la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
+                if la_ == 1:
+                    self.state = 70
+                    self.power_spec()
+                    pass
+
+                elif la_ == 2:
+                    self.state = 71
+                    self.power_spec()
+                    self.state = 72
+                    self.multiply()
+                    self.state = 73
+                    self.power_spec()
+                    pass
+
+                elif la_ == 3:
+                    self.state = 75
+                    self.div()
+                    pass
+
+
+                self.state = 81
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
+                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                    if _alt==1:
+                        self.state = 78
+                        self.product_spec() 
+                    self.state = 83
+                    self._errHandler.sync(self)
+                    _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
+
+                pass
+
 
         except RecognitionException as re:
             localctx.exception = re
@@ -467,61 +530,11 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 6, self.RULE_div)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 79
+            self.state = 86
             self.power_spec()
-            self.state = 80
+            self.state = 87
             self.divide()
-            self.state = 81
-            self.power_spec()
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.exitRule()
-        return localctx
-
-
-    class MultContext(ParserRuleContext):
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
-
-        def power_spec(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(udunits2Parser.Power_specContext)
-            else:
-                return self.getTypedRuleContext(udunits2Parser.Power_specContext,i)
-
-
-        def multiply(self):
-            return self.getTypedRuleContext(udunits2Parser.MultiplyContext,0)
-
-
-        def getRuleIndex(self):
-            return udunits2Parser.RULE_mult
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitMult" ):
-                return visitor.visitMult(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-
-
-    def mult(self):
-
-        localctx = udunits2Parser.MultContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_mult)
-        try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 83
-            self.power_spec()
-            self.state = 84
-            self.multiply()
-            self.state = 85
+            self.state = 88
             self.power_spec()
         except RecognitionException as re:
             localctx.exception = re
@@ -581,48 +594,48 @@ class udunits2Parser ( Parser ):
     def power_spec(self):
 
         localctx = udunits2Parser.Power_specContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_power_spec)
+        self.enterRule(localctx, 8, self.RULE_power_spec)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 93
-            self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
-            if la_ == 1:
-                self.state = 87
-                self.basic_spec()
-                pass
-
-            elif la_ == 2:
-                self.state = 88
-                self.juxtaposed_raise()
-                pass
-
-            elif la_ == 3:
-                self.state = 89
-                self.juxtaposed_multiplication()
-                pass
-
-            elif la_ == 4:
-                self.state = 90
-                self.exponent_unicode()
-                pass
-
-            elif la_ == 5:
-                self.state = 91
-                self.exponent()
-                pass
-
-            elif la_ == 6:
-                self.state = 92
-                self.negative_exponent()
-                pass
-
-
             self.state = 96
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,5,self._ctx)
             if la_ == 1:
+                self.state = 90
+                self.basic_spec()
+                pass
+
+            elif la_ == 2:
+                self.state = 91
+                self.juxtaposed_raise()
+                pass
+
+            elif la_ == 3:
+                self.state = 92
+                self.juxtaposed_multiplication()
+                pass
+
+            elif la_ == 4:
+                self.state = 93
+                self.exponent_unicode()
+                pass
+
+            elif la_ == 5:
+                self.state = 94
+                self.exponent()
+                pass
+
+            elif la_ == 6:
                 self.state = 95
+                self.negative_exponent()
+                pass
+
+
+            self.state = 99
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
+            if la_ == 1:
+                self.state = 98
                 self.signed_int()
 
 
@@ -668,28 +681,28 @@ class udunits2Parser ( Parser ):
     def basic_spec(self):
 
         localctx = udunits2Parser.Basic_specContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_basic_spec)
+        self.enterRule(localctx, 10, self.RULE_basic_spec)
         try:
-            self.state = 104
+            self.state = 107
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [udunits2Parser.ID]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 98
+                self.state = 101
                 self.base_unit()
                 pass
             elif token in [udunits2Parser.T__0]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 99
+                self.state = 102
                 self.match(udunits2Parser.T__0)
-                self.state = 100
+                self.state = 103
                 self.shift_spec()
-                self.state = 101
+                self.state = 104
                 self.match(udunits2Parser.T__1)
                 pass
-            elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.INT, udunits2Parser.FLOAT]:
+            elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.PERIOD, udunits2Parser.INT]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 103
+                self.state = 106
                 self.sci_number()
                 pass
             else:
@@ -729,10 +742,10 @@ class udunits2Parser ( Parser ):
     def basic_unit(self):
 
         localctx = udunits2Parser.Basic_unitContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_basic_unit)
+        self.enterRule(localctx, 12, self.RULE_basic_unit)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 106
+            self.state = 109
             self.base_unit()
         except RecognitionException as re:
             localctx.exception = re
@@ -767,10 +780,10 @@ class udunits2Parser ( Parser ):
     def base_unit(self):
 
         localctx = udunits2Parser.Base_unitContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_base_unit)
+        self.enterRule(localctx, 14, self.RULE_base_unit)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 108
+            self.state = 111
             self.match(udunits2Parser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -787,8 +800,9 @@ class udunits2Parser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def FLOAT(self):
-            return self.getToken(udunits2Parser.FLOAT, 0)
+        def float_t(self):
+            return self.getTypedRuleContext(udunits2Parser.Float_tContext,0)
+
 
         def INT(self):
             return self.getToken(udunits2Parser.INT, 0)
@@ -812,25 +826,32 @@ class udunits2Parser ( Parser ):
     def sci_number(self):
 
         localctx = udunits2Parser.Sci_numberContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_sci_number)
+        self.enterRule(localctx, 16, self.RULE_sci_number)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 111
+            self.state = 114
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==udunits2Parser.PLUS or _la==udunits2Parser.MINUS:
-                self.state = 110
+                self.state = 113
                 self.sign()
 
 
-            self.state = 113
-            _la = self._input.LA(1)
-            if not(_la==udunits2Parser.INT or _la==udunits2Parser.FLOAT):
-                self._errHandler.recoverInline(self)
-            else:
-                self._errHandler.reportMatch(self)
-                self.consume()
+            self.state = 118
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,9,self._ctx)
+            if la_ == 1:
+                self.state = 116
+                self.float_t()
+                pass
+
+            elif la_ == 2:
+                self.state = 117
+                self.match(udunits2Parser.INT)
+                pass
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -868,19 +889,19 @@ class udunits2Parser ( Parser ):
     def signed_int(self):
 
         localctx = udunits2Parser.Signed_intContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_signed_int)
+        self.enterRule(localctx, 18, self.RULE_signed_int)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 116
+            self.state = 121
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==udunits2Parser.PLUS or _la==udunits2Parser.MINUS:
-                self.state = 115
+                self.state = 120
                 self.sign()
 
 
-            self.state = 118
+            self.state = 123
             self.match(udunits2Parser.INT)
         except RecognitionException as re:
             localctx.exception = re
@@ -933,67 +954,67 @@ class udunits2Parser ( Parser ):
     def juxtaposed_multiplication(self):
 
         localctx = udunits2Parser.Juxtaposed_multiplicationContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_juxtaposed_multiplication)
+        self.enterRule(localctx, 20, self.RULE_juxtaposed_multiplication)
         self._la = 0 # Token type
         try:
-            self.state = 145
+            self.state = 150
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,12,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,14,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 120
+                self.state = 125
                 self.sci_number()
-                self.state = 124
+                self.state = 129
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==udunits2Parser.WS:
-                    self.state = 121
-                    self.match(udunits2Parser.WS)
                     self.state = 126
+                    self.match(udunits2Parser.WS)
+                    self.state = 131
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 127
+                self.state = 132
                 self.basic_spec()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 129
+                self.state = 134
                 self.basic_spec()
-                self.state = 131 
+                self.state = 136 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 130
+                    self.state = 135
                     self.match(udunits2Parser.WS)
-                    self.state = 133 
+                    self.state = 138 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 135
+                self.state = 140
                 self.any_signed_number()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 137
+                self.state = 142
                 self.any_signed_number()
-                self.state = 139 
+                self.state = 144 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 138
+                    self.state = 143
                     self.match(udunits2Parser.WS)
-                    self.state = 141 
+                    self.state = 146 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 143
+                self.state = 148
                 self.any_signed_number()
                 pass
 
@@ -1034,11 +1055,11 @@ class udunits2Parser ( Parser ):
     def sign(self):
 
         localctx = udunits2Parser.SignContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 24, self.RULE_sign)
+        self.enterRule(localctx, 22, self.RULE_sign)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 147
+            self.state = 152
             _la = self._input.LA(1)
             if not(_la==udunits2Parser.PLUS or _la==udunits2Parser.MINUS):
                 self._errHandler.recoverInline(self)
@@ -1083,19 +1104,19 @@ class udunits2Parser ( Parser ):
     def any_signed_number(self):
 
         localctx = udunits2Parser.Any_signed_numberContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 26, self.RULE_any_signed_number)
+        self.enterRule(localctx, 24, self.RULE_any_signed_number)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 150
+            self.state = 155
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==udunits2Parser.PLUS or _la==udunits2Parser.MINUS:
-                self.state = 149
+                self.state = 154
                 self.sign()
 
 
-            self.state = 152
+            self.state = 157
             self.any_unsigned_number()
         except RecognitionException as re:
             localctx.exception = re
@@ -1112,8 +1133,9 @@ class udunits2Parser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def FLOAT(self):
-            return self.getToken(udunits2Parser.FLOAT, 0)
+        def float_t(self):
+            return self.getTypedRuleContext(udunits2Parser.Float_tContext,0)
+
 
         def INT(self):
             return self.getToken(udunits2Parser.INT, 0)
@@ -1133,17 +1155,24 @@ class udunits2Parser ( Parser ):
     def any_unsigned_number(self):
 
         localctx = udunits2Parser.Any_unsigned_numberContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 28, self.RULE_any_unsigned_number)
-        self._la = 0 # Token type
+        self.enterRule(localctx, 26, self.RULE_any_unsigned_number)
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 154
-            _la = self._input.LA(1)
-            if not(_la==udunits2Parser.INT or _la==udunits2Parser.FLOAT):
-                self._errHandler.recoverInline(self)
-            else:
-                self._errHandler.reportMatch(self)
-                self.consume()
+            self.state = 161
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,16,self._ctx)
+            if la_ == 1:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 159
+                self.float_t()
+                pass
+
+            elif la_ == 2:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 160
+                self.match(udunits2Parser.INT)
+                pass
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1153,44 +1182,115 @@ class udunits2Parser ( Parser ):
         return localctx
 
 
-    class NumberContext(ParserRuleContext):
+    class Float_tContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def INT(self):
-            return self.getToken(udunits2Parser.INT, 0)
+        def INT(self, i:int=None):
+            if i is None:
+                return self.getTokens(udunits2Parser.INT)
+            else:
+                return self.getToken(udunits2Parser.INT, i)
 
-        def REAL(self):
-            return self.getToken(udunits2Parser.REAL, 0)
+        def E_POWER(self):
+            return self.getToken(udunits2Parser.E_POWER, 0)
+
+        def PERIOD(self):
+            return self.getToken(udunits2Parser.PERIOD, 0)
 
         def getRuleIndex(self):
-            return udunits2Parser.RULE_number
+            return udunits2Parser.RULE_float_t
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitNumber" ):
-                return visitor.visitNumber(self)
+            if hasattr( visitor, "visitFloat_t" ):
+                return visitor.visitFloat_t(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def number(self):
+    def float_t(self):
 
-        localctx = udunits2Parser.NumberContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 30, self.RULE_number)
+        localctx = udunits2Parser.Float_tContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 28, self.RULE_float_t)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 156
+            self.state = 185
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,21,self._ctx)
+            if la_ == 1:
+                self.state = 164 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 163
+                    self.match(udunits2Parser.INT)
+                    self.state = 166 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==udunits2Parser.INT):
+                        break
+
+                self.state = 168
+                self.match(udunits2Parser.PERIOD)
+                self.state = 172
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,18,self._ctx)
+                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                    if _alt==1:
+                        self.state = 169
+                        self.match(udunits2Parser.INT) 
+                    self.state = 174
+                    self._errHandler.sync(self)
+                    _alt = self._interp.adaptivePredict(self._input,18,self._ctx)
+
+                pass
+
+            elif la_ == 2:
+                self.state = 176
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                if _la==udunits2Parser.INT:
+                    self.state = 175
+                    self.match(udunits2Parser.INT)
+
+
+                self.state = 178
+                self.match(udunits2Parser.PERIOD)
+                self.state = 180 
+                self._errHandler.sync(self)
+                _alt = 1
+                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                    if _alt == 1:
+                        self.state = 179
+                        self.match(udunits2Parser.INT)
+
+                    else:
+                        raise NoViableAltException(self)
+                    self.state = 182 
+                    self._errHandler.sync(self)
+                    _alt = self._interp.adaptivePredict(self._input,20,self._ctx)
+
+                pass
+
+            elif la_ == 3:
+                self.state = 184
+                self.match(udunits2Parser.INT)
+                pass
+
+
+            self.state = 188
+            self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if not(_la==udunits2Parser.INT or _la==udunits2Parser.REAL):
-                self._errHandler.recoverInline(self)
-            else:
-                self._errHandler.reportMatch(self)
-                self.consume()
+            if _la==udunits2Parser.E_POWER:
+                self.state = 187
+                self.match(udunits2Parser.E_POWER)
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1247,197 +1347,197 @@ class udunits2Parser ( Parser ):
     def timestamp(self):
 
         localctx = udunits2Parser.TimestampContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_timestamp)
+        self.enterRule(localctx, 30, self.RULE_timestamp)
         self._la = 0 # Token type
         try:
-            self.state = 232
+            self.state = 264
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,24,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,33,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 158
+                self.state = 190
                 self.date()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 159
+                self.state = 191
                 self.date()
-                self.state = 161 
+                self.state = 193 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 160
+                    self.state = 192
                     self.match(udunits2Parser.WS)
-                    self.state = 163 
+                    self.state = 195 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 165
+                self.state = 197
                 self.match(udunits2Parser.CLOCK)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 167
+                self.state = 199
                 self.date()
-                self.state = 169 
+                self.state = 201 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 168
+                    self.state = 200
                     self.match(udunits2Parser.WS)
-                    self.state = 171 
+                    self.state = 203 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 173
+                self.state = 205
                 self.match(udunits2Parser.CLOCK)
-                self.state = 175 
+                self.state = 207 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 174
+                    self.state = 206
                     self.match(udunits2Parser.WS)
-                    self.state = 177 
+                    self.state = 209 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 179
+                self.state = 211
                 self.signed_int()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 181
+                self.state = 213
                 self.date()
-                self.state = 183 
+                self.state = 215 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 182
+                    self.state = 214
                     self.match(udunits2Parser.WS)
-                    self.state = 185 
+                    self.state = 217 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 187
+                self.state = 219
                 self.match(udunits2Parser.CLOCK)
-                self.state = 189 
+                self.state = 221 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 188
+                    self.state = 220
                     self.match(udunits2Parser.WS)
-                    self.state = 191 
+                    self.state = 223 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 193
+                self.state = 225
                 self.match(udunits2Parser.CLOCK)
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 195
+                self.state = 227
                 self.date()
-                self.state = 197 
+                self.state = 229 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 196
+                    self.state = 228
                     self.match(udunits2Parser.WS)
-                    self.state = 199 
+                    self.state = 231 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 201
+                self.state = 233
                 self.signed_int()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 203
+                self.state = 235
                 self.date()
-                self.state = 205 
+                self.state = 237 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 204
+                    self.state = 236
                     self.match(udunits2Parser.WS)
-                    self.state = 207 
+                    self.state = 239 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 209
+                self.state = 241
                 self.signed_int()
-                self.state = 211 
+                self.state = 243 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 210
+                    self.state = 242
                     self.match(udunits2Parser.WS)
-                    self.state = 213 
+                    self.state = 245 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 215
+                self.state = 247
                 self.match(udunits2Parser.CLOCK)
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 217
+                self.state = 249
                 self.date()
-                self.state = 219 
+                self.state = 251 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 218
+                    self.state = 250
                     self.match(udunits2Parser.WS)
-                    self.state = 221 
+                    self.state = 253 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 223
+                self.state = 255
                 self.signed_int()
-                self.state = 225 
+                self.state = 257 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 224
+                    self.state = 256
                     self.match(udunits2Parser.WS)
-                    self.state = 227 
+                    self.state = 259 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
                         break
 
-                self.state = 229
+                self.state = 261
                 self.signed_int()
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 231
+                self.state = 263
                 self.match(udunits2Parser.TIMESTAMP)
                 pass
 
@@ -1479,18 +1579,18 @@ class udunits2Parser ( Parser ):
     def clock(self):
 
         localctx = udunits2Parser.ClockContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_clock)
+        self.enterRule(localctx, 32, self.RULE_clock)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 236
+            self.state = 268
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [udunits2Parser.CLOCK]:
-                self.state = 234
+                self.state = 266
                 self.match(udunits2Parser.CLOCK)
                 pass
             elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.INT]:
-                self.state = 235
+                self.state = 267
                 self.signed_int()
                 pass
             else:
@@ -1538,23 +1638,23 @@ class udunits2Parser ( Parser ):
     def date(self):
 
         localctx = udunits2Parser.DateContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 36, self.RULE_date)
+        self.enterRule(localctx, 34, self.RULE_date)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 238
+            self.state = 270
             self.match(udunits2Parser.INT)
-            self.state = 239
+            self.state = 271
             self.match(udunits2Parser.MINUS)
-            self.state = 240
+            self.state = 272
             self.match(udunits2Parser.INT)
-            self.state = 243
+            self.state = 275
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==udunits2Parser.MINUS:
-                self.state = 241
+                self.state = 273
                 self.match(udunits2Parser.MINUS)
-                self.state = 242
+                self.state = 274
                 self.match(udunits2Parser.INT)
 
 
@@ -1597,29 +1697,29 @@ class udunits2Parser ( Parser ):
     def shift(self):
 
         localctx = udunits2Parser.ShiftContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 38, self.RULE_shift)
+        self.enterRule(localctx, 36, self.RULE_shift)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 248
+            self.state = 280
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 245
+                self.state = 277
                 self.match(udunits2Parser.WS)
-                self.state = 250
+                self.state = 282
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 251
+            self.state = 283
             self.match(udunits2Parser.SHIFT_OP)
-            self.state = 255
+            self.state = 287
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 252
+                self.state = 284
                 self.match(udunits2Parser.WS)
-                self.state = 257
+                self.state = 289
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1641,6 +1741,15 @@ class udunits2Parser ( Parser ):
         def MULTIPLY(self):
             return self.getToken(udunits2Parser.MULTIPLY, 0)
 
+        def PERIOD(self):
+            return self.getToken(udunits2Parser.PERIOD, 0)
+
+        def WS(self, i:int=None):
+            if i is None:
+                return self.getTokens(udunits2Parser.WS)
+            else:
+                return self.getToken(udunits2Parser.WS, i)
+
         def getRuleIndex(self):
             return udunits2Parser.RULE_multiply
 
@@ -1656,11 +1765,40 @@ class udunits2Parser ( Parser ):
     def multiply(self):
 
         localctx = udunits2Parser.MultiplyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 40, self.RULE_multiply)
+        self.enterRule(localctx, 38, self.RULE_multiply)
+        self._la = 0 # Token type
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 258
-            self.match(udunits2Parser.MULTIPLY)
+            self.state = 297
+            self._errHandler.sync(self)
+            token = self._input.LA(1)
+            if token in [udunits2Parser.MULTIPLY]:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 290
+                self.match(udunits2Parser.MULTIPLY)
+                pass
+            elif token in [udunits2Parser.PERIOD]:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 291
+                self.match(udunits2Parser.PERIOD)
+                pass
+            elif token in [udunits2Parser.WS]:
+                self.enterOuterAlt(localctx, 3)
+                self.state = 293 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 292
+                    self.match(udunits2Parser.WS)
+                    self.state = 295 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==udunits2Parser.WS):
+                        break
+
+                pass
+            else:
+                raise NoViableAltException(self)
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1698,12 +1836,12 @@ class udunits2Parser ( Parser ):
     def exponent_unicode(self):
 
         localctx = udunits2Parser.Exponent_unicodeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_exponent_unicode)
+        self.enterRule(localctx, 40, self.RULE_exponent_unicode)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 260
+            self.state = 299
             self.basic_spec()
-            self.state = 261
+            self.state = 300
             self.match(udunits2Parser.UNICODE_EXPONENT)
         except RecognitionException as re:
             localctx.exception = re
@@ -1752,26 +1890,26 @@ class udunits2Parser ( Parser ):
     def exponent(self):
 
         localctx = udunits2Parser.ExponentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 44, self.RULE_exponent)
+        self.enterRule(localctx, 42, self.RULE_exponent)
         try:
-            self.state = 269
+            self.state = 308
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,29,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,40,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 263
+                self.state = 302
                 self.basic_spec()
-                self.state = 264
+                self.state = 303
                 self.match(udunits2Parser.RAISE)
-                self.state = 265
+                self.state = 304
                 self.signed_int()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 267
+                self.state = 306
                 self.match(udunits2Parser.ID)
-                self.state = 268
+                self.state = 307
                 self.match(udunits2Parser.INT)
                 pass
 
@@ -1817,24 +1955,24 @@ class udunits2Parser ( Parser ):
     def juxtaposed_raise(self):
 
         localctx = udunits2Parser.Juxtaposed_raiseContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 46, self.RULE_juxtaposed_raise)
+        self.enterRule(localctx, 44, self.RULE_juxtaposed_raise)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 273
+            self.state = 312
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [udunits2Parser.ID]:
-                self.state = 271
+                self.state = 310
                 self.base_unit()
                 pass
             elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.INT]:
-                self.state = 272
+                self.state = 311
                 self.signed_int()
                 pass
             else:
                 raise NoViableAltException(self)
 
-            self.state = 275
+            self.state = 314
             self.signed_int()
         except RecognitionException as re:
             localctx.exception = re
@@ -1876,14 +2014,14 @@ class udunits2Parser ( Parser ):
     def negative_exponent(self):
 
         localctx = udunits2Parser.Negative_exponentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 48, self.RULE_negative_exponent)
+        self.enterRule(localctx, 46, self.RULE_negative_exponent)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 277
+            self.state = 316
             self.basic_spec()
-            self.state = 278
+            self.state = 317
             self.match(udunits2Parser.MINUS)
-            self.state = 279
+            self.state = 318
             self.match(udunits2Parser.INT)
         except RecognitionException as re:
             localctx.exception = re
@@ -1924,29 +2062,29 @@ class udunits2Parser ( Parser ):
     def divide(self):
 
         localctx = udunits2Parser.DivideContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 50, self.RULE_divide)
+        self.enterRule(localctx, 48, self.RULE_divide)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 284
+            self.state = 323
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 281
+                self.state = 320
                 self.match(udunits2Parser.WS)
-                self.state = 286
+                self.state = 325
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 287
+            self.state = 326
             self.match(udunits2Parser.DIVIDE)
-            self.state = 291
+            self.state = 330
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 288
+                self.state = 327
                 self.match(udunits2Parser.WS)
-                self.state = 293
+                self.state = 332
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 

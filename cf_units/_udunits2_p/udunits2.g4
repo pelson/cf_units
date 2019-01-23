@@ -12,18 +12,17 @@ shift_spec:
 ;
 
 product_spec:  
+      (base_unit PERIOD signed_int) // km.2 === 2*km
+       |
       (power_spec
-       | mult  // km*2
+       //| power_spec PERIOD signed_int) // km.2 === 2*km
+       | power_spec multiply power_spec // km*2
        | div  // km/2
-      ) power_spec*  // 
+      ) product_spec*  // 
 ;
 
 div:
     power_spec divide power_spec
-;
-
-mult:
-    power_spec multiply power_spec
 ;
 
 power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
@@ -49,7 +48,7 @@ base_unit: ID;
 
 
 sci_number:
-    sign? (FLOAT | INT)
+    sign? (float_t | INT)
 ;
 
 signed_int:
@@ -69,8 +68,9 @@ fragment SIGN
 
 PLUS: '+';
 MINUS: '-';
-MULTIPLY: '*';
+MULTIPLY: ('*' | '·');
 DIVIDE: '/';
+PERIOD: '.';
 
 fragment INTEGER
    : ('0' .. '9')+
@@ -81,25 +81,32 @@ any_signed_number:
 ;
 
 any_unsigned_number:
-    FLOAT | INT
+    float_t | INT
 ;
 
 INT : '0'..'9'+ ;
 
-FLOAT: 
-     (FLOAT_LEADING_DIGIT | FLOAT_LEADING_PERIOD | INTEGER) E_POWER?  // 1.2e-5, 1e2
-   ;
+// Float is not a lexer token as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
+float_t:
+    ( (INT+ '.' INT*)
+     |(INT? '.' INT+)
+     | INT
+    ) E_POWER?  // 1.2e-5, 1e2
+;
+
+//FLOAT: 
+//     (FLOAT_LEADING_DIGIT | FLOAT_LEADING_PERIOD | INTEGER) E_POWER?  // 1.2e-5, 1e2
+//   ;
 
 fragment FLOAT_LEADING_DIGIT:
-     ('0' .. '9')+ '.' ('0' .. '9')*
 ;
 
 fragment FLOAT_LEADING_PERIOD:
      ('0' .. '9')? '.' ('0' .. '9')+
 ;
 
-fragment E_POWER:
-     (E (PLUS | MINUS)? INTEGER)?
+E_POWER:
+     ('E' | 'e') (PLUS | MINUS)? INT
 ;
 
 
@@ -107,13 +114,7 @@ fragment E
    : 'E' | 'e'
    ;
 
-number: 
-         INT
-      |  REAL
-;
-
 fragment DIGIT: '0'..'9';
-REAL : INT* '.' INT+ ;
 
 
 timestamp:
@@ -169,17 +170,17 @@ SHIFT_OP :
 
 // 
 // REAL:
-//         the usual floating_point format
+//         the usual float_ting_point format
 // 
 // INT:
 //         the usual integer format
 
 multiply:
       //(SPACE+ '-')  // This is now handled in juxtaposed_multiply
-//      |  (SPACE* '.' SPACE*)
 //      |  (SPACE* '*' SPACE*)
-      '*'
-//      | SPACE+
+      MULTIPLY
+      | PERIOD
+      | WS+
 ;
 
 exponent_unicode:  // m²

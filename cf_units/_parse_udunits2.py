@@ -153,7 +153,7 @@ class ExprVisitor(LabeledExprVisitor):
 
             import unicodedata
             consumers = {lexer.INT: int,
-                         lexer.FLOAT: float,
+                    #                         lexer.FLOAT: float,
                          lexer.WS: lambda n: None,
                          lexer.ID: str,
                          # Convert unicode to compatibility form
@@ -165,7 +165,8 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.RAISE: str,
                          lexer.SHIFT_OP: str,
                          lexer.CLOCK: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
-                         lexer.TIMESTAMP: self.prepareTIMESTAMP
+                         lexer.TIMESTAMP: self.prepareTIMESTAMP,
+                         lexer.PERIOD: str,
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
@@ -179,6 +180,14 @@ class ExprVisitor(LabeledExprVisitor):
     def prepareDATE(self, string):
         print("PREPARE DATE:", string)
         return Date(*string.split('-'))
+
+    def visitFloat_t(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print('FLOAT:', nodes)
+        if not isinstance(nodes, Leaf):
+            string = ''.join(str(n.content) for n in nodes)
+            nodes = Leaf(float(string))
+        return nodes
 
     def visitDate(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -265,7 +274,13 @@ class ExprVisitor(LabeledExprVisitor):
             print('PROD:', nodes)
             # Walk the nodes backwards applying mult to each successively.
             for node in nodes[:-1][::-1]:
-                last = BinaryOp('*', node, last)
+                if isinstance(node, Operand):
+                    # Happens because we don't have a specific visitor for the multiplication rule.
+                    assert node.content == '*'
+                else:
+                    if isinstance(node, Leaf) and node.content == '.':
+                        continue  # m.2
+                    last = BinaryOp('*', node, last)
             nodes = last
 
         if False:

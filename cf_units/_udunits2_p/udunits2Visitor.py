@@ -139,11 +139,6 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by udunits2Parser#juxtaposed_raise.
-    def visitJuxtaposed_raise(self, ctx:udunits2Parser.Juxtaposed_raiseContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by udunits2Parser#negative_exponent.
     def visitNegative_exponent(self, ctx:udunits2Parser.Negative_exponentContext):
         return self.visitChildren(ctx)

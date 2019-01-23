@@ -232,7 +232,7 @@ def test_product_spec(_, unit_str, expected):
 @pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
     ['2.3', '2.3'],
     ['m2', 'm^2'],
-    ['2m', '2*m'],
+    ['2m', '2'],  # <- no product should be happening. This is the right behaviour!
     ['m²', 'm^2'],
     ['m**2', 'm^2'],
     ['m-2', 'm^-2'],

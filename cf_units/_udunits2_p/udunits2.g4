@@ -10,8 +10,9 @@ shift_spec:
      | product_spec shift timestamp
 ;
 
+
 product_spec:  
-      (base_unit PERIOD signed_int) // km.2 === 2*km
+      (base_unit PERIOD signed_int) // km.2 === 2*km (i.e. this trumps km * 0.2)
        |
       (power_spec
        //| power_spec PERIOD signed_int) // km.2 === 2*km
@@ -26,8 +27,6 @@ div:
 
 power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
     (basic_spec
-      | juxtaposed_raise
-      | juxtaposed_multiplication
       | exponent_unicode
       | exponent
       | negative_exponent
@@ -163,13 +162,10 @@ exponent_unicode:  // m²
 ;
 
 exponent:  // TODO: m2
-    basic_spec RAISE signed_int  //km^2, km^-1, km^+2
-    | ID INT   // NOTE: Not basic_spec, because that could be a number.
+    (basic_spec RAISE signed_int)  //km^2, km^-1, km^+2
+    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3
 ;
 
-juxtaposed_raise:
-    (base_unit | signed_int) signed_int    // m2, m+2, s-1, 1+2, 2-3
-;
 
 negative_exponent:
    basic_spec '-' INT

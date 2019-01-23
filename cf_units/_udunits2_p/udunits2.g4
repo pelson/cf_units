@@ -105,18 +105,33 @@ REAL : INT* '.' INT+ ;
 
 timestamp:
     DATE
+//    | (DATE WS+ clock WS+ clock)
     | (DATE WS+ CLOCK)
-    | (DATE WS+ CLOCK WS+ CLOCK)
-//    | (DATE WS+ CLOCK WS+ INT)  // TODO: What is this?
-//    | (DATE WS+ CLOCK WS+ ID)
-//  | TIMESTAMP
-// ...
-    
+    | (DATE WS+ CLOCK WS+ signed_int)  // Timezone offset.
+    | (DATE WS+ CLOCK WS+ CLOCK)       // Date + (Clock1 - Clock2)
+
+    | (DATE WS+ signed_int)            // Date + packed_clock
+    | (DATE WS+ signed_int WS+ CLOCK)  // Date + (packed_clock - Clock2)
+
+    | (DATE WS+ signed_int WS+ signed_int)  // Date + packed_clock + Timezone Offset
+//    | (DATE WS+ CLOCK WS+ ID) // UNKNOWN!
+    | TIMESTAMP
+// ...   
 ;
+
+clock:
+    (CLOCK | signed_int)
+;
+
+
 
 DATE: INT '-' INT ('-' INT)?;
 CLOCK: INT ':' INT (':' INT)?;
-TIMSTAMP: INT (INT INT?)? 'T' INT (INT INT?)?;
+TIMESTAMP: INT (MONTH INT?)? 'T' INT (INT INT?)?;
+
+fragment MONTH: 
+    ('0'? ('1'..'9')) | ('1' ('0'..'2'))
+;
 
 // Timestamp: one of
 //         DATE

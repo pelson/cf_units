@@ -53,9 +53,13 @@ testdata = [
     'hour@1990',
     'hours from 1990-1',
     'hours from 1990-1-1',
-#    'hours from 1990-1-1 0',
+    'hours from 1990-1-1 0',
     'hours from 1990-1-1 0:1:1',
-    'hours from 1990-1-1 0:0:1',
+    'hours from 1990-1-1 0:0:1 +2',
+#    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
+    's since 19900102T5',  # Packed format (undocumented?)
+#    's since 199022T1',  # UGLY! (bug?)
+#   'hours from 1990-1-1 3+1'
 ]
 
 invalid = [
@@ -69,7 +73,7 @@ invalid = [
     '$',
     '£',  # TODO: What if udunits has this defined in its XML, does it work?
     
-    #    'hours from 1990-1-1 0:1:60',
+    #        'hours from 1990-1-1 0:1:60',
     #    'hours from 1990-0-0 0:0:0',
 ]
 

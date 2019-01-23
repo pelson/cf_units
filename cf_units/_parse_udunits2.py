@@ -68,6 +68,46 @@ class BinaryOp(Node):
         return '{self.lhs}{self.op}{self.rhs}'.format(self=self)
 
 
+class Timestamp(Node):
+    def __init__(self, date, clock, tz_offset=0):
+        self.date = date
+        self.clock = clock
+        self.tz_offset = tz_offset
+
+    def _items(self):
+        return self.date, self.clock, self.tz_offset
+
+    def __str__(self):
+        return f'{self.date}T{self.clock}+{self.tz_offset}'
+
+
+class NaiveClock(Node):
+    def __init__(self, hour=0, minute=0, second=0):
+        self.hour = hour
+        self.minute = minute
+        self.second = second
+
+    def _items(self):
+        return self.hour, self.minute, self.second
+
+    def __str__(self):
+        return f'{self.hour}:{self.minute}:{self.second}'
+
+
+
+class Date(Node):
+    def __init__(self, year, month=1, day=1):
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def _items(self):
+        return self.year, month, self.day
+
+    def __str__(self):
+        return f'{self.year}-{self.month}-{self.day}'
+
+
 class ExprVisitor(LabeledExprVisitor):
     # def __getattribute__(self, attr):
     #     # Useful to debug what is getting called.
@@ -123,21 +163,59 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.MULTIPLY: str,
                          lexer.RAISE: str,
                          lexer.SHIFT_OP: str,
-                         lexer.DATE: lambda *args: ' '.join(args),
-                         lexer.CLOCK: lambda *args: ' '.join(args),
+                         lexer.DATE: self.prepareDATE,  # lambda arg: arg.split('-'),  #lambda *args: ' '.join(args),
+                         lexer.CLOCK: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
+                         lexer.TIMESTAMP: self.prepareTIMESTAMP
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
             else:
                 print('UNHANDLED TERMINAL:', repr(r))
 
-        return Leaf(r)
+        if not isinstance(r, Node):
+            r = Leaf(r)
+        return r
+
+    def prepareDATE(self, string):
+        print("PREPARE DATE:", string)
+        return Date(*string.split('-'))
+
+    def prepareCLOCK(self, string):
+        print('PREPARE CLOCK', string)
+        return NaiveClock(*string.split(':'))
+
+    def prepareTIMESTAMP(self, string):
+        packed_date, packed_clock = string.split('T')
+        y, mnth = packed_date[:4], packed_date[4:6]
+        mnth = int(mnth or 1)
+        if mnth > 12:
+            # It seems like a bug, but udunits supports months >12 in timestamps.
+            # d = packed_date[5:]
+            # mnth = int(packed_date[4:5])
+            d = packed_date[6:]
+        else:
+            d = packed_date[6:]
+        d = int(d or 1)
+
+        negative_hr = packed_clock[0] == '-'
+        if packed_date[0] in ['-', '+']:
+            packed_clock = packed_clock[1:]
+
+        # NB: This is NOT what the grammar states, but is what udunits does.
+        h, m, s = packed_clock[:2], packed_clock[2:4], packed_clock[4:6]
+
+        h, m, s = int(h or 0), int(m or 0), int(s or 0)
+        if negative_hr:
+            h = -h
+
+        node = Timestamp(Date(int(y), mnth, d), NaiveClock(h, m, s))
+        return node
 
     def visitSigned_int(self, ctx):
         return self.visitAny_signed_number(ctx)
 
     def strip_whitespace(self, nodes):
-        return [n for n in nodes if n.content is not None]
+        return [n for n in nodes if (isinstance(n, Node) and not (isinstance(n, Leaf) and n.content is None))]
 
     def visitJuxtaposed_multiplication(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -176,13 +254,46 @@ class ExprVisitor(LabeledExprVisitor):
         [operand] = self.strip_whitespace(nodes)
         return operand
 
+    def visitClock(self, ctx):
+        nodes = self.visitChildren(ctx)
+        print('TICK TOCK CLOCK:', nodes, type(nodes))
+        if not isinstance(nodes.content, list):
+            # Signed integer.
+            nodes = Leaf([nodes])
+        return nodes
+
+#    def prepareClock(self, clock_nodes):
+
     def visitTimestamp(self, ctx):
         nodes = self.visitChildren(ctx)
         print('TIMESTAMP', nodes)
         print(type(nodes))
-        if not isinstance(nodes, Leaf):
+        #if isinstance(nodes, Leaf):
+        #    nodes = Timestamp(*nodes.content)
+
+        if not isinstance(nodes, Node):
             nodes = self.strip_whitespace(nodes)
-            nodes = Leaf(' '.join(n.content for n in nodes))
+            print('STRIPPED:', nodes)
+
+            types = [type(n) for n in nodes]
+            print('t:', types)
+
+            if types == [Date, Leaf]:
+                # DATE + packed_time
+                return Timestamp(nodes[0], NaiveClock(nodes[1].content))
+            elif types == [Date, NaiveClock]:
+                return Timestamp(*nodes)
+            elif types == [Date, NaiveClock, Leaf]:
+                return Timestamp(*nodes)
+            elif types == [Date, NaiveClock, NaiveClock]:
+                raise RuntimeError('NEED TO IMPLEMENT CLOCK SUBTRACT')
+            elif types == [Date, Leaf, NaiveClock]:
+                raise RuntimeError('NEED TO IMPLEMENT CLOCK SUBTRACT')
+            elif types == [Date, Leaf, Leaf]:
+                hour = nodes[1].content
+                hour = NaiveClock(hour)
+                return Timestamp(nodes[0], hour, nodes[1])
+
         return nodes
 
     def visitJuxtaposed_raise(self, ctx):

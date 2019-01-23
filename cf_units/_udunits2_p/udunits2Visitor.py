@@ -79,6 +79,11 @@ class udunits2Visitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by udunits2Parser#clock.
+    def visitClock(self, ctx:udunits2Parser.ClockContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by udunits2Parser#shift.
     def visitShift(self, ctx:udunits2Parser.ShiftContext):
         return self.visitChildren(ctx)

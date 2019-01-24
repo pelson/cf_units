@@ -1,10 +1,7 @@
 from cf_units._parse_udunits2 import parse as ud_parse
 import sys
 
-t = ud_parse(sys.argv[1])
 
-
-print(type(t))
 
 
 class Visitor:
@@ -83,15 +80,21 @@ def walk_tree(tree, _d=0):
         for n in tree._items():
             walk_tree(n, _d=_d+1)
 
-print(t)
 
 
-print('---')
 
-walk_tree(t)
+if __name__ == '__main__':
+    t = ud_parse(sys.argv[1])
+
+    print(type(t))
+    print(t)
+
+    print('---')
+
+    walk_tree(t)
 
 
-print('======')
-r = TeXVisitor().visit(t)
+    print('======')
+    r = TeXVisitor().visit(t)
 
-print(' '.join(r))
+    print(' '.join(r))

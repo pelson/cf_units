@@ -94,8 +94,9 @@ float_t_signed:
 float_t: float_t_unsigned ;//| float_t_signed;
 
 timestamp:
-    DATE
-    | (DATE WS? signed_clock signed_hour_minute?)
+    (DATE | INT)  // TODO: Test 'since +1900'
+    | ((DATE | INT) WS? signed_clock (WS? signed_hour_minute)?)
+    | DT_T_CLOCK
 //     | (date WS+ clock)
 //     | (date WS+ clock WS+ signed_int)  // Timezone offset. // TODO check 0:0:0+1
 //     | (date WS+ clock WS+ clock)       // Date + (Clock1 - Clock2)
@@ -115,10 +116,11 @@ timestamp:
 date: any_int MINUS INT (MINUS INT)?;
 
 signed_clock:
-    HOUR_MINUTE_SECOND | HOUR_MINUTE | any_int
+    HOUR_MINUTE_SECOND | HOUR_MINUTE | any_int 
 ;
 
 signed_hour_minute:
+    // Second not allowed.
     ((WS+ | (WS* sign)) (HOUR_MINUTE | INT))
     | (WS* SIGNED_INT)
 ;

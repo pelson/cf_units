@@ -137,6 +137,22 @@ class Date(Node):
         return f'{self.year}-{self.month}-{self.day}'
 
 
+class PackedDate(Date):
+    # Udunits supports integers that look a bit like YYYYMMDD. Problem is, they are also allowed to exceed, so
+    # 1990234 is actually Y: 1990 + M//12, M: 23%12, D: 4 + the number of days that adding extra months requires.
+    # Additionally, +1990 miraculously reaches y: 198, m: 12, d: 01
+
+    # Rather than try to reverse engineer this, let's encapsualte it and pass it on to UDUNITS if we possibly can.
+    def __init__(self, datestamp):
+        self.datestamp = datestamp
+
+    def _items(self):
+        return (self.datestamp,)
+
+    def __str__(self):
+        return f'{self.datestamp}'
+
+
 class ExprVisitor(LabeledExprVisitor):
     # def __getattribute__(self, attr):
     #     # Useful to debug what is getting called.
@@ -175,6 +191,7 @@ class ExprVisitor(LabeledExprVisitor):
 
             import unicodedata
             consumers = {lexer.INT: int,
+                         lexer.SIGNED_INT: int,
                     #                         lexer.FLOAT: float,
                          lexer.WS: lambda n: None,
                          lexer.ID: str,
@@ -225,31 +242,22 @@ class ExprVisitor(LabeledExprVisitor):
 
     def prepareTIMESTAMP(self, string):
         packed_date, packed_clock = string.split('T')
-        y, mnth = packed_date[:4], packed_date[4:6]
-        mnth = int(mnth or 1)
-        if mnth > 12:
-            # It seems like a bug, but udunits supports months >12 in timestamps.
-            # d = packed_date[5:]
-            # mnth = int(packed_date[4:5])
-            d = packed_date[6:]
-        else:
-            d = packed_date[6:]
-        d = int(d or 1)
 
+
+        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L243-L252
+        packed_date = PackedDate(packed_date)
 
         # REF: https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L113-L126
         negative_hr = packed_clock[0] == '-'
-        if packed_date[0] in ['-', '+']:
-            packed_clock = packed_clock[1:]
 
-        # NB: This is NOT what the grammar states, but is what udunits does.
+        # NB: This is NOT what the grammar states, but is what udunits appears to do.
         h, m, s = packed_clock[:2], packed_clock[2:4], packed_clock[4:6]
 
         h, m, s = int(h or 0), int(m or 0), int(s or 0)
         if negative_hr:
             h = -h
 
-        node = Timestamp(Date(int(y), mnth, d), NaiveClock(h, m, s))
+        node = Timestamp(packed_date, NaiveClock(h, m, s))
         return node
 
     def visitSigned_int(self, ctx):
@@ -405,6 +413,9 @@ class ExprVisitor(LabeledExprVisitor):
             if matches([Date, Leaf]):
                 # DATE + packed_time
                 return Timestamp(nodes[0], NaiveClock(nodes[1].content))
+            elif matches([Leaf, NaiveClock]):
+                # Int Clock
+                return Timestamp(Date(nodes[0]), nodes[1])
             elif matches([Date, NaiveClock]):
                 return Timestamp(*nodes)
             elif matches([Date, NaiveClock, Leaf]):

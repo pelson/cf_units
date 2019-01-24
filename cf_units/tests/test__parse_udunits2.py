@@ -84,8 +84,11 @@ testdata = [
     's since 1990-1-2+5:2',
     's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
     's since 19900102T5',  # Packed format (undocumented?)
-    's since 199022T1',  # UGLY! (bug?). NOTE: Sometimes this test fails. Seems like there may be some residual state in UDUNITS2 and/or cf-units?
+    's since 199022T1',  # UGLY! (bug?).
 
+
+    's since 1990 +2:0:2.9',
+    's since 1990-2T1',
     'hours from 1990-1-1 -19:4:2',
     'hours from 1990-1-1 3+1',
 
@@ -129,6 +132,10 @@ not_allowed = [
 known_issues = [
     # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
     ['m--2--3', SyntaxError], # -2 * -3 * m
+
+    ['s since +1990 +2:0:2.9', # Disabled due to crazy results from UDUNITS.
+    ['s since -1990 +2:0:2.9', SyntaxError],  # Disabled due to crazy results from UDUNITS.
+
 ]
 
 not_done = [
@@ -262,7 +269,7 @@ def test_power_spec(_, unit_str, expected):
 @pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
     ['1.2', '1.2'],
     ['m', 'm'],
-    ['+1e12', '+1e12'],
+    ['+1e12', '1e12'],
 ])])
 def test_basic_spec(_, unit_str, expected):
     n = str(parse(unit_str, root='basic_spec'))

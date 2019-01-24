@@ -24,12 +24,14 @@ E_POWER:
      ('E' | 'e') ANY_INT 
 ;
 
-HOUR_MINUTE_SECOND: ANY_INT ':' INT ':' INT;
-HOUR_MINUTE: ANY_INT ':' INT;
 
 
 fragment MONTH:
     ('0'? ('1'..'9')) | ('1' ('0'..'2'))
+;
+
+fragment DAY:
+    ('0'? ('1'..'9')) | (('1'..'2')('0'..'9')) | '30' | '31'
 ;
 
 SHIFT_OP :
@@ -69,8 +71,37 @@ ERRORCHARACTER : . ;
 
 mode SHIFT_MODE;
 
-DATE: (WS? ANY_INT MINUS INT (MINUS INT)?);
+fragment SIGN:
+    PLUS | MINUS
+;
 
-TIMESTAMP: ANY_INT (MONTH INT?)? 'T' ANY_INT (INT INT?)?;
+fragment HOUR:
+    // NOTE: -19 is fine, -20 is not in the current udunits implementation.
+    (SIGN? ('0'..'1')? ('0'..'9')) | (('2' ('0'..'3')))
+;
+
+fragment MINUTE:
+    ('0'..'5')? ('0'..'9')
+;
+
+fragment SECOND:
+    (MINUTE | '60') (PERIOD ('0'..'9')*)?
+;
+
+HOUR_MINUTE_SECOND: HOUR ':' MINUTE ':' SECOND;
+HOUR_MINUTE: HOUR ':' MINUTE;
+
+DATE: (ANY_INT MINUS MONTH (MINUS DAY)?);
+
+fragment CLOCK: HOUR (MINUTE SECOND?)?;
+
+TIMESTAMP: 
+    (ANY_INT (MONTH DAY?)? 'T' CLOCK)
+;
+
+DT_T_CLOCK: DATE 'T' CLOCK; // UNDOCUMENTED
+
+
+
 // inherit from DEFAULT_MODE: INT, SIGNED_INT, E_POWER, WS, PLUS, MINUS, PERIOD, SEMICOLON, HOUR_MINUTE, HOUR_MINUTE_SECOND, ERRORCHARACTER;
 

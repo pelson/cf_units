@@ -3,7 +3,7 @@ parser grammar udunits2Parser;
 options { tokenVocab=udunits2Lexer; }
 
 unit_spec:
-    shift_spec? EOF
+    shift_spec? EOF  // Zero or one "shift_spec", followed by the end of the input.
 ;
 
 shift_spec:
@@ -12,12 +12,10 @@ shift_spec:
      | product_spec shift timestamp
 ;
 
-
 product_spec:  
       (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2, but not km.+2)
        |
       (power_spec
-       //| power_spec PERIOD signed_int) // km.2 === 2*km
        | power_spec multiply power_spec // km*2
        | div  // km/2
       ) (WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 

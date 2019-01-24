@@ -133,7 +133,7 @@ known_issues = [
     # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
     ['m--2--3', SyntaxError], # -2 * -3 * m
 
-    ['s since +1990 +2:0:2.9', # Disabled due to crazy results from UDUNITS.
+    ['s since +1990 +2:0:2.9', SyntaxError], # Disabled due to crazy results from UDUNITS.
     ['s since -1990 +2:0:2.9', SyntaxError],  # Disabled due to crazy results from UDUNITS.
 
 ]

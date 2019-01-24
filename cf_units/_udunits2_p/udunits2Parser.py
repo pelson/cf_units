@@ -57,7 +57,7 @@ def serializedATN():
         buf.write("\2\2\2JF\3\2\2\2K\5\3\2\2\2LM\5\20\t\2MN\7\b\2\2NO\5\22")
         buf.write("\n\2Ob\3\2\2\2PW\5\n\6\2QR\5\n\6\2RS\5\66\34\2ST\5\n\6")
         buf.write("\2TW\3\2\2\2UW\5\b\5\2VP\3\2\2\2VQ\3\2\2\2VU\3\2\2\2W")
-        buf.write("^\3\2\2\2XZ\7\17\2\2YX\3\2\2\2YZ\3\2\2\2Z[\3\2\2\2[]\5")
+        buf.write("^\3\2\2\2XZ\7\22\2\2YX\3\2\2\2YZ\3\2\2\2Z[\3\2\2\2[]\5")
         buf.write("\6\4\2\\Y\3\2\2\2]`\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_b\3\2")
         buf.write("\2\2`^\3\2\2\2aL\3\2\2\2aV\3\2\2\2b\7\3\2\2\2cd\5\n\6")
         buf.write("\2de\5\32\16\2ef\5\n\6\2f\t\3\2\2\2gk\5\f\7\2hk\58\35")
@@ -65,27 +65,27 @@ def serializedATN():
         buf.write("n\5\24\13\2ml\3\2\2\2mn\3\2\2\2n\13\3\2\2\2ow\5\20\t\2")
         buf.write("pq\7\t\2\2qr\5\4\3\2rs\7\n\2\2sw\3\2\2\2tw\5\22\n\2uw")
         buf.write("\5\24\13\2vo\3\2\2\2vp\3\2\2\2vt\3\2\2\2vu\3\2\2\2w\r")
-        buf.write("\3\2\2\2xy\5\20\t\2y\17\3\2\2\2z{\7\22\2\2{\21\3\2\2\2")
+        buf.write("\3\2\2\2xy\5\20\t\2y\17\3\2\2\2z{\7\21\2\2{\21\3\2\2\2")
         buf.write("|\u0082\5&\24\2}\177\5\34\17\2~}\3\2\2\2~\177\3\2\2\2")
         buf.write("\177\u0080\3\2\2\2\u0080\u0082\7\f\2\2\u0081|\3\2\2\2")
         buf.write("\u0081~\3\2\2\2\u0082\23\3\2\2\2\u0083\u0084\t\2\2\2\u0084")
         buf.write("\25\3\2\2\2\u0085\u0086\t\2\2\2\u0086\27\3\2\2\2\u0087")
-        buf.write("\u008b\5\22\n\2\u0088\u008a\7\17\2\2\u0089\u0088\3\2\2")
+        buf.write("\u008b\5\22\n\2\u0088\u008a\7\22\2\2\u0089\u0088\3\2\2")
         buf.write("\2\u008a\u008d\3\2\2\2\u008b\u0089\3\2\2\2\u008b\u008c")
         buf.write("\3\2\2\2\u008c\u008e\3\2\2\2\u008d\u008b\3\2\2\2\u008e")
         buf.write("\u008f\5\f\7\2\u008f\u00a1\3\2\2\2\u0090\u0092\5\f\7\2")
-        buf.write("\u0091\u0093\7\17\2\2\u0092\u0091\3\2\2\2\u0093\u0094")
+        buf.write("\u0091\u0093\7\22\2\2\u0092\u0091\3\2\2\2\u0093\u0094")
         buf.write("\3\2\2\2\u0094\u0092\3\2\2\2\u0094\u0095\3\2\2\2\u0095")
         buf.write("\u0096\3\2\2\2\u0096\u0097\5\36\20\2\u0097\u00a1\3\2\2")
-        buf.write("\2\u0098\u009a\5\36\20\2\u0099\u009b\7\17\2\2\u009a\u0099")
+        buf.write("\2\u0098\u009a\5\36\20\2\u0099\u009b\7\22\2\2\u009a\u0099")
         buf.write("\3\2\2\2\u009b\u009c\3\2\2\2\u009c\u009a\3\2\2\2\u009c")
         buf.write("\u009d\3\2\2\2\u009d\u009e\3\2\2\2\u009e\u009f\5\36\20")
         buf.write("\2\u009f\u00a1\3\2\2\2\u00a0\u0087\3\2\2\2\u00a0\u0090")
         buf.write("\3\2\2\2\u00a0\u0098\3\2\2\2\u00a1\31\3\2\2\2\u00a2\u00a4")
-        buf.write("\7\17\2\2\u00a3\u00a2\3\2\2\2\u00a4\u00a7\3\2\2\2\u00a5")
+        buf.write("\7\22\2\2\u00a3\u00a2\3\2\2\2\u00a4\u00a7\3\2\2\2\u00a5")
         buf.write("\u00a3\3\2\2\2\u00a5\u00a6\3\2\2\2\u00a6\u00a8\3\2\2\2")
         buf.write("\u00a7\u00a5\3\2\2\2\u00a8\u00ac\7\7\2\2\u00a9\u00ab\7")
-        buf.write("\17\2\2\u00aa\u00a9\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac")
+        buf.write("\22\2\2\u00aa\u00a9\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac")
         buf.write("\u00aa\3\2\2\2\u00ac\u00ad\3\2\2\2\u00ad\33\3\2\2\2\u00ae")
         buf.write("\u00ac\3\2\2\2\u00af\u00b0\t\3\2\2\u00b0\35\3\2\2\2\u00b1")
         buf.write("\u00b3\5\34\17\2\u00b2\u00b1\3\2\2\2\u00b2\u00b3\3\2\2")
@@ -103,9 +103,9 @@ def serializedATN():
         buf.write("\2\u00cc\u00c4\3\2\2\2\u00cc\u00c9\3\2\2\2\u00cd#\3\2")
         buf.write("\2\2\u00ce\u00cf\3\2\2\2\u00cf%\3\2\2\2\u00d0\u00d1\5")
         buf.write("\"\22\2\u00d1\'\3\2\2\2\u00d2\u00e1\t\4\2\2\u00d3\u00d5")
-        buf.write("\t\4\2\2\u00d4\u00d6\7\17\2\2\u00d5\u00d4\3\2\2\2\u00d5")
+        buf.write("\t\4\2\2\u00d4\u00d6\7\22\2\2\u00d5\u00d4\3\2\2\2\u00d5")
         buf.write("\u00d6\3\2\2\2\u00d6\u00d7\3\2\2\2\u00d7\u00dc\5,\27\2")
-        buf.write("\u00d8\u00da\7\17\2\2\u00d9\u00d8\3\2\2\2\u00d9\u00da")
+        buf.write("\u00d8\u00da\7\22\2\2\u00d9\u00d8\3\2\2\2\u00d9\u00da")
         buf.write("\3\2\2\2\u00da\u00db\3\2\2\2\u00db\u00dd\5.\30\2\u00dc")
         buf.write("\u00d9\3\2\2\2\u00dc\u00dd\3\2\2\2\u00dd\u00e1\3\2\2\2")
         buf.write("\u00de\u00e1\7\30\2\2\u00df\u00e1\7\27\2\2\u00e0\u00d2")
@@ -116,32 +116,32 @@ def serializedATN():
         buf.write("\2\2\2\u00e8+\3\2\2\2\u00e9\u00ed\7\24\2\2\u00ea\u00ed")
         buf.write("\7\25\2\2\u00eb\u00ed\5\26\f\2\u00ec\u00e9\3\2\2\2\u00ec")
         buf.write("\u00ea\3\2\2\2\u00ec\u00eb\3\2\2\2\u00ed-\3\2\2\2\u00ee")
-        buf.write("\u00f0\7\17\2\2\u00ef\u00ee\3\2\2\2\u00f0\u00f1\3\2\2")
+        buf.write("\u00f0\7\22\2\2\u00ef\u00ee\3\2\2\2\u00f0\u00f1\3\2\2")
         buf.write("\2\u00f1\u00ef\3\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00fb")
-        buf.write("\3\2\2\2\u00f3\u00f5\7\17\2\2\u00f4\u00f3\3\2\2\2\u00f5")
+        buf.write("\3\2\2\2\u00f3\u00f5\7\22\2\2\u00f4\u00f3\3\2\2\2\u00f5")
         buf.write("\u00f8\3\2\2\2\u00f6\u00f4\3\2\2\2\u00f6\u00f7\3\2\2\2")
         buf.write("\u00f7\u00f9\3\2\2\2\u00f8\u00f6\3\2\2\2\u00f9\u00fb\5")
         buf.write("\34\17\2\u00fa\u00ef\3\2\2\2\u00fa\u00f6\3\2\2\2\u00fb")
-        buf.write("\u00fc\3\2\2\2\u00fc\u0105\t\5\2\2\u00fd\u00ff\7\17\2")
+        buf.write("\u00fc\3\2\2\2\u00fc\u0105\t\5\2\2\u00fd\u00ff\7\22\2")
         buf.write("\2\u00fe\u00fd\3\2\2\2\u00ff\u0102\3\2\2\2\u0100\u00fe")
         buf.write("\3\2\2\2\u0100\u0101\3\2\2\2\u0101\u0103\3\2\2\2\u0102")
         buf.write("\u0100\3\2\2\2\u0103\u0105\7\3\2\2\u0104\u00fa\3\2\2\2")
         buf.write("\u0104\u0100\3\2\2\2\u0105/\3\2\2\2\u0106\u0107\5\26\f")
         buf.write("\2\u0107\u0108\7\13\2\2\u0108\u0109\7\f\2\2\u0109\61\3")
         buf.write("\2\2\2\u010a\u010b\t\6\2\2\u010b\63\3\2\2\2\u010c\u010e")
-        buf.write("\7\17\2\2\u010d\u010c\3\2\2\2\u010e\u0111\3\2\2\2\u010f")
+        buf.write("\7\22\2\2\u010d\u010c\3\2\2\2\u010e\u0111\3\2\2\2\u010f")
         buf.write("\u010d\3\2\2\2\u010f\u0110\3\2\2\2\u0110\u0112\3\2\2\2")
         buf.write("\u0111\u010f\3\2\2\2\u0112\u0116\7\16\2\2\u0113\u0115")
-        buf.write("\7\17\2\2\u0114\u0113\3\2\2\2\u0115\u0118\3\2\2\2\u0116")
+        buf.write("\7\22\2\2\u0114\u0113\3\2\2\2\u0115\u0118\3\2\2\2\u0116")
         buf.write("\u0114\3\2\2\2\u0116\u0117\3\2\2\2\u0117\65\3\2\2\2\u0118")
         buf.write("\u0116\3\2\2\2\u0119\u0122\7\5\2\2\u011a\u0122\7\6\2\2")
-        buf.write("\u011b\u0122\7\b\2\2\u011c\u011e\7\17\2\2\u011d\u011c")
+        buf.write("\u011b\u0122\7\b\2\2\u011c\u011e\7\22\2\2\u011d\u011c")
         buf.write("\3\2\2\2\u011e\u011f\3\2\2\2\u011f\u011d\3\2\2\2\u011f")
         buf.write("\u0120\3\2\2\2\u0120\u0122\3\2\2\2\u0121\u0119\3\2\2\2")
         buf.write("\u0121\u011a\3\2\2\2\u0121\u011b\3\2\2\2\u0121\u011d\3")
         buf.write("\2\2\2\u0122\67\3\2\2\2\u0123\u0124\5\f\7\2\u0124\u0125")
-        buf.write("\7\20\2\2\u01259\3\2\2\2\u0126\u0127\5\f\7\2\u0127\u0128")
-        buf.write("\7\21\2\2\u0128\u0129\5\24\13\2\u0129\u0131\3\2\2\2\u012a")
+        buf.write("\7\17\2\2\u01259\3\2\2\2\u0126\u0127\5\f\7\2\u0127\u0128")
+        buf.write("\7\20\2\2\u0128\u0129\5\24\13\2\u0129\u0131\3\2\2\2\u012a")
         buf.write("\u012d\5\20\t\2\u012b\u012d\5\24\13\2\u012c\u012a\3\2")
         buf.write("\2\2\u012c\u012b\3\2\2\2\u012d\u012e\3\2\2\2\u012e\u012f")
         buf.write("\5\24\13\2\u012f\u0131\3\2\2\2\u0130\u0126\3\2\2\2\u0130")
@@ -168,8 +168,8 @@ class udunits2Parser ( Parser ):
 
     symbolicNames = [ "<INVALID>", "SIGNED_INT", "PLUS", "MINUS", "MULTIPLY", 
                       "DIVIDE", "PERIOD", "OPEN_PAREN", "CLOSE_PAREN", "SEMICOLON", 
-                      "INT", "E_POWER", "SHIFT_OP", "WS", "UNICODE_EXPONENT", 
-                      "RAISE", "ID", "ERRORCHARACTER", "HOUR_MINUTE_SECOND", 
+                      "INT", "E_POWER", "SHIFT_OP", "UNICODE_EXPONENT", 
+                      "RAISE", "ID", "WS", "ERRORCHARACTER", "HOUR_MINUTE_SECOND", 
                       "HOUR_MINUTE", "DATE", "TIMESTAMP", "DT_T_CLOCK" ]
 
     RULE_unit_spec = 0
@@ -223,10 +223,10 @@ class udunits2Parser ( Parser ):
     INT=10
     E_POWER=11
     SHIFT_OP=12
-    WS=13
-    UNICODE_EXPONENT=14
-    RAISE=15
-    ID=16
+    UNICODE_EXPONENT=13
+    RAISE=14
+    ID=15
+    WS=16
     ERRORCHARACTER=17
     HOUR_MINUTE_SECOND=18
     HOUR_MINUTE=19

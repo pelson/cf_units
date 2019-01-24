@@ -1,56 +1,44 @@
 lexer grammar udunits2Lexer;
 
-SIGNED_INT : (MINUS|PLUS) '0'..'9'+ ;
-fragment ANY_INT: INT | SIGNED_INT;
+SIGNED_INT : (MINUS|PLUS) INT ;
+fragment ANY_INT: INT | SIGNED_INT ;
 
-PLUS: '+';
-MINUS: '-';
-MULTIPLY: ('*' | '·');
-DIVIDE: '/';
-PERIOD: '.';
+PLUS: '+' ;
+MINUS: '-' ;
+MULTIPLY: ('*' | '·') ;
+DIVIDE: '/' ;
+PERIOD: '.' ;
 
-OPEN_PAREN: '(';
-CLOSE_PAREN: ')';
-SEMICOLON: ':';
-
-fragment INTEGER
-   : ('0' .. '9')+
-   ;
+OPEN_PAREN: '(' ;
+CLOSE_PAREN: ')' ;
+SEMICOLON: ':' ;
 
 INT : '0'..'9'+ ;
 
+E_POWER: ('E' | 'e') ANY_INT ;
+// NOTE: floats themselves are context sensitive, see the parser rules (especially float_t).
 
-E_POWER:
-     ('E' | 'e') ANY_INT 
+
+
+SHIFT_OP:
+  ( '@'
+  | 'after'
+  | 'from'
+  | 'since'
+  | 'ref'
+  )  -> pushMode(SHIFT_MODE)
 ;
 
-
-
-fragment MONTH:
-    ('0'? ('1'..'9')) | ('1' ('0'..'2'))
-;
-
-fragment DAY:
-    ('0'? ('1'..'9')) | (('1'..'2')('0'..'9')) | '30' | '31'
-;
-
-SHIFT_OP :
-         ('@'
-         | 'after'
-         | 'from'
-         | 'since'
-         | 'ref')  -> pushMode(SHIFT_MODE) ;
-
-WS : [ ] ;
 
 UNICODE_EXPONENT:
-    // One or more ISO-8859-9 encoded exponent characters
-    ('⁻' | '⁺' | '¹' | '²' | '³' | '⁴' | '⁵' | '⁶' | '⁷' | '⁸' | '⁹' | '⁰')+
+  // One or more ISO-8859-9 encoded exponent characters
+  ('⁻' | '⁺' | '¹' | '²' | '³' | '⁴' | '⁵' | '⁶' | '⁷' | '⁸' | '⁹' | '⁰')+
 ; 
 
 RAISE :
-         '^'
-       | '**'
+  ( '^'
+  | '**'
+  )
 ;
 
 //ID: one of
@@ -63,6 +51,8 @@ RAISE :
 //
 ID:  [A-Za-z_]+ ;
 
+WS : [ ] ;
+
 // Any characters which fail to match will raise an error.
 // nb. without this token, we don't get quite as good error messages. TODO: test for this!
 ERRORCHARACTER : . ;
@@ -70,6 +60,7 @@ ERRORCHARACTER : . ;
 
 
 mode SHIFT_MODE;
+// This mode is only enabled after seeing a SHIFT_OP token.
 
 fragment SIGN:
     PLUS | MINUS
@@ -88,20 +79,29 @@ fragment SECOND:
     (MINUTE | '60') (PERIOD ('0'..'9')*)?
 ;
 
+fragment MONTH:
+    ('0'? ('1'..'9')) | ('1' ('0'..'2'))
+;
+
+fragment DAY:
+    ('0'? ('1'..'9')) | (('1'..'2')('0'..'9')) | '30' | '31'
+;
+
+fragment YEAR:
+    SIGN? INT INT? INT? INT?
+;
+
 HOUR_MINUTE_SECOND: HOUR ':' MINUTE ':' SECOND;
 HOUR_MINUTE: HOUR ':' MINUTE;
 
-DATE: (ANY_INT MINUS MONTH (MINUS DAY)?);
+DATE: (YEAR MINUS MONTH (MINUS DAY)?);
 
 fragment CLOCK: HOUR (MINUTE SECOND?)?;
 
 TIMESTAMP: 
-    (ANY_INT (MONTH DAY?)? 'T' CLOCK)
+    (YEAR (MONTH DAY?)? 'T' CLOCK)
 ;
 
 DT_T_CLOCK: DATE 'T' CLOCK; // UNDOCUMENTED
 
-
-
-// inherit from DEFAULT_MODE: INT, SIGNED_INT, E_POWER, WS, PLUS, MINUS, PERIOD, SEMICOLON, HOUR_MINUTE, HOUR_MINUTE_SECOND, ERRORCHARACTER;
-
+// inherit from DEFAULT_MODE: INT, SIGNED_INT, E_POWER, WS, PLUS, MINUS, PERIOD, SEMICOLON, ERRORCHARACTER;

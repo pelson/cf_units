@@ -81,9 +81,10 @@ testdata = [
     'hours from 1990-1-1 0:1:1',
     'hours from 1990-1-1 0:0:1 +2',
     's since 1990-1-2+5:2:2',
+    's since 1990-1-2+5:2',
     's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
     's since 19900102T5',  # Packed format (undocumented?)
-#    's since 199022T1',  # UGLY! (bug?)
+    's since 199022T1',  # UGLY! (bug?). NOTE: Sometimes this test fails. Seems like there may be some residual state in UDUNITS2 and/or cf-units?
 
     'hours from 1990-1-1 -19:4:2',
     'hours from 1990-1-1 3+1',
@@ -114,7 +115,6 @@ not_udunits = [
     ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
     ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
-    ['hours from 1990-1-1 -20:4:18 +2', 'hours @ 1990-1-1 -20:4:18 2']  # TODO: We should try to exclude this one.
 ]
 
 udunits_bugs = [
@@ -122,6 +122,9 @@ udunits_bugs = [
         'm⁻²'
 ]
 
+not_allowed = [
+    'hours from 1990-1-1 -20:4:18 +2',
+]
 
 known_issues = [
     # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
@@ -199,6 +202,17 @@ def test_known_issues(_, unit_str, expected):
         assert unit_expr != expected
 
 
+@pytest.mark.parametrize("_, unit_str", enumerate(not_allowed))
+def test_not_allowed(_, unit_str):
+    # Get the udunits symbolic form for the raw unit.
+
+    with pytest.raises(ValueError):
+        raw_symbol = cf_units.Unit(unit_str).symbol
+
+    with pytest.raises(SyntaxError):
+        unit_expr = normalize(unit_str)
+
+
 @pytest.mark.parametrize("_, unit_str", enumerate(testdata))
 def test_normed_unit(_, unit_str):
     # nb: The "_" argument allows an easier interface for seeing which
@@ -248,7 +262,7 @@ def test_power_spec(_, unit_str, expected):
 @pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
     ['1.2', '1.2'],
     ['m', 'm'],
-    ['+1e12', '1e12'],
+    ['+1e12', '+1e12'],
 ])])
 def test_basic_spec(_, unit_str, expected):
     n = str(parse(unit_str, root='basic_spec'))

@@ -194,6 +194,7 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.DATE: lambda arg: Date(*arg.strip().rsplit('-', 2)),  # TODO: Handle -1-3
                          lexer.OPEN_PAREN: str,
                          lexer.CLOSE_PAREN: str,
+                         #                          lexer.SIGNED_INT: str,
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)
@@ -256,7 +257,8 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitSigned_hour_minute(self, ctx):
         nodes = self.visitChildren(ctx)
-        nodes = self.strip_whitespace(nodes)
+        if not isinstance(nodes, Node):
+            nodes = self.strip_whitespace(nodes)
         if isinstance(nodes, list):
             if len(nodes) == 1:
                 nodes = nodes[0]
@@ -279,7 +281,8 @@ class ExprVisitor(LabeledExprVisitor):
     
     def visitSigned_clock(self, ctx):
         nodes = self.visitChildren(ctx)
-        nodes = self.strip_whitespace(nodes)
+        if not isinstance(nodes, Node):
+            nodes = self.strip_whitespace(nodes)
         if isinstance(nodes, list):
             if len(nodes) == 1:
                 nodes = nodes[0]

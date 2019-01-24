@@ -14,7 +14,7 @@ shift_spec:
 
 
 product_spec:  
-      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2)
+      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2, but not km.+2)
        |
       (power_spec
        //| power_spec PERIOD signed_int) // km.2 === 2*km
@@ -31,7 +31,7 @@ power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
     (basic_spec
       | exponent_unicode
       | exponent
-      | negative_exponent
+//      | negative_exponent
     )  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4
 ;
 
@@ -39,7 +39,7 @@ basic_spec:
        base_unit
        | '(' shift_spec ')'
 //       | LOGREF product_spec ')'
-       | sci_number
+       | sci_number | signed_int
 ;
 
 
@@ -48,11 +48,14 @@ base_unit: ID;
 
 
 sci_number:
-    sign? (float_t | INT)
+    float_t | (sign? INT)
 ;
 
 signed_int:
-    sign? INT
+    SIGNED_INT | INT
+;
+any_int: 
+    SIGNED_INT | INT
 ;
 
 juxtaposed_multiplication:
@@ -73,18 +76,22 @@ any_signed_number:
 ;
 
 any_unsigned_number:
-    float_t | INT
+    float_t | any_int
 ;
 
 
 // Float is not a lexer token as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
-float_t:
-    (((INT PERIOD INT?)
-     |(INT? PERIOD INT)
-    ) E_POWER?)  // 1.2e-5, 1e2
-    | (INT E_POWER)
+float_t_unsigned:
+    (((any_int PERIOD INT?)
+     |(any_int? PERIOD INT)
+    ) E_POWER?)  // 1.2e-5, 1e2, +2.e4
+    | (any_int E_POWER)
 ;
 
+float_t_signed:
+;
+
+float_t: float_t_unsigned ;//| float_t_signed;
 
 timestamp:
     DATE
@@ -105,16 +112,18 @@ timestamp:
 //    | (TIMESTAMP WS+ ID) // UNKNOWN!
 ;
 
-date: INT MINUS INT (MINUS INT)?;
+date: any_int MINUS INT (MINUS INT)?;
 
 signed_clock:
-    (WS+ | (WS* sign)) (clock | INT)    
+    HOUR_MINUTE_SECOND | HOUR_MINUTE | any_int
 ;
 
 signed_hour_minute:
-    (WS+ | (WS* sign)) (HOUR_MINUTE | INT) 
+    ((WS+ | (WS* sign)) (HOUR_MINUTE | INT))
+    | (WS* SIGNED_INT)
 ;
-hour_minute: INT ':' INT;
+
+hour_minute: any_int ':' INT;
 
 clock: HOUR_MINUTE | HOUR_MINUTE_SECOND;
 
@@ -124,7 +133,7 @@ shift:
 ;
  
 multiply:
-      '-'  // m--1 === m * -1
+      MINUS  // m--1 === m * -1
       | MULTIPLY
       | PERIOD
       | WS+
@@ -140,6 +149,6 @@ exponent:  // TODO: m2
 ;
 
 
-negative_exponent:
-   basic_spec '-' INT
-;
+//negative_exponent:
+//   basic_spec '-' INT
+//;

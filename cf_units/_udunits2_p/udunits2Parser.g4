@@ -33,7 +33,7 @@ power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
 
 basic_spec:
        base_unit
-       | '(' shift_spec ')'
+       | '(' basic_spec ')'
 //       | LOGREF product_spec ')'
        | sci_number | signed_int
 ;
@@ -75,7 +75,7 @@ any_unsigned_number:
 ;
 
 // Float is not a parser rule as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
-float_t_unsigned:
+float_t:
     (((any_int PERIOD INT?)
      |(any_int? PERIOD INT)
     ) E_POWER?)  // 1.2e-5, 1e2, +2.e4

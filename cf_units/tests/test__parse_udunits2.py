@@ -36,7 +36,10 @@ testdata = [
 
     # TODO: add some tests with brackets.
     'm(2.3)',
-    'm(2.3m)',
+#    'm(2.3m)',
+#    'm s^(-1)',
+#    'm++2',
+
 
     'm/2',
     'm1',

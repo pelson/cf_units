@@ -44,6 +44,15 @@ class Leaf(Node):
 class Operand(Leaf):
     pass
 
+
+class Number(Leaf):
+    pass
+
+
+class Identifier(Leaf):
+    # The unit itself (e.g. meters, m, km, etc.)
+    pass
+
 class Root(Node):
     def __init__(self, *units):
         self.units = units
@@ -190,18 +199,16 @@ class ExprVisitor(LabeledExprVisitor):
             lexer = ctx.symbol.source[0]
 
             import unicodedata
-            consumers = {lexer.INT: int,
-                         lexer.SIGNED_INT: int,
-                    #                         lexer.FLOAT: float,
+            consumers = {lexer.INT: lambda string: Number(int(string)),
+                         lexer.SIGNED_INT: lambda string: Number(int(string)),
                          lexer.WS: lambda n: None,
-                         lexer.ID: str,
+                         lexer.ID: Identifier,
                          # Convert unicode to compatibility form
                          lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
-                         lexer.PLUS: str,
-                         lexer.MINUS: str,
-                         lexer.DIVIDE: str,
-                         lexer.MULTIPLY: str,
-                         lexer.RAISE: str,
+                         lexer.MINUS: Operand,
+                         lexer.DIVIDE: Operand,
+                         lexer.MULTIPLY: Operand,
+                         lexer.RAISE: Operand,
                          lexer.SHIFT_OP: str,
                          lexer.HOUR_MINUTE_SECOND: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.HOUR_MINUTE: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
@@ -230,7 +237,7 @@ class ExprVisitor(LabeledExprVisitor):
         if not isinstance(nodes, Leaf):
             string = ''.join(str(n.content) for n in nodes)
             # We don't cast this here in order to keep fidelity later on. Perhaps we should have a Float node.
-            nodes = Leaf(string)
+            nodes = Number(string)
         return nodes
 
     def visitDate(self, ctx):
@@ -309,7 +316,7 @@ class ExprVisitor(LabeledExprVisitor):
     def visitJuxtaposed_multiplication(self, ctx):
         nodes = self.visitChildren(ctx)
         lhs, rhs = self.strip_whitespace(nodes)
-        return BinaryOp('*', lhs, rhs)
+        return BinaryOp(Operand('*'), lhs, rhs)
 
     def visitPower_spec(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -318,21 +325,21 @@ class ExprVisitor(LabeledExprVisitor):
             new = []
             # Walk the nodes backwards applying raise to each successivelyi.
             for node in nodes[:-1][::-1]:
-                last = BinaryOp('^', node, last)
+                last = BinaryOp(Operand('^'), node, last)
             nodes = last
 #            if len(nodes) == 2:
-#                nodes = BinaryOp('^', *nodes)
+#                nodes = BinaryOp(Operand('^'), *nodes)
         return nodes
 
     def visitMult(self, ctx):
         nodes = self.visitChildren(ctx)
         lhs, op, rhs = self.strip_whitespace(nodes)
-        return BinaryOp('*', lhs, rhs)
+        return BinaryOp(Operand('*'), lhs, rhs)
 
     def visitDiv(self, ctx):
         nodes = self.visitChildren(ctx)
         lhs, op, rhs = self.strip_whitespace(nodes)
-        return BinaryOp('/', lhs, rhs)
+        return BinaryOp(Operand('/'), lhs, rhs)
 
     def visitProduct_spec(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
@@ -350,18 +357,9 @@ class ExprVisitor(LabeledExprVisitor):
                 else:
                     if isinstance(node, Leaf) and node.content == '.':
                         continue  # m.2
-                    last = BinaryOp('*', node, last)
+                    last = BinaryOp(Operand('*'), node, last)
             nodes = last
 
-        if False:
-            # power spec
-            if isinstance(nodes, Node):
-                node = nodes
-            elif len(nodes) == 3 and isinstance(nodes[1], Operand):
-                node = BinaryOp(nodes[1], nodes[0], nodes[2])
-            else:
-                raise RuntimeError('Unhandled product spec {}'.format(nodes))
-            nodes = node
         return nodes
 
     def visitDivide(self, ctx):
@@ -375,22 +373,12 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitNegative_exponent(self, ctx):
         nodes = self.visitChildren(ctx)
-        return BinaryOp('^-', nodes[0], nodes[2])
+        return BinaryOp(Operand('^-'), nodes[0], nodes[2])
 
     def visitShift(self, ctx):
         nodes = self.visitChildren(ctx)
         [operand] = self.strip_whitespace(nodes)
         return operand
-
-#     def visitClock(self, ctx):
-#         nodes = self.visitChildren(ctx)
-#         print('TICK TOCK CLOCK:', nodes, type(nodes))
-#         if not isinstance(nodes.content, list):
-#             # Signed integer.
-#             nodes = Leaf([nodes])
-#         return nodes
-
-#    def prepareClock(self, clock_nodes):
 
     def visitTimestamp(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -439,12 +427,12 @@ class ExprVisitor(LabeledExprVisitor):
     def visitJuxtaposed_raise(self, ctx):
         nodes = self.visitChildren(ctx)
         lhs, rhs = self.strip_whitespace(nodes)
-        return BinaryOp('^', lhs, rhs)
+        return BinaryOp(Operand('^'), lhs, rhs)
 
     def visitExponent_unicode(self, ctx):
         nodes = self.visitChildren(ctx)
         lhs, rhs = nodes
-        return BinaryOp('^', lhs, rhs)
+        return BinaryOp(Operand('^'), lhs, rhs)
 
     def visitSci_number(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -469,9 +457,9 @@ class ExprVisitor(LabeledExprVisitor):
     def visitExponent(self, ctx):
         nodes = self.visitChildren(ctx)
         if len(nodes) == 2:
-            return BinaryOp('^', nodes[0], nodes[1])
+            return BinaryOp(Operand('^'), nodes[0], nodes[1])
         else:
-            return BinaryOp('^', nodes[0], nodes[2])
+            return BinaryOp(Operand('^'), nodes[0], nodes[2])
 
     def visitShift(self, ctx):
         _ = self.visitChildren(ctx)  # noqa: F841

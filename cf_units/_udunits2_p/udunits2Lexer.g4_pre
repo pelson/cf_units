@@ -16,6 +16,7 @@ fragment INTEGER
 
 INT : '0'..'9'+ ;
 
+
 E_POWER:
      ('E' | 'e') (PLUS|MINUS)? INT 
 ;

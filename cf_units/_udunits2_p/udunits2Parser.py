@@ -1,4 +1,4 @@
-# Generated from udunits2.g4 by ANTLR 4.7.2
+# Generated from udunits2Parser.g4 by ANTLR 4.7.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -8,8 +8,8 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\25")
-        buf.write("\u012d\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\26")
+        buf.write("\u0130\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
@@ -27,130 +27,133 @@ def serializedATN():
         buf.write("\13\r\3\16\3\16\3\17\5\17\u00b0\n\17\3\17\3\17\3\20\3")
         buf.write("\20\5\20\u00b6\n\20\3\21\3\21\3\21\5\21\u00bb\n\21\3\21")
         buf.write("\5\21\u00be\n\21\3\21\3\21\5\21\u00c2\n\21\3\21\5\21\u00c5")
-        buf.write("\n\21\3\21\3\21\5\21\u00c9\n\21\3\22\3\22\3\22\3\22\5")
-        buf.write("\22\u00cf\n\22\3\22\5\22\u00d2\n\22\3\23\3\23\3\23\3\23")
-        buf.write("\3\23\5\23\u00d9\n\23\3\24\6\24\u00dc\n\24\r\24\16\24")
-        buf.write("\u00dd\3\24\7\24\u00e1\n\24\f\24\16\24\u00e4\13\24\3\24")
-        buf.write("\5\24\u00e7\n\24\3\24\3\24\5\24\u00eb\n\24\3\25\6\25\u00ee")
-        buf.write("\n\25\r\25\16\25\u00ef\3\25\7\25\u00f3\n\25\f\25\16\25")
-        buf.write("\u00f6\13\25\3\25\5\25\u00f9\n\25\3\25\3\25\3\26\3\26")
-        buf.write("\3\26\3\26\3\27\3\27\3\30\7\30\u0104\n\30\f\30\16\30\u0107")
-        buf.write("\13\30\3\30\3\30\7\30\u010b\n\30\f\30\16\30\u010e\13\30")
-        buf.write("\3\31\3\31\3\31\3\31\6\31\u0114\n\31\r\31\16\31\u0115")
-        buf.write("\5\31\u0118\n\31\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3")
-        buf.write("\33\3\33\5\33\u0123\n\33\3\33\3\33\5\33\u0127\n\33\3\34")
-        buf.write("\3\34\3\34\3\34\3\34\2\2\35\2\4\6\b\n\f\16\20\22\24\26")
-        buf.write("\30\32\34\36 \"$&(*,.\60\62\64\66\2\5\3\2\6\7\4\2\13\13")
-        buf.write("\16\16\3\2\r\16\2\u0143\29\3\2\2\2\4F\3\2\2\2\6]\3\2\2")
-        buf.write("\2\b_\3\2\2\2\ng\3\2\2\2\fr\3\2\2\2\16t\3\2\2\2\20v\3")
-        buf.write("\2\2\2\22y\3\2\2\2\24\u0080\3\2\2\2\26\u009d\3\2\2\2\30")
-        buf.write("\u00a2\3\2\2\2\32\u00ac\3\2\2\2\34\u00af\3\2\2\2\36\u00b5")
-        buf.write("\3\2\2\2 \u00c8\3\2\2\2\"\u00d1\3\2\2\2$\u00d3\3\2\2\2")
-        buf.write("&\u00e6\3\2\2\2(\u00f8\3\2\2\2*\u00fc\3\2\2\2,\u0100\3")
-        buf.write("\2\2\2.\u0105\3\2\2\2\60\u0117\3\2\2\2\62\u0119\3\2\2")
-        buf.write("\2\64\u0126\3\2\2\2\66\u0128\3\2\2\28:\5\4\3\298\3\2\2")
-        buf.write("\29:\3\2\2\2:;\3\2\2\2;<\7\2\2\3<\3\3\2\2\2=G\5\6\4\2")
-        buf.write(">?\5\6\4\2?@\5.\30\2@A\5\22\n\2AG\3\2\2\2BC\5\6\4\2CD")
-        buf.write("\5.\30\2DE\5\"\22\2EG\3\2\2\2F=\3\2\2\2F>\3\2\2\2FB\3")
-        buf.write("\2\2\2G\5\3\2\2\2HI\5\20\t\2IJ\7\n\2\2JK\5\22\n\2K^\3")
-        buf.write("\2\2\2LS\5\n\6\2MN\5\n\6\2NO\5\60\31\2OP\5\n\6\2PS\3\2")
-        buf.write("\2\2QS\5\b\5\2RL\3\2\2\2RM\3\2\2\2RQ\3\2\2\2SZ\3\2\2\2")
-        buf.write("TV\7\21\2\2UT\3\2\2\2UV\3\2\2\2VW\3\2\2\2WY\5\6\4\2XU")
-        buf.write("\3\2\2\2Y\\\3\2\2\2ZX\3\2\2\2Z[\3\2\2\2[^\3\2\2\2\\Z\3")
-        buf.write("\2\2\2]H\3\2\2\2]R\3\2\2\2^\7\3\2\2\2_`\5\n\6\2`a\5\30")
-        buf.write("\r\2ab\5\n\6\2b\t\3\2\2\2ch\5\f\7\2dh\5\62\32\2eh\5\64")
-        buf.write("\33\2fh\5\66\34\2gc\3\2\2\2gd\3\2\2\2ge\3\2\2\2gf\3\2")
-        buf.write("\2\2hj\3\2\2\2ik\5\24\13\2ji\3\2\2\2jk\3\2\2\2k\13\3\2")
-        buf.write("\2\2ls\5\20\t\2mn\7\3\2\2no\5\4\3\2op\7\4\2\2ps\3\2\2")
-        buf.write("\2qs\5\22\n\2rl\3\2\2\2rm\3\2\2\2rq\3\2\2\2s\r\3\2\2\2")
-        buf.write("tu\5\20\t\2u\17\3\2\2\2vw\7\24\2\2w\21\3\2\2\2xz\5\32")
-        buf.write("\16\2yx\3\2\2\2yz\3\2\2\2z}\3\2\2\2{~\5 \21\2|~\7\13\2")
-        buf.write("\2}{\3\2\2\2}|\3\2\2\2~\23\3\2\2\2\177\u0081\5\32\16\2")
-        buf.write("\u0080\177\3\2\2\2\u0080\u0081\3\2\2\2\u0081\u0082\3\2")
-        buf.write("\2\2\u0082\u0083\7\13\2\2\u0083\25\3\2\2\2\u0084\u0088")
-        buf.write("\5\22\n\2\u0085\u0087\7\21\2\2\u0086\u0085\3\2\2\2\u0087")
-        buf.write("\u008a\3\2\2\2\u0088\u0086\3\2\2\2\u0088\u0089\3\2\2\2")
-        buf.write("\u0089\u008b\3\2\2\2\u008a\u0088\3\2\2\2\u008b\u008c\5")
-        buf.write("\f\7\2\u008c\u009e\3\2\2\2\u008d\u008f\5\f\7\2\u008e\u0090")
-        buf.write("\7\21\2\2\u008f\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091")
-        buf.write("\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0093\3\2\2\2")
-        buf.write("\u0093\u0094\5\34\17\2\u0094\u009e\3\2\2\2\u0095\u0097")
-        buf.write("\5\34\17\2\u0096\u0098\7\21\2\2\u0097\u0096\3\2\2\2\u0098")
-        buf.write("\u0099\3\2\2\2\u0099\u0097\3\2\2\2\u0099\u009a\3\2\2\2")
-        buf.write("\u009a\u009b\3\2\2\2\u009b\u009c\5\34\17\2\u009c\u009e")
-        buf.write("\3\2\2\2\u009d\u0084\3\2\2\2\u009d\u008d\3\2\2\2\u009d")
-        buf.write("\u0095\3\2\2\2\u009e\27\3\2\2\2\u009f\u00a1\7\21\2\2\u00a0")
-        buf.write("\u009f\3\2\2\2\u00a1\u00a4\3\2\2\2\u00a2\u00a0\3\2\2\2")
-        buf.write("\u00a2\u00a3\3\2\2\2\u00a3\u00a5\3\2\2\2\u00a4\u00a2\3")
-        buf.write("\2\2\2\u00a5\u00a9\7\t\2\2\u00a6\u00a8\7\21\2\2\u00a7")
-        buf.write("\u00a6\3\2\2\2\u00a8\u00ab\3\2\2\2\u00a9\u00a7\3\2\2\2")
-        buf.write("\u00a9\u00aa\3\2\2\2\u00aa\31\3\2\2\2\u00ab\u00a9\3\2")
-        buf.write("\2\2\u00ac\u00ad\t\2\2\2\u00ad\33\3\2\2\2\u00ae\u00b0")
-        buf.write("\5\32\16\2\u00af\u00ae\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0")
-        buf.write("\u00b1\3\2\2\2\u00b1\u00b2\5\36\20\2\u00b2\35\3\2\2\2")
-        buf.write("\u00b3\u00b6\5 \21\2\u00b4\u00b6\7\13\2\2\u00b5\u00b3")
-        buf.write("\3\2\2\2\u00b5\u00b4\3\2\2\2\u00b6\37\3\2\2\2\u00b7\u00b8")
-        buf.write("\7\13\2\2\u00b8\u00ba\7\n\2\2\u00b9\u00bb\7\13\2\2\u00ba")
-        buf.write("\u00b9\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb\u00c2\3\2\2\2")
-        buf.write("\u00bc\u00be\7\13\2\2\u00bd\u00bc\3\2\2\2\u00bd\u00be")
-        buf.write("\3\2\2\2\u00be\u00bf\3\2\2\2\u00bf\u00c0\7\n\2\2\u00c0")
-        buf.write("\u00c2\7\13\2\2\u00c1\u00b7\3\2\2\2\u00c1\u00bd\3\2\2")
-        buf.write("\2\u00c2\u00c4\3\2\2\2\u00c3\u00c5\7\f\2\2\u00c4\u00c3")
-        buf.write("\3\2\2\2\u00c4\u00c5\3\2\2\2\u00c5\u00c9\3\2\2\2\u00c6")
-        buf.write("\u00c7\7\13\2\2\u00c7\u00c9\7\f\2\2\u00c8\u00c1\3\2\2")
-        buf.write("\2\u00c8\u00c6\3\2\2\2\u00c9!\3\2\2\2\u00ca\u00d2\5$\23")
-        buf.write("\2\u00cb\u00cc\5$\23\2\u00cc\u00ce\5&\24\2\u00cd\u00cf")
-        buf.write("\5(\25\2\u00ce\u00cd\3\2\2\2\u00ce\u00cf\3\2\2\2\u00cf")
-        buf.write("\u00d2\3\2\2\2\u00d0\u00d2\7\17\2\2\u00d1\u00ca\3\2\2")
-        buf.write("\2\u00d1\u00cb\3\2\2\2\u00d1\u00d0\3\2\2\2\u00d2#\3\2")
-        buf.write("\2\2\u00d3\u00d4\7\13\2\2\u00d4\u00d5\7\7\2\2\u00d5\u00d8")
-        buf.write("\7\13\2\2\u00d6\u00d7\7\7\2\2\u00d7\u00d9\7\13\2\2\u00d8")
-        buf.write("\u00d6\3\2\2\2\u00d8\u00d9\3\2\2\2\u00d9%\3\2\2\2\u00da")
-        buf.write("\u00dc\7\21\2\2\u00db\u00da\3\2\2\2\u00dc\u00dd\3\2\2")
-        buf.write("\2\u00dd\u00db\3\2\2\2\u00dd\u00de\3\2\2\2\u00de\u00e7")
-        buf.write("\3\2\2\2\u00df\u00e1\7\21\2\2\u00e0\u00df\3\2\2\2\u00e1")
-        buf.write("\u00e4\3\2\2\2\u00e2\u00e0\3\2\2\2\u00e2\u00e3\3\2\2\2")
-        buf.write("\u00e3\u00e5\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e5\u00e7\5")
-        buf.write("\32\16\2\u00e6\u00db\3\2\2\2\u00e6\u00e2\3\2\2\2\u00e7")
-        buf.write("\u00ea\3\2\2\2\u00e8\u00eb\5,\27\2\u00e9\u00eb\7\13\2")
-        buf.write("\2\u00ea\u00e8\3\2\2\2\u00ea\u00e9\3\2\2\2\u00eb\'\3\2")
-        buf.write("\2\2\u00ec\u00ee\7\21\2\2\u00ed\u00ec\3\2\2\2\u00ee\u00ef")
-        buf.write("\3\2\2\2\u00ef\u00ed\3\2\2\2\u00ef\u00f0\3\2\2\2\u00f0")
-        buf.write("\u00f9\3\2\2\2\u00f1\u00f3\7\21\2\2\u00f2\u00f1\3\2\2")
-        buf.write("\2\u00f3\u00f6\3\2\2\2\u00f4\u00f2\3\2\2\2\u00f4\u00f5")
-        buf.write("\3\2\2\2\u00f5\u00f7\3\2\2\2\u00f6\u00f4\3\2\2\2\u00f7")
-        buf.write("\u00f9\5\32\16\2\u00f8\u00ed\3\2\2\2\u00f8\u00f4\3\2\2")
-        buf.write("\2\u00f9\u00fa\3\2\2\2\u00fa\u00fb\t\3\2\2\u00fb)\3\2")
-        buf.write("\2\2\u00fc\u00fd\7\13\2\2\u00fd\u00fe\7\5\2\2\u00fe\u00ff")
-        buf.write("\7\13\2\2\u00ff+\3\2\2\2\u0100\u0101\t\4\2\2\u0101-\3")
-        buf.write("\2\2\2\u0102\u0104\7\21\2\2\u0103\u0102\3\2\2\2\u0104")
-        buf.write("\u0107\3\2\2\2\u0105\u0103\3\2\2\2\u0105\u0106\3\2\2\2")
-        buf.write("\u0106\u0108\3\2\2\2\u0107\u0105\3\2\2\2\u0108\u010c\7")
-        buf.write("\20\2\2\u0109\u010b\7\21\2\2\u010a\u0109\3\2\2\2\u010b")
-        buf.write("\u010e\3\2\2\2\u010c\u010a\3\2\2\2\u010c\u010d\3\2\2\2")
-        buf.write("\u010d/\3\2\2\2\u010e\u010c\3\2\2\2\u010f\u0118\7\7\2")
-        buf.write("\2\u0110\u0118\7\b\2\2\u0111\u0118\7\n\2\2\u0112\u0114")
-        buf.write("\7\21\2\2\u0113\u0112\3\2\2\2\u0114\u0115\3\2\2\2\u0115")
-        buf.write("\u0113\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u0118\3\2\2\2")
-        buf.write("\u0117\u010f\3\2\2\2\u0117\u0110\3\2\2\2\u0117\u0111\3")
-        buf.write("\2\2\2\u0117\u0113\3\2\2\2\u0118\61\3\2\2\2\u0119\u011a")
-        buf.write("\5\f\7\2\u011a\u011b\7\22\2\2\u011b\63\3\2\2\2\u011c\u011d")
-        buf.write("\5\f\7\2\u011d\u011e\7\23\2\2\u011e\u011f\5\24\13\2\u011f")
-        buf.write("\u0127\3\2\2\2\u0120\u0123\5\20\t\2\u0121\u0123\5\24\13")
-        buf.write("\2\u0122\u0120\3\2\2\2\u0122\u0121\3\2\2\2\u0123\u0124")
-        buf.write("\3\2\2\2\u0124\u0125\5\24\13\2\u0125\u0127\3\2\2\2\u0126")
-        buf.write("\u011c\3\2\2\2\u0126\u0122\3\2\2\2\u0127\65\3\2\2\2\u0128")
-        buf.write("\u0129\5\f\7\2\u0129\u012a\7\7\2\2\u012a\u012b\7\13\2")
-        buf.write("\2\u012b\67\3\2\2\2+9FRUZ]gjry}\u0080\u0088\u0091\u0099")
-        buf.write("\u009d\u00a2\u00a9\u00af\u00b5\u00ba\u00bd\u00c1\u00c4")
-        buf.write("\u00c8\u00ce\u00d1\u00d8\u00dd\u00e2\u00e6\u00ea\u00ef")
-        buf.write("\u00f4\u00f8\u0105\u010c\u0115\u0117\u0122\u0126")
+        buf.write("\n\21\3\21\3\21\5\21\u00c9\n\21\3\22\3\22\3\22\5\22\u00ce")
+        buf.write("\n\22\3\22\3\22\5\22\u00d2\n\22\3\22\5\22\u00d5\n\22\3")
+        buf.write("\23\3\23\3\23\3\23\3\23\5\23\u00dc\n\23\3\24\6\24\u00df")
+        buf.write("\n\24\r\24\16\24\u00e0\3\24\7\24\u00e4\n\24\f\24\16\24")
+        buf.write("\u00e7\13\24\3\24\5\24\u00ea\n\24\3\24\3\24\5\24\u00ee")
+        buf.write("\n\24\3\25\6\25\u00f1\n\25\r\25\16\25\u00f2\3\25\7\25")
+        buf.write("\u00f6\n\25\f\25\16\25\u00f9\13\25\3\25\5\25\u00fc\n\25")
+        buf.write("\3\25\3\25\3\26\3\26\3\26\3\26\3\27\3\27\3\30\7\30\u0107")
+        buf.write("\n\30\f\30\16\30\u010a\13\30\3\30\3\30\7\30\u010e\n\30")
+        buf.write("\f\30\16\30\u0111\13\30\3\31\3\31\3\31\3\31\6\31\u0117")
+        buf.write("\n\31\r\31\16\31\u0118\5\31\u011b\n\31\3\32\3\32\3\32")
+        buf.write("\3\33\3\33\3\33\3\33\3\33\3\33\5\33\u0126\n\33\3\33\3")
+        buf.write("\33\5\33\u012a\n\33\3\34\3\34\3\34\3\34\3\34\2\2\35\2")
+        buf.write("\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64")
+        buf.write("\66\2\5\3\2\3\4\4\2\13\13\16\16\3\2\r\16\2\u0147\29\3")
+        buf.write("\2\2\2\4F\3\2\2\2\6]\3\2\2\2\b_\3\2\2\2\ng\3\2\2\2\fr")
+        buf.write("\3\2\2\2\16t\3\2\2\2\20v\3\2\2\2\22y\3\2\2\2\24\u0080")
+        buf.write("\3\2\2\2\26\u009d\3\2\2\2\30\u00a2\3\2\2\2\32\u00ac\3")
+        buf.write("\2\2\2\34\u00af\3\2\2\2\36\u00b5\3\2\2\2 \u00c8\3\2\2")
+        buf.write("\2\"\u00d4\3\2\2\2$\u00d6\3\2\2\2&\u00e9\3\2\2\2(\u00fb")
+        buf.write("\3\2\2\2*\u00ff\3\2\2\2,\u0103\3\2\2\2.\u0108\3\2\2\2")
+        buf.write("\60\u011a\3\2\2\2\62\u011c\3\2\2\2\64\u0129\3\2\2\2\66")
+        buf.write("\u012b\3\2\2\28:\5\4\3\298\3\2\2\29:\3\2\2\2:;\3\2\2\2")
+        buf.write(";<\7\2\2\3<\3\3\2\2\2=G\5\6\4\2>?\5\6\4\2?@\5.\30\2@A")
+        buf.write("\5\22\n\2AG\3\2\2\2BC\5\6\4\2CD\5.\30\2DE\5\"\22\2EG\3")
+        buf.write("\2\2\2F=\3\2\2\2F>\3\2\2\2FB\3\2\2\2G\5\3\2\2\2HI\5\20")
+        buf.write("\t\2IJ\7\7\2\2JK\5\22\n\2K^\3\2\2\2LS\5\n\6\2MN\5\n\6")
+        buf.write("\2NO\5\60\31\2OP\5\n\6\2PS\3\2\2\2QS\5\b\5\2RL\3\2\2\2")
+        buf.write("RM\3\2\2\2RQ\3\2\2\2SZ\3\2\2\2TV\7\21\2\2UT\3\2\2\2UV")
+        buf.write("\3\2\2\2VW\3\2\2\2WY\5\6\4\2XU\3\2\2\2Y\\\3\2\2\2ZX\3")
+        buf.write("\2\2\2Z[\3\2\2\2[^\3\2\2\2\\Z\3\2\2\2]H\3\2\2\2]R\3\2")
+        buf.write("\2\2^\7\3\2\2\2_`\5\n\6\2`a\5\30\r\2ab\5\n\6\2b\t\3\2")
+        buf.write("\2\2ch\5\f\7\2dh\5\62\32\2eh\5\64\33\2fh\5\66\34\2gc\3")
+        buf.write("\2\2\2gd\3\2\2\2ge\3\2\2\2gf\3\2\2\2hj\3\2\2\2ik\5\24")
+        buf.write("\13\2ji\3\2\2\2jk\3\2\2\2k\13\3\2\2\2ls\5\20\t\2mn\7\b")
+        buf.write("\2\2no\5\4\3\2op\7\t\2\2ps\3\2\2\2qs\5\22\n\2rl\3\2\2")
+        buf.write("\2rm\3\2\2\2rq\3\2\2\2s\r\3\2\2\2tu\5\20\t\2u\17\3\2\2")
+        buf.write("\2vw\7\24\2\2w\21\3\2\2\2xz\5\32\16\2yx\3\2\2\2yz\3\2")
+        buf.write("\2\2z}\3\2\2\2{~\5 \21\2|~\7\13\2\2}{\3\2\2\2}|\3\2\2")
+        buf.write("\2~\23\3\2\2\2\177\u0081\5\32\16\2\u0080\177\3\2\2\2\u0080")
+        buf.write("\u0081\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0083\7\13\2")
+        buf.write("\2\u0083\25\3\2\2\2\u0084\u0088\5\22\n\2\u0085\u0087\7")
+        buf.write("\21\2\2\u0086\u0085\3\2\2\2\u0087\u008a\3\2\2\2\u0088")
+        buf.write("\u0086\3\2\2\2\u0088\u0089\3\2\2\2\u0089\u008b\3\2\2\2")
+        buf.write("\u008a\u0088\3\2\2\2\u008b\u008c\5\f\7\2\u008c\u009e\3")
+        buf.write("\2\2\2\u008d\u008f\5\f\7\2\u008e\u0090\7\21\2\2\u008f")
+        buf.write("\u008e\3\2\2\2\u0090\u0091\3\2\2\2\u0091\u008f\3\2\2\2")
+        buf.write("\u0091\u0092\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\5")
+        buf.write("\34\17\2\u0094\u009e\3\2\2\2\u0095\u0097\5\34\17\2\u0096")
+        buf.write("\u0098\7\21\2\2\u0097\u0096\3\2\2\2\u0098\u0099\3\2\2")
+        buf.write("\2\u0099\u0097\3\2\2\2\u0099\u009a\3\2\2\2\u009a\u009b")
+        buf.write("\3\2\2\2\u009b\u009c\5\34\17\2\u009c\u009e\3\2\2\2\u009d")
+        buf.write("\u0084\3\2\2\2\u009d\u008d\3\2\2\2\u009d\u0095\3\2\2\2")
+        buf.write("\u009e\27\3\2\2\2\u009f\u00a1\7\21\2\2\u00a0\u009f\3\2")
+        buf.write("\2\2\u00a1\u00a4\3\2\2\2\u00a2\u00a0\3\2\2\2\u00a2\u00a3")
+        buf.write("\3\2\2\2\u00a3\u00a5\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a5")
+        buf.write("\u00a9\7\6\2\2\u00a6\u00a8\7\21\2\2\u00a7\u00a6\3\2\2")
+        buf.write("\2\u00a8\u00ab\3\2\2\2\u00a9\u00a7\3\2\2\2\u00a9\u00aa")
+        buf.write("\3\2\2\2\u00aa\31\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ac\u00ad")
+        buf.write("\t\2\2\2\u00ad\33\3\2\2\2\u00ae\u00b0\5\32\16\2\u00af")
+        buf.write("\u00ae\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0\u00b1\3\2\2\2")
+        buf.write("\u00b1\u00b2\5\36\20\2\u00b2\35\3\2\2\2\u00b3\u00b6\5")
+        buf.write(" \21\2\u00b4\u00b6\7\13\2\2\u00b5\u00b3\3\2\2\2\u00b5")
+        buf.write("\u00b4\3\2\2\2\u00b6\37\3\2\2\2\u00b7\u00b8\7\13\2\2\u00b8")
+        buf.write("\u00ba\7\7\2\2\u00b9\u00bb\7\13\2\2\u00ba\u00b9\3\2\2")
+        buf.write("\2\u00ba\u00bb\3\2\2\2\u00bb\u00c2\3\2\2\2\u00bc\u00be")
+        buf.write("\7\13\2\2\u00bd\u00bc\3\2\2\2\u00bd\u00be\3\2\2\2\u00be")
+        buf.write("\u00bf\3\2\2\2\u00bf\u00c0\7\7\2\2\u00c0\u00c2\7\13\2")
+        buf.write("\2\u00c1\u00b7\3\2\2\2\u00c1\u00bd\3\2\2\2\u00c2\u00c4")
+        buf.write("\3\2\2\2\u00c3\u00c5\7\f\2\2\u00c4\u00c3\3\2\2\2\u00c4")
+        buf.write("\u00c5\3\2\2\2\u00c5\u00c9\3\2\2\2\u00c6\u00c7\7\13\2")
+        buf.write("\2\u00c7\u00c9\7\f\2\2\u00c8\u00c1\3\2\2\2\u00c8\u00c6")
+        buf.write("\3\2\2\2\u00c9!\3\2\2\2\u00ca\u00d5\7\26\2\2\u00cb\u00cd")
+        buf.write("\7\26\2\2\u00cc\u00ce\7\21\2\2\u00cd\u00cc\3\2\2\2\u00cd")
+        buf.write("\u00ce\3\2\2\2\u00ce\u00cf\3\2\2\2\u00cf\u00d1\5&\24\2")
+        buf.write("\u00d0\u00d2\5(\25\2\u00d1\u00d0\3\2\2\2\u00d1\u00d2\3")
+        buf.write("\2\2\2\u00d2\u00d5\3\2\2\2\u00d3\u00d5\7\17\2\2\u00d4")
+        buf.write("\u00ca\3\2\2\2\u00d4\u00cb\3\2\2\2\u00d4\u00d3\3\2\2\2")
+        buf.write("\u00d5#\3\2\2\2\u00d6\u00d7\7\13\2\2\u00d7\u00d8\7\4\2")
+        buf.write("\2\u00d8\u00db\7\13\2\2\u00d9\u00da\7\4\2\2\u00da\u00dc")
+        buf.write("\7\13\2\2\u00db\u00d9\3\2\2\2\u00db\u00dc\3\2\2\2\u00dc")
+        buf.write("%\3\2\2\2\u00dd\u00df\7\21\2\2\u00de\u00dd\3\2\2\2\u00df")
+        buf.write("\u00e0\3\2\2\2\u00e0\u00de\3\2\2\2\u00e0\u00e1\3\2\2\2")
+        buf.write("\u00e1\u00ea\3\2\2\2\u00e2\u00e4\7\21\2\2\u00e3\u00e2")
+        buf.write("\3\2\2\2\u00e4\u00e7\3\2\2\2\u00e5\u00e3\3\2\2\2\u00e5")
+        buf.write("\u00e6\3\2\2\2\u00e6\u00e8\3\2\2\2\u00e7\u00e5\3\2\2\2")
+        buf.write("\u00e8\u00ea\5\32\16\2\u00e9\u00de\3\2\2\2\u00e9\u00e5")
+        buf.write("\3\2\2\2\u00ea\u00ed\3\2\2\2\u00eb\u00ee\5,\27\2\u00ec")
+        buf.write("\u00ee\7\13\2\2\u00ed\u00eb\3\2\2\2\u00ed\u00ec\3\2\2")
+        buf.write("\2\u00ee\'\3\2\2\2\u00ef\u00f1\7\21\2\2\u00f0\u00ef\3")
+        buf.write("\2\2\2\u00f1\u00f2\3\2\2\2\u00f2\u00f0\3\2\2\2\u00f2\u00f3")
+        buf.write("\3\2\2\2\u00f3\u00fc\3\2\2\2\u00f4\u00f6\7\21\2\2\u00f5")
+        buf.write("\u00f4\3\2\2\2\u00f6\u00f9\3\2\2\2\u00f7\u00f5\3\2\2\2")
+        buf.write("\u00f7\u00f8\3\2\2\2\u00f8\u00fa\3\2\2\2\u00f9\u00f7\3")
+        buf.write("\2\2\2\u00fa\u00fc\5\32\16\2\u00fb\u00f0\3\2\2\2\u00fb")
+        buf.write("\u00f7\3\2\2\2\u00fc\u00fd\3\2\2\2\u00fd\u00fe\t\3\2\2")
+        buf.write("\u00fe)\3\2\2\2\u00ff\u0100\7\13\2\2\u0100\u0101\7\n\2")
+        buf.write("\2\u0101\u0102\7\13\2\2\u0102+\3\2\2\2\u0103\u0104\t\4")
+        buf.write("\2\2\u0104-\3\2\2\2\u0105\u0107\7\21\2\2\u0106\u0105\3")
+        buf.write("\2\2\2\u0107\u010a\3\2\2\2\u0108\u0106\3\2\2\2\u0108\u0109")
+        buf.write("\3\2\2\2\u0109\u010b\3\2\2\2\u010a\u0108\3\2\2\2\u010b")
+        buf.write("\u010f\7\20\2\2\u010c\u010e\7\21\2\2\u010d\u010c\3\2\2")
+        buf.write("\2\u010e\u0111\3\2\2\2\u010f\u010d\3\2\2\2\u010f\u0110")
+        buf.write("\3\2\2\2\u0110/\3\2\2\2\u0111\u010f\3\2\2\2\u0112\u011b")
+        buf.write("\7\4\2\2\u0113\u011b\7\5\2\2\u0114\u011b\7\7\2\2\u0115")
+        buf.write("\u0117\7\21\2\2\u0116\u0115\3\2\2\2\u0117\u0118\3\2\2")
+        buf.write("\2\u0118\u0116\3\2\2\2\u0118\u0119\3\2\2\2\u0119\u011b")
+        buf.write("\3\2\2\2\u011a\u0112\3\2\2\2\u011a\u0113\3\2\2\2\u011a")
+        buf.write("\u0114\3\2\2\2\u011a\u0116\3\2\2\2\u011b\61\3\2\2\2\u011c")
+        buf.write("\u011d\5\f\7\2\u011d\u011e\7\22\2\2\u011e\63\3\2\2\2\u011f")
+        buf.write("\u0120\5\f\7\2\u0120\u0121\7\23\2\2\u0121\u0122\5\24\13")
+        buf.write("\2\u0122\u012a\3\2\2\2\u0123\u0126\5\20\t\2\u0124\u0126")
+        buf.write("\5\24\13\2\u0125\u0123\3\2\2\2\u0125\u0124\3\2\2\2\u0126")
+        buf.write("\u0127\3\2\2\2\u0127\u0128\5\24\13\2\u0128\u012a\3\2\2")
+        buf.write("\2\u0129\u011f\3\2\2\2\u0129\u0125\3\2\2\2\u012a\65\3")
+        buf.write("\2\2\2\u012b\u012c\5\f\7\2\u012c\u012d\7\4\2\2\u012d\u012e")
+        buf.write("\7\13\2\2\u012e\67\3\2\2\2,9FRUZ]gjry}\u0080\u0088\u0091")
+        buf.write("\u0099\u009d\u00a2\u00a9\u00af\u00b5\u00ba\u00bd\u00c1")
+        buf.write("\u00c4\u00c8\u00cd\u00d1\u00d4\u00db\u00e0\u00e5\u00e9")
+        buf.write("\u00ed\u00f2\u00f7\u00fb\u0108\u010f\u0118\u011a\u0125")
+        buf.write("\u0129")
         return buf.getvalue()
 
 
 class udunits2Parser ( Parser ):
 
-    grammarFileName = "udunits2.g4"
+    grammarFileName = "udunits2Parser.g4"
 
     atn = ATNDeserializer().deserialize(serializedATN())
 
@@ -158,14 +161,14 @@ class udunits2Parser ( Parser ):
 
     sharedContextCache = PredictionContextCache()
 
-    literalNames = [ "<INVALID>", "'('", "')'", "':'", "'+'", "'-'", "<INVALID>", 
-                     "'/'", "'.'" ]
+    literalNames = [ "<INVALID>", "'+'", "'-'", "<INVALID>", "'/'", "'.'", 
+                     "'('", "')'", "':'" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
-                      "PLUS", "MINUS", "MULTIPLY", "DIVIDE", "PERIOD", "INT", 
-                      "E_POWER", "HOUR_MINUTE_SECOND", "HOUR_MINUTE", "TIMESTAMP", 
-                      "SHIFT_OP", "WS", "UNICODE_EXPONENT", "RAISE", "ID", 
-                      "ERRORCHARACTER" ]
+    symbolicNames = [ "<INVALID>", "PLUS", "MINUS", "MULTIPLY", "DIVIDE", 
+                      "PERIOD", "OPEN_PAREN", "CLOSE_PAREN", "SEMICOLON", 
+                      "INT", "E_POWER", "HOUR_MINUTE_SECOND", "HOUR_MINUTE", 
+                      "TIMESTAMP", "SHIFT_OP", "WS", "UNICODE_EXPONENT", 
+                      "RAISE", "ID", "ERRORCHARACTER", "DATE" ]
 
     RULE_unit_spec = 0
     RULE_shift_spec = 1
@@ -204,14 +207,14 @@ class udunits2Parser ( Parser ):
                    "exponent", "negative_exponent" ]
 
     EOF = Token.EOF
-    T__0=1
-    T__1=2
-    T__2=3
-    PLUS=4
-    MINUS=5
-    MULTIPLY=6
-    DIVIDE=7
-    PERIOD=8
+    PLUS=1
+    MINUS=2
+    MULTIPLY=3
+    DIVIDE=4
+    PERIOD=5
+    OPEN_PAREN=6
+    CLOSE_PAREN=7
+    SEMICOLON=8
     INT=9
     E_POWER=10
     HOUR_MINUTE_SECOND=11
@@ -223,6 +226,7 @@ class udunits2Parser ( Parser ):
     RAISE=17
     ID=18
     ERRORCHARACTER=19
+    DATE=20
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -268,7 +272,7 @@ class udunits2Parser ( Parser ):
             self.state = 55
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.T__0) | (1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.PERIOD) | (1 << udunits2Parser.INT) | (1 << udunits2Parser.ID))) != 0):
+            if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.PERIOD) | (1 << udunits2Parser.OPEN_PAREN) | (1 << udunits2Parser.INT) | (1 << udunits2Parser.ID))) != 0):
                 self.state = 54
                 self.shift_spec()
 
@@ -639,9 +643,15 @@ class udunits2Parser ( Parser ):
             return self.getTypedRuleContext(udunits2Parser.Base_unitContext,0)
 
 
+        def OPEN_PAREN(self):
+            return self.getToken(udunits2Parser.OPEN_PAREN, 0)
+
         def shift_spec(self):
             return self.getTypedRuleContext(udunits2Parser.Shift_specContext,0)
 
+
+        def CLOSE_PAREN(self):
+            return self.getToken(udunits2Parser.CLOSE_PAREN, 0)
 
         def sci_number(self):
             return self.getTypedRuleContext(udunits2Parser.Sci_numberContext,0)
@@ -672,14 +682,14 @@ class udunits2Parser ( Parser ):
                 self.state = 106
                 self.base_unit()
                 pass
-            elif token in [udunits2Parser.T__0]:
+            elif token in [udunits2Parser.OPEN_PAREN]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 107
-                self.match(udunits2Parser.T__0)
+                self.match(udunits2Parser.OPEN_PAREN)
                 self.state = 108
                 self.shift_spec()
                 self.state = 109
-                self.match(udunits2Parser.T__1)
+                self.match(udunits2Parser.CLOSE_PAREN)
                 pass
             elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.PERIOD, udunits2Parser.INT]:
                 self.enterOuterAlt(localctx, 3)
@@ -1337,13 +1347,15 @@ class udunits2Parser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def date(self):
-            return self.getTypedRuleContext(udunits2Parser.DateContext,0)
-
+        def DATE(self):
+            return self.getToken(udunits2Parser.DATE, 0)
 
         def signed_clock(self):
             return self.getTypedRuleContext(udunits2Parser.Signed_clockContext,0)
 
+
+        def WS(self):
+            return self.getToken(udunits2Parser.WS, 0)
 
         def signed_hour_minute(self):
             return self.getTypedRuleContext(udunits2Parser.Signed_hour_minuteContext,0)
@@ -1370,26 +1382,34 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 32, self.RULE_timestamp)
         self._la = 0 # Token type
         try:
-            self.state = 207
+            self.state = 210
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,26,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,27,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 200
-                self.date()
+                self.match(udunits2Parser.DATE)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 201
-                self.date()
-                self.state = 202
+                self.match(udunits2Parser.DATE)
+                self.state = 203
+                self._errHandler.sync(self)
+                la_ = self._interp.adaptivePredict(self._input,25,self._ctx)
+                if la_ == 1:
+                    self.state = 202
+                    self.match(udunits2Parser.WS)
+
+
+                self.state = 205
                 self.signed_clock()
-                self.state = 204
+                self.state = 207
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << udunits2Parser.PLUS) | (1 << udunits2Parser.MINUS) | (1 << udunits2Parser.WS))) != 0):
-                    self.state = 203
+                    self.state = 206
                     self.signed_hour_minute()
 
 
@@ -1397,7 +1417,7 @@ class udunits2Parser ( Parser ):
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 206
+                self.state = 209
                 self.match(udunits2Parser.TIMESTAMP)
                 pass
 
@@ -1445,21 +1465,22 @@ class udunits2Parser ( Parser ):
 
         localctx = udunits2Parser.DateContext(self, self._ctx, self.state)
         self.enterRule(localctx, 34, self.RULE_date)
+        self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 209
+            self.state = 212
             self.match(udunits2Parser.INT)
-            self.state = 210
+            self.state = 213
             self.match(udunits2Parser.MINUS)
-            self.state = 211
-            self.match(udunits2Parser.INT)
             self.state = 214
+            self.match(udunits2Parser.INT)
+            self.state = 217
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,27,self._ctx)
-            if la_ == 1:
-                self.state = 212
+            _la = self._input.LA(1)
+            if _la==udunits2Parser.MINUS:
+                self.state = 215
                 self.match(udunits2Parser.MINUS)
-                self.state = 213
+                self.state = 216
                 self.match(udunits2Parser.INT)
 
 
@@ -1514,17 +1535,17 @@ class udunits2Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 228
+            self.state = 231
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,30,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,31,self._ctx)
             if la_ == 1:
-                self.state = 217 
+                self.state = 220 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 216
+                    self.state = 219
                     self.match(udunits2Parser.WS)
-                    self.state = 219 
+                    self.state = 222 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
@@ -1533,30 +1554,30 @@ class udunits2Parser ( Parser ):
                 pass
 
             elif la_ == 2:
-                self.state = 224
+                self.state = 227
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==udunits2Parser.WS:
-                    self.state = 221
+                    self.state = 224
                     self.match(udunits2Parser.WS)
-                    self.state = 226
+                    self.state = 229
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 227
+                self.state = 230
                 self.sign()
                 pass
 
 
-            self.state = 232
+            self.state = 235
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [udunits2Parser.HOUR_MINUTE_SECOND, udunits2Parser.HOUR_MINUTE]:
-                self.state = 230
+                self.state = 233
                 self.clock()
                 pass
             elif token in [udunits2Parser.INT]:
-                self.state = 231
+                self.state = 234
                 self.match(udunits2Parser.INT)
                 pass
             else:
@@ -1612,17 +1633,17 @@ class udunits2Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 246
+            self.state = 249
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,34,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,35,self._ctx)
             if la_ == 1:
-                self.state = 235 
+                self.state = 238 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 234
+                    self.state = 237
                     self.match(udunits2Parser.WS)
-                    self.state = 237 
+                    self.state = 240 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
@@ -1631,22 +1652,22 @@ class udunits2Parser ( Parser ):
                 pass
 
             elif la_ == 2:
-                self.state = 242
+                self.state = 245
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==udunits2Parser.WS:
-                    self.state = 239
+                    self.state = 242
                     self.match(udunits2Parser.WS)
-                    self.state = 244
+                    self.state = 247
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 245
+                self.state = 248
                 self.sign()
                 pass
 
 
-            self.state = 248
+            self.state = 251
             _la = self._input.LA(1)
             if not(_la==udunits2Parser.INT or _la==udunits2Parser.HOUR_MINUTE):
                 self._errHandler.recoverInline(self)
@@ -1674,6 +1695,9 @@ class udunits2Parser ( Parser ):
             else:
                 return self.getToken(udunits2Parser.INT, i)
 
+        def SEMICOLON(self):
+            return self.getToken(udunits2Parser.SEMICOLON, 0)
+
         def getRuleIndex(self):
             return udunits2Parser.RULE_hour_minute
 
@@ -1692,11 +1716,11 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 40, self.RULE_hour_minute)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 250
+            self.state = 253
             self.match(udunits2Parser.INT)
-            self.state = 251
-            self.match(udunits2Parser.T__2)
-            self.state = 252
+            self.state = 254
+            self.match(udunits2Parser.SEMICOLON)
+            self.state = 255
             self.match(udunits2Parser.INT)
         except RecognitionException as re:
             localctx.exception = re
@@ -1738,7 +1762,7 @@ class udunits2Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 254
+            self.state = 257
             _la = self._input.LA(1)
             if not(_la==udunits2Parser.HOUR_MINUTE_SECOND or _la==udunits2Parser.HOUR_MINUTE):
                 self._errHandler.recoverInline(self)
@@ -1788,25 +1812,25 @@ class udunits2Parser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 259
+            self.state = 262
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 256
+                self.state = 259
                 self.match(udunits2Parser.WS)
-                self.state = 261
+                self.state = 264
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 262
+            self.state = 265
             self.match(udunits2Parser.SHIFT_OP)
-            self.state = 266
+            self.state = 269
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==udunits2Parser.WS:
-                self.state = 263
+                self.state = 266
                 self.match(udunits2Parser.WS)
-                self.state = 268
+                self.state = 271
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1858,33 +1882,33 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 46, self.RULE_multiply)
         self._la = 0 # Token type
         try:
-            self.state = 277
+            self.state = 280
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [udunits2Parser.MINUS]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 269
+                self.state = 272
                 self.match(udunits2Parser.MINUS)
                 pass
             elif token in [udunits2Parser.MULTIPLY]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 270
+                self.state = 273
                 self.match(udunits2Parser.MULTIPLY)
                 pass
             elif token in [udunits2Parser.PERIOD]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 271
+                self.state = 274
                 self.match(udunits2Parser.PERIOD)
                 pass
             elif token in [udunits2Parser.WS]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 273 
+                self.state = 276 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 272
+                    self.state = 275
                     self.match(udunits2Parser.WS)
-                    self.state = 275 
+                    self.state = 278 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==udunits2Parser.WS):
@@ -1934,9 +1958,9 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 48, self.RULE_exponent_unicode)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 279
+            self.state = 282
             self.basic_spec()
-            self.state = 280
+            self.state = 283
             self.match(udunits2Parser.UNICODE_EXPONENT)
         except RecognitionException as re:
             localctx.exception = re
@@ -1988,36 +2012,36 @@ class udunits2Parser ( Parser ):
         localctx = udunits2Parser.ExponentContext(self, self._ctx, self.state)
         self.enterRule(localctx, 50, self.RULE_exponent)
         try:
-            self.state = 292
+            self.state = 295
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,40,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,41,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 282
+                self.state = 285
                 self.basic_spec()
-                self.state = 283
+                self.state = 286
                 self.match(udunits2Parser.RAISE)
-                self.state = 284
+                self.state = 287
                 self.signed_int()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 288
+                self.state = 291
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [udunits2Parser.ID]:
-                    self.state = 286
+                    self.state = 289
                     self.base_unit()
                     pass
                 elif token in [udunits2Parser.PLUS, udunits2Parser.MINUS, udunits2Parser.INT]:
-                    self.state = 287
+                    self.state = 290
                     self.signed_int()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 290
+                self.state = 293
                 self.signed_int()
                 pass
 
@@ -2065,11 +2089,11 @@ class udunits2Parser ( Parser ):
         self.enterRule(localctx, 52, self.RULE_negative_exponent)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 294
+            self.state = 297
             self.basic_spec()
-            self.state = 295
+            self.state = 298
             self.match(udunits2Parser.MINUS)
-            self.state = 296
+            self.state = 299
             self.match(udunits2Parser.INT)
         except RecognitionException as re:
             localctx.exception = re

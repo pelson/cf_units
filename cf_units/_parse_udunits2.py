@@ -23,7 +23,7 @@ from antlr4.error.ErrorListener import ErrorListener
 
 from ._udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
 from ._udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
-from ._udunits2_p.udunits2Visitor import udunits2Visitor as LabeledExprVisitor
+from ._udunits2_p.udunits2ParserVisitor import udunits2ParserVisitor as LabeledExprVisitor
 
 
 class Node:
@@ -191,6 +191,7 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.TIMESTAMP: self.prepareTIMESTAMP,
                          lexer.PERIOD: str,
                          lexer.E_POWER: str,
+                         lexer.DATE: lambda arg: Date(*arg.strip().rsplit('-', 2))  # TODO: Handle -1-3
                          }
             if symbol_idx in consumers:
                 r = consumers[symbol_idx](r)

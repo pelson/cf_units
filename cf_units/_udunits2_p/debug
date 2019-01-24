@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Uses pygrun to diagnose grammer issues with the given input.
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd $DIR
+
+command=${1}
+echo ${command}
+
+python -c "import cf_units; u = cf_units.Unit(\"${command}\"); print('cf_units: ', u.symbol); print('FMT:', u.format([cf_units.UT_DEFINITION, cf_units.UT_UTF8]))"
+
+
+echo -n "${command}" | ${DIR}/pygrun udunits2 unit_spec -a -k -t
+
+
+python -m cf_units._parse_udunits2 "$command"

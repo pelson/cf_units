@@ -1,0 +1,71 @@
+lexer grammar udunits2Lexer;
+
+PLUS: '+';
+MINUS: '-';
+MULTIPLY: ('*' | '·');
+DIVIDE: '/';
+PERIOD: '.';
+
+OPEN_PAREN: '(';
+CLOSE_PAREN: ')';
+SEMICOLON: ':';
+
+fragment INTEGER
+   : ('0' .. '9')+
+   ;
+
+INT : '0'..'9'+ ;
+
+E_POWER:
+     ('E' | 'e') (PLUS|MINUS)? INT 
+;
+
+HOUR_MINUTE_SECOND: INT ':' INT ':' INT;
+HOUR_MINUTE: INT ':' INT;
+
+TIMESTAMP: (PLUS|MINUS)? INT (MONTH INT?)? 'T' INT (INT INT?)?;
+
+fragment MONTH:
+    ('0'? ('1'..'9')) | ('1' ('0'..'2'))
+;
+
+SHIFT_OP :
+         ('@'
+         | 'after'
+         | 'from'
+         | 'since'
+         | 'ref')  -> pushMode(SHIFT_MODE) ;
+
+WS : [ ] ;
+
+UNICODE_EXPONENT:
+    // One or more ISO-8859-9 encoded exponent characters
+    ('⁻' | '⁺' | '¹' | '²' | '³' | '⁴' | '⁵' | '⁶' | '⁷' | '⁸' | '⁹' | '⁰')+
+; 
+
+RAISE :
+         '^'
+       | '**'
+;
+
+//ID: one of
+//        <id>
+//        '%'
+//        "'"
+//        "\""
+//        degree sign
+//        greek mu character
+//
+ID:  [A-Za-z_]+ ;
+
+// Any characters which fail to match will raise an error.
+// nb. without this token, we don't get quite as good error messages. TODO: test for this!
+ERRORCHARACTER : . ;
+
+
+
+mode SHIFT_MODE;
+
+DATE: (WS? (PLUS|MINUS)? INT MINUS INT (MINUS INT)?);
+// inherit from DEFAULT_MODE: INT, E_POWER, WS, PLUS, MINUS, PERIOD, SEMICOLON, HOUR_MINUTE, HOUR_MINUTE_SECOND, TIMESTAMP, ERRORCHARACTER;
+

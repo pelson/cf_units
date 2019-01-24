@@ -87,14 +87,14 @@ INT : '0'..'9'+ ;
 
 // Float is not a lexer token as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
 float_t:
-    ( (INT+ '.' INT*)
-     |(INT? '.' INT+)
-     | INT
-    ) E_POWER?  // 1.2e-5, 1e2
+    (((INT PERIOD INT?)
+     |(INT? PERIOD INT)
+    ) E_POWER?)  // 1.2e-5, 1e2
+    | (INT E_POWER)
 ;
 
 E_POWER:
-     ('E' | 'e') (PLUS | MINUS)? INT
+     ('E' | 'e') (PLUS|MINUS)? INT 
 ;
 
 

@@ -61,6 +61,7 @@ ERRORCHARACTER : . ;
 
 mode SHIFT_MODE;
 // This mode is only enabled after seeing a SHIFT_OP token.
+// However, it is worth noting that the simplest form is just a number (e.g. m@10).
 
 fragment SIGN:
     PLUS | MINUS

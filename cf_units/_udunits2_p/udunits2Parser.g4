@@ -27,9 +27,7 @@ div:
 
 power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
     (basic_spec
-      | exponent_unicode
       | exponent
-//      | negative_exponent
     )  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4
 ;
 
@@ -46,7 +44,7 @@ base_unit: ID;
 
 
 sci_number:
-    float_t | (sign? INT)
+    float_t | (sign? INT) | SIGNED_INT
 ;
 
 signed_int:
@@ -68,7 +66,6 @@ divide:
 
 sign: (PLUS | MINUS);
 
-
 any_signed_number:
     sign? any_unsigned_number
 ;
@@ -77,19 +74,13 @@ any_unsigned_number:
     float_t | any_int
 ;
 
-
-// Float is not a lexer token as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
+// Float is not a parser rule as the context is important (e.g. m2.3 === m^2 * 3 in udunits2)
 float_t_unsigned:
     (((any_int PERIOD INT?)
      |(any_int? PERIOD INT)
     ) E_POWER?)  // 1.2e-5, 1e2, +2.e4
     | (any_int E_POWER)
 ;
-
-float_t_signed:
-;
-
-float_t: float_t_unsigned ;//| float_t_signed;
 
 timestamp:
     (DATE | INT)  // TODO: Test 'since +1900'
@@ -111,8 +102,6 @@ timestamp:
 //    | (TIMESTAMP WS+ ID) // UNKNOWN!
 ;
 
-date: any_int MINUS INT (MINUS INT)?;
-
 signed_clock:
     HOUR_MINUTE_SECOND | HOUR_MINUTE | any_int 
 ;
@@ -123,32 +112,23 @@ signed_hour_minute:
     | (WS* SIGNED_INT)
 ;
 
-hour_minute: any_int ':' INT;
-
 clock: HOUR_MINUTE | HOUR_MINUTE_SECOND;
 
-
 shift:
-         WS* SHIFT_OP WS*
+    WS* SHIFT_OP WS*
 ;
  
 multiply:
-      MINUS  // m--1 === m * -1
-      | MULTIPLY
-      | PERIOD
-      | WS+
+  ( MINUS       // m--1 === m * -1
+  | MULTIPLY    // m*2
+  | PERIOD      // m.m, m.2 (=== m*2)
+  | WS+         // "m m"
+  )
 ;
 
-exponent_unicode:  // m²
-    basic_spec UNICODE_EXPONENT
-;
-
-exponent:  // TODO: m2
+exponent:
     (basic_spec RAISE signed_int)  //km^2, km^-1, km^+2
-    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3
+    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3      // TODO: This rule isn't doing anything, but it should be.
+    | (basic_spec UNICODE_EXPONENT)  // m²
 ;
 
-
-//negative_exponent:
-//   basic_spec '-' INT
-//;

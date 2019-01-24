@@ -468,7 +468,10 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitExponent(self, ctx):
         nodes = self.visitChildren(ctx)
-        return BinaryOp('^', nodes[0], nodes[2])
+        if len(nodes) == 2:
+            return BinaryOp('^', nodes[0], nodes[1])
+        else:
+            return BinaryOp('^', nodes[0], nodes[2])
 
     def visitShift(self, ctx):
         _ = self.visitChildren(ctx)  # noqa: F841

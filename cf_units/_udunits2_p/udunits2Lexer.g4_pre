@@ -58,7 +58,17 @@ RAISE :
 //        degree sign
 //        greek mu character
 //
-ID:  [A-Za-z_]+ -> mode(ID_SEEN);
+
+ID:  ([A-Za-z_] | LATIN_SUBSET)+ -> mode(ID_SEEN);
+
+LATIN_SUBSET:
+    '\u00C0'..'\u00D6'  // UDUNITS implementation "\xc3([\x80-\x96])"
+  | '\u00D8'..'\u00F6'  // UDUNITS implementation "\xc3([\x98-\xB6])"
+  | '\u00F8'..'\u00FF'  // UDUNITS implementation "\xc3([\xB8-\xBF])"
+  | '\u0080' | '\u00AD' // Non-breaking space. " ". Why is this in UDUNITS?!
+  | '\u00B0'            // Degree symbol °
+  | '\u00B5'            // Mu µ
+;
 
 WS : [ ] ;
 

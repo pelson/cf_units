@@ -81,9 +81,9 @@ LATIN_SUBSET:
 WS : [ ] ;
 
 // Any characters which fail to match will raise an error.
-// nb. without this token, we don't get quite as good error messages. TODO: test for this!
+// nb. without this token, we don't get quite as good error messages (e.g. "$")
+// TODO: test for this!
 ERRORCHARACTER : . ;
-
 
 
 mode SHIFT_MODE;

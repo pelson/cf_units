@@ -109,6 +109,13 @@ testdata = [
     's since 1990-1-2+5:2:2',
     'hours from 1990-1-1 0:1:60',
     'hours from 1990-1-1 0:1:62',
+
+    '(hours since 1900) (s since 1980)',  # Really fruity behaviour.
+
+    # Unicode / constants
+    'π',
+    'e',
+    '°C'
 ]
 
 invalid = [
@@ -124,6 +131,8 @@ invalid = [
     '£',  # TODO: What if udunits has this defined in its XML, does it work?
     
     'hours from 1990-0-0 0:0:0',
+    'hours since 1900-1 10:12 10:0 1',
+
 ]
 
 
@@ -132,6 +141,16 @@ not_udunits = [
     ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
     ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
+
+    # Unicode (subset of the subset).
+    ['À'] * 2,
+    ['Á'] * 2,
+    ['Ö'] * 2,
+    ['Ø'] * 2,
+    ['ö'] * 2,
+    ['ø'] * 2,
+    ['ÿ'] * 2,
+    ['µ'] * 2,
 ]
 
 udunits_bugs = [
@@ -156,7 +175,6 @@ known_issues = [
 ]
 
 not_done = [
-    'm--1',  # TODO: CANT FIGURE OUT WHAT THIS IS SUPPOSED TO BE!
     'µ°F·Ω⁻¹',  # This is in the docs, so let's at least support that one!
     ]
 
@@ -257,39 +275,3 @@ def test_normed_unit(_, unit_str):
     # Whilst the symbolic form from udunits is ugly, it *is* acurate,
     # so check that the two represent the same unit.
     assert raw_symbol == parsed_expr_symbol
-
-@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
-    ['1.2', '1.2'],
-    ['m.m', 'm*m'],
-    ['m m', 'm*m'],
-    ['m -1.2', 'm*-1.2'],
-    ['km.2', 'km*2'],
-])])
-def test_product_spec(_, unit_str, expected):
-    n = str(parse(unit_str, root='product_spec'))
-    assert n == expected
-
-
-@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
-    ['2.3', '2.3'],
-    ['m2', 'm^2'],
-    ['2m', '2'],  # <- no product should be happening. This is the right behaviour!
-    ['m²', 'm^2'],
-    ['m**2', 'm^2'],
-    ['m-2', 'm^-2'],
-    ['m.m', 'm']  # <- no product happending, and no EOL in the rule. This is the right behaviour!
-])])
-def test_power_spec(_, unit_str, expected):
-    n = str(parse(unit_str, root='power_spec'))
-    assert n == expected
-
-
-@pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
-    ['1.2', '1.2'],
-    ['m', 'm'],
-    ['+1e12', '+1e12'],
-])])
-def test_basic_spec(_, unit_str, expected):
-    n = str(parse(unit_str, root='basic_spec'))
-    assert n == expected
-

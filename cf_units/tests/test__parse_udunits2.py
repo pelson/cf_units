@@ -36,9 +36,7 @@ testdata = [
 
     # TODO: add some tests with brackets.
     'm(2.3)',
-#    'm(2.3m)',
-#    'm s^(-1)',
-#    'm++2',
+    'm(2.3m)',
 
 
     'm/2',
@@ -135,6 +133,8 @@ udunits_bugs = [
 
 not_allowed = [
     'hours from 1990-1-1 -20:4:18 +2',
+    'm++2',
+    'm s^(-1)',
 ]
 
 known_issues = [

@@ -18,13 +18,12 @@ INT : '0'..'9'+ ;
 E_POWER: ('E' | 'e') ANY_INT ;
 
 FLOAT:
+    // NOTE: floats themselves are context sensitive. (e.g. m2.3 === m^2 * 3 in udunits2)
     (((ANY_INT PERIOD INT?)
      |(ANY_INT? PERIOD INT)
     ) E_POWER?)  // 1.2e-5, 1e2, 2.e4
     | (ANY_INT E_POWER)
 ;
-// NOTE: floats themselves are context sensitive, see the parser rules (especially float_t).
-
 
 
 SHIFT_OP:

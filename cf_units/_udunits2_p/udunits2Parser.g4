@@ -7,25 +7,36 @@ unit_spec:
 ;
 
 shift_spec:
-       product_spec
-     | product_spec shift sci_number
-     | product_spec shift timestamp
+       multi_product
+     ((shift sci_number)
+      | (shift timestamp))?
+;
+
+multi_product:
+    product_spec (WS? product_spec)*?
 ;
 
 product_spec:  
-      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2, but not km.+2)
-       |
-      (power_spec
-       | power_spec multiply power_spec // km*2
+//      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2)
+//       |
+      
+      (
+       (multi_power)
+       | multi_power PERIOD sci_number // km.2 === 2*km (i.e. this trumps km * 0.2)
+       | multi_power multiply power_spec // km*2
        | div  // km/2
-      ) (WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 
+      ) //(WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 
 ;
 
 div:
     power_spec divide power_spec
 ;
 
-power_spec:    // Examples include: m+2, m-2, m3, 2^3, m+3**2 (=m^9)
+multi_power:
+    power_spec //+ // TESTING
+;
+
+power_spec:    // Examples include: m+2, m-2, m3, 2^3
     (basic_spec
       | exponent
     )  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4

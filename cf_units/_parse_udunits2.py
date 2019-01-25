@@ -362,6 +362,9 @@ class ExprVisitor(LabeledExprVisitor):
 
         return nodes
 
+    def visitMulti_product(self, ctx):
+        return self.visitProduct_spec(ctx)
+
     def visitDivide(self, ctx):
         nodes = self.visitChildren(ctx)  # noqa: F841
         return Operand('/')

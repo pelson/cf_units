@@ -49,7 +49,7 @@ RAISE :
 //        degree sign
 //        greek mu character
 //
-ID:  [A-Za-z_]+ ;
+ID:  [A-Za-z_]+ -> mode(ID_SEEN);
 
 WS : [ ] ;
 
@@ -106,3 +106,14 @@ TIMESTAMP:
 DT_T_CLOCK: DATE 'T' CLOCK; // UNDOCUMENTED
 
 // inherit from DEFAULT_MODE: INT, SIGNED_INT, E_POWER, WS, PLUS, MINUS, PERIOD, SEMICOLON, ERRORCHARACTER;
+{% for TOKEN in tokens['DEFAULT_MODE'] -%}
+    SHIFT_MODE_{{ TOKEN }}: {{TOKEN}} -> type({{TOKEN}});
+{% endfor %}
+
+
+mode ID_SEEN;
+EXTRA_MULTIPLY: '.' -> type(MULTIPLY), mode(DEFAULT_MODE);
+{% for TOKEN in tokens['DEFAULT_MODE'] -%}
+    ID_SEEN_{{ TOKEN }}: {{TOKEN}} -> type({{TOKEN}}), mode(DEFAULT_MODE);
+{% endfor %}
+// inherit // from DEFAULT_MODE: *;

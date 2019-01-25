@@ -99,7 +99,7 @@ class Shift(Node):
         return self.unit, self.shift_from
 
     def __str__(self):
-        return f'{self.unit} @ {self.shift_from}'
+        return f'({self.unit} @ {self.shift_from})'
 
 class Timestamp(Node):
     def __init__(self, date, clock, tz_offset=0):
@@ -217,9 +217,9 @@ class ExprVisitor(LabeledExprVisitor):
                          lexer.ID: Identifier,
                          # Convert unicode to compatibility form
                          lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
-                         lexer.MINUS: Operand,
+                         #                          lexer.MINUS: Operand,
                          lexer.DIVIDE: Operand,
-                         lexer.MULTIPLY: Operand,
+                         lexer.MULTIPLY: lambda op: Operand('*'),
                          lexer.RAISE: Operand,
                          lexer.SHIFT_OP: str,
                          lexer.HOUR_MINUTE_SECOND: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
@@ -358,21 +358,26 @@ class ExprVisitor(LabeledExprVisitor):
         # so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
         print("PROD:", nodes)
+        op = Operand('*')
         if isinstance(nodes, list):
             nodes = self.strip_whitespace(nodes)
             last = nodes[-1]
             # Walk the nodes backwards applying mult to each successively.
             for node in nodes[:-1][::-1]:
                 if isinstance(node, Operand):
-                    # Happens because we don't have a specific visitor for the multiplication rule.
-                    assert node.content == '*'
+                    op = node
+#                    # Happens because we don't have a specific visitor for the multiplication rule.
+#                    assert node.content in ['*', '·', '-', '.'], 'Wasn\'t expecting {}'.format(node)
+#                    pass
                 else:
                     if isinstance(node, Leaf) and node.content == '.':
                         continue  # m.2
-                    last = BinaryOp(Operand('*'), node, last)
+                    last = BinaryOp(op, node, last)
+                    op = Operand('*')
             nodes = last
 
         return nodes
+    visitProduct = visitProduct_spec
 
     def visitMulti_product(self, ctx):
         return self.visitProduct_spec(ctx)
@@ -471,10 +476,17 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitExponent(self, ctx):
         nodes = self.visitChildren(ctx)
+        if isinstance(nodes, Node):
+            return nodes
+        print('EXP:', nodes)
+        if len(nodes) == 1:
+            return nodes[0]
         if len(nodes) == 2:
             return BinaryOp(Operand('^'), nodes[0], nodes[1])
         else:
             return BinaryOp(Operand('^'), nodes[0], nodes[2])
+
+    visitPower = visitExponent
 
     def visitShift(self, ctx):
         _ = self.visitChildren(ctx)  # noqa: F841

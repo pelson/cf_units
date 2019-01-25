@@ -20,6 +20,8 @@ testdata = [
     '2e',  # <- TODO: Assert this isn't 2e1, but is infact the unit e *2
     'm',
     'meter',
+
+    # Multiplication
     '1 2 3',
     '1 -2 -3',
     '1m',
@@ -33,6 +35,8 @@ testdata = [
     'm 1.2',
     'm-+2',
     'm--4',
+    'm*1*2',
+    'm--2--3',
 
     # TODO: add some tests with brackets.
     'm(2.3)',
@@ -66,21 +70,21 @@ testdata = [
     'm0.2', # But this is 2 m^0
     'm2.5', # And this is 5m^2
 
-# TODO: Test divide
-#    'm per 2',
-#    'm / 2',
+    # Division
+    'm per 2',
+    'm per s',
+    'm / 2',
 
-
+    # Shift
     'm@10',
     'm @10',
     'm @ 10',
     'm@ 10',
     'm from2',
     'm from2e-1',
+    '(m @ 10) (s @ 10)',
 
-    # '(m @ 10) (s @ 10)' # TODO: Nasty behaviour.
-
-
+    # Date shift
     's from 1990',
     'minutes since 1990',
     'hour@1990',
@@ -91,10 +95,9 @@ testdata = [
     'hours from 1990-1-1 0:0:1 +2',
     's since 1990-1-2+5:2:2',
     's since 1990-1-2+5:2',
-    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format (date + (t1 - t2)).
+    's since 1990-1-2 5 6:0',  # Undocumented packed_clock format?
     's since 19900102T5',  # Packed format (undocumented?)
     's since 199022T1',  # UGLY! (bug?).
-
 
     's since 1990 +2:0:2.9',
     's since 1990-2T1',
@@ -124,7 +127,7 @@ invalid = [
 
 not_udunits = [
     ['foo', 'foo'],
-    ['mfrom1', 'mfrom^1'],
+#    ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
     ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
 ]
@@ -138,11 +141,12 @@ not_allowed = [
     'hours from 1990-1-1 -20:4:18 +2',
     'm++2',
     'm s^(-1)',
+    'm per /s',
 ]
 
 known_issues = [
     # [unit_str, what_we_SHOULD_get_or_which_exception_we_CURRENTLY_get]
-    ['m--2--3', SyntaxError], # -2 * -3 * m
+    #    ['m--2--3', SyntaxError], # -2 * -3 * m
 
     ['s since +1990 +2:0:2.9', SyntaxError], # Disabled due to crazy results from UDUNITS.
     ['s since -1990 +2:0:2.9', SyntaxError],  # Disabled due to crazy results from UDUNITS.

@@ -1,12 +1,15 @@
 lexer grammar udunits2Lexer;
 
+// Whitespace is significant, and is not ignored. (e.g. "m 2" == m*2, yet "m2" == m^2)
+
+
 SIGNED_INT : (MINUS|PLUS) INT ;
 fragment ANY_INT: INT | SIGNED_INT ;
 
 PLUS: '+' ;
-MINUS: '-' ;
-MULTIPLY: ('*' | '·') ;
-DIVIDE: '/' ;
+fragment MINUS: '-' ;
+MULTIPLY: ('*' | '·' | MINUS) ;
+DIVIDE: WS* ('/' | ' PER ' | ' per ') WS*;
 PERIOD: '.' ;
 
 OPEN_PAREN: '(' ;
@@ -69,6 +72,8 @@ mode SHIFT_MODE;
 // This mode is only enabled after seeing a SHIFT_OP token.
 // However, it is worth noting that the simplest form is just a number (e.g. m@10).
 
+// S_WS: ' ' -> skip;
+
 fragment SIGN:
     PLUS | MINUS
 ;
@@ -118,8 +123,15 @@ DT_T_CLOCK: DATE 'T' CLOCK; // UNDOCUMENTED
 
 
 mode ID_SEEN;
-EXTRA_MULTIPLY: '.' -> type(MULTIPLY), mode(DEFAULT_MODE);
+
+ID_SEEN_SIGNED_INT: SIGNED_INT -> type(SIGNED_INT), mode(DEFAULT_MODE);
+
+EXTRA_MULTIPLY: (
+    '.'   // m.m, m.2 (=2m)
+  | '-'   // m-m (=m^2), m--2 (=-2m)
+) -> type(MULTIPLY), mode(DEFAULT_MODE);
+
 {% for TOKEN in tokens['DEFAULT_MODE'] if TOKEN not in ['FLOAT'] -%}
-    ID_SEEN_{{ TOKEN }}: {{TOKEN}} -> type({{TOKEN}}), mode(DEFAULT_MODE);
+    ID_SEEN_AUTO_{{ TOKEN }}: {{TOKEN}} -> type({{TOKEN}}), mode(DEFAULT_MODE);
 {% endfor %}
 // inherit // from DEFAULT_MODE: *;

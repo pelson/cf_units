@@ -7,39 +7,64 @@ unit_spec:
 ;
 
 shift_spec:
-    multi_product
-    | (multi_product shift sci_number)
-    | (multi_product shift timestamp)
+    product
+    | product shift sci_number
+    | product shift timestamp
 ;
 
-multi_product:
-    product_spec (WS? product_spec)*?
+
+product:
+    power
+    | product power
+    | product MULTIPLY power
+    | product DIVIDE power
+    | product WS+ power
+    // NO WHITESPACE...
+;
+
+multi_product_old:
+    // product_spec // (WS? product_spec)*?
+    product_spec
+   | 
+    (product_spec (MULTIPLY power_spec)?)  // m.m, but not "m m". Space multiplication occurs in product_spec.
 ;
 
 product_spec:  
-//      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2)
-//       |
-      
-      (
-       (multi_power)
-       | multi_power PERIOD sci_number // km.2 === 2*km (i.e. this trumps km * 0.2)
-       | multi_power multiply power_spec // km*2
-       | div  // km/2
-      ) //(WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 
+    disabled
 ;
 
-div:
-    power_spec divide power_spec
+//      (base_unit PERIOD sci_number) // km.2 === 2*km (i.e. this trumps km * 0.2)
+//       |
+
+disabled:
+      (
+       (multi_power)
+       | (multi_power multiply power_spec) // km*2
+       | (multi_power DIVIDE power_spec)  // km/2
+      )+ //(WS? product_spec)*  // "km.2 2km .2s" === "4km² 0.2s" 
+;
+
+power:
+    basic_spec any_int   // Note: m2 should be matched before m for m2 vs m*2.
+    | basic_spec
+    | basic_spec RAISE any_int
+    | basic_spec UNICODE_EXPONENT
+
+//    (basic_spec RAISE signed_int)  //km^2, km^-1, km^+2
+//    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3
+//    | (basic_spec UNICODE_EXPONENT)  // m²
 ;
 
 multi_power:
-    power_spec //+ // TESTING
+    power_spec+ // TESTING
 ;
 
 power_spec:    // Examples include: m+2, m-2, m3, 2^3
-    (basic_spec
+    (
+    exponent
+    | basic_spec
       | exponent
-    )  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4
+    ) //  signed_int?   // We allow only one further power, so 2+3+4 == (2^3)*4
 ;
 
 basic_spec:
@@ -65,17 +90,7 @@ any_int:
     SIGNED_INT | INT
 ;
 
-juxtaposed_multiplication:
-    (sci_number WS* basic_spec)    // "2km", "2  km"
-    | (basic_spec WS+ any_signed_number)  // "km 2", "km -2"
-    | (any_signed_number WS+ any_signed_number)  // "2 3"
-;
-
-divide:
-    WS* DIVIDE WS*
-;
-
-sign: (PLUS | MINUS);
+sign: (PLUS);  // | MINUS);
 
 any_signed_number:
     sign? any_unsigned_number
@@ -90,10 +105,10 @@ float_t:
    FLOAT
 ;
 
-timestamp:
+timestamp: WS?
     (DATE | INT)  // TODO: Test 'since +1900'
-    | ((DATE | INT) WS? signed_clock (WS? signed_hour_minute)?)
-    | DT_T_CLOCK
+    | WS? ((DATE | INT) WS? signed_clock (WS? signed_hour_minute)?)
+    | WS? DT_T_CLOCK
 //     | (date WS+ clock)
 //     | (date WS+ clock WS+ signed_int)  // Timezone offset. // TODO check 0:0:0+1
 //     | (date WS+ clock WS+ clock)       // Date + (Clock1 - Clock2)
@@ -103,7 +118,7 @@ timestamp:
 //     | (date sign (INT|clock) WS+ hour_minute)  // Date + (packed_clock - tz offset)
 // 
 //     | (date WS+ signed_int ((WS+ INT) | (WS* signed_int)))  // Date + packed_clock + Timezone Offset
-    | TIMESTAMP
+    | WS? TIMESTAMP
 
 //    | (date WS+ clock WS+ ID) // UNKNOWN!
 //    | (TIMESTAMP WS+ INT) // UNKNOWN!
@@ -116,7 +131,7 @@ signed_clock:
 
 signed_hour_minute:
     // Second not allowed.
-    ((WS+ | (WS* sign)) (HOUR_MINUTE | INT))
+    (((sign?)) (HOUR_MINUTE | INT))
     | (WS* SIGNED_INT)
 ;
 
@@ -127,16 +142,15 @@ shift:
 ;
  
 multiply:
-  ( MINUS       // m--1 === m * -1
-  | MULTIPLY    // m*2
-  | PERIOD      // m.m, m.2 (=== m*2)
+  (
+    MULTIPLY    // m*2, m--1 m
   | WS+         // "m m"
   )
 ;
 
 exponent:
     (basic_spec RAISE signed_int)  //km^2, km^-1, km^+2
-    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3      // TODO: This rule isn't doing anything, but it should be.
+    | ((base_unit | signed_int) signed_int)    // m2, m+2, s-1, 1+2, 2-3
     | (basic_spec UNICODE_EXPONENT)  // m²
 ;
 

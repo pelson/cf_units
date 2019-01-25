@@ -27,18 +27,47 @@ from ._udunits2_p.udunits2ParserVisitor import udunits2ParserVisitor as LabeledE
 
 
 class Node:
-    pass
+    """
+    Represents a node in an expression graph.
+
+    """
+    def children(self):
+        """
+        Return the children of this node.
+
+        """
+        return []
+
+    def __repr__(self):
+        return '<{}>'.format(self)
+
+
+
+class Root(Node):
+    """
+    The first node in the expression graph.
+
+    """
+    def __init__(self, *units):
+        self.units = units
+
+    def children(self):
+        return self.units
+
+    def __str__(self):
+        return ' '.join(str(u) for u in self.units)
 
 
 class Leaf(Node):
+    """
+    A generic terminal node in an expression graph.
+
+    """
     def __init__(self, content):
         self.content = content
 
     def __str__(self):
         return '{}'.format(self.content)
-
-    def __repr__(self):
-        return '<{}>'.format(self)
 
 
 class Operand(Leaf):
@@ -50,18 +79,8 @@ class Number(Leaf):
 
 
 class Identifier(Leaf):
-    # The unit itself (e.g. meters, m, km, etc.)
+    """The unit itself (e.g. meters, m, km and π)"""
     pass
-
-class Root(Node):
-    def __init__(self, *units):
-        self.units = units
-
-    def _items(self):
-        return self.units
-
-    def __str__(self):
-        return ' '.join(str(u) for u in self.units)
 
 
 class BinaryOp(Node):
@@ -70,24 +89,11 @@ class BinaryOp(Node):
         self.rhs = rhs
         self.op = op
 
-    def _items(self):
+    def children(self):
         return self.lhs, self.op, self.rhs
 
     def __str__(self):
         return '{self.lhs}{self.op}{self.rhs}'.format(self=self)
-
-
-class UnaryOp(Node):
-    def __init__(self, op, operand):
-        self.op = op
-        self.operand = operand
-
-    def _items(self):
-        return self.op, self.operand
-
-    def __str__(self):
-        # Probably "-" or "~"
-        return f'{self.op}{self.operand}'
 
 
 class Shift(Node):
@@ -95,7 +101,7 @@ class Shift(Node):
         self.unit = unit  # AKA Gregorian in the udunits2 codebase.
         self.shift_from = shift_from
 
-    def _items(self):
+    def children(self):
         return self.unit, self.shift_from
 
     def __str__(self):
@@ -107,7 +113,7 @@ class Timestamp(Node):
         self.clock = clock
         self.tz_offset = tz_offset
 
-    def _items(self):
+    def children(self):
         return self.date, self.clock, self.tz_offset
 
     def __str__(self):
@@ -120,7 +126,7 @@ class NaiveClock(Node):
         self.minute = minute
         self.second = second
 
-    def _items(self):
+    def children(self):
         return self.hour, self.minute, self.second
 
     def __str__(self):
@@ -138,7 +144,7 @@ class NegativeNaiveClock(NaiveClock):
         # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L49-L71
         self.clock = clock
 
-    def _items(self):
+    def children(self):
         return (self.clock, )
 
     def __str__(self):
@@ -151,7 +157,7 @@ class Date(Node):
         self.month = month
         self.day = day
 
-    def _items(self):
+    def children(self):
         return self.year, month, self.day
 
     def __str__(self):
@@ -167,7 +173,7 @@ class PackedDate(Date):
     def __init__(self, datestamp):
         self.datestamp = datestamp
 
-    def _items(self):
+    def children(self):
         return (self.datestamp,)
 
     def __str__(self):
@@ -175,11 +181,6 @@ class PackedDate(Date):
 
 
 class ExprVisitor(LabeledExprVisitor):
-    # def __getattribute__(self, attr):
-    #     # Useful to debug what is getting called.
-    #     print('GET:', attr)
-    #     return super().__getattribute__(attr)
-
     def defaultResult(self):
         # Called once per ``visitChildren`` call.
         return []
@@ -241,17 +242,6 @@ class ExprVisitor(LabeledExprVisitor):
             r = Leaf(r)
         return r
 
-    def prepareDATE(self, string):
-        return Date(*string.split('-'))
-
-    def visitFloat_t(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if not isinstance(nodes, Leaf):
-            string = ''.join(str(n.content) for n in nodes)
-            # We don't cast this here in order to keep fidelity later on. Perhaps we should have a Float node.
-            nodes = Number(string)
-        return nodes
-
     def visitDate(self, ctx):
         nodes = self.visitChildren(ctx)
         return Date(*[node.content for node in nodes if node.content != '-'])
@@ -279,126 +269,42 @@ class ExprVisitor(LabeledExprVisitor):
         node = Timestamp(packed_date, NaiveClock(h, m, s))
         return node
 
-    def visitSigned_int(self, ctx):
-        return self.visitAny_signed_number(ctx)
-
-    def visitSigned_hour_minute(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if not isinstance(nodes, Node):
-            nodes = self.strip_whitespace(nodes)
-        if isinstance(nodes, list):
-            if len(nodes) == 1:
-                nodes = nodes[0]
-            else:
-                assert len(nodes) == 2
-                if nodes[0].content == '-':
-                    nodes = UnaryOp(nodes[0].content, nodes[1])
-                else:
-                    nodes = nodes[1]
-
-        return nodes
-
     def visitBasic_spec(self, ctx):
         nodes = self.visitChildren(ctx)
         if isinstance(nodes, list):
-            if isinstance(nodes[0], Leaf) and nodes[0].content == '(':
-                nodes = [nodes[1]]
-        return nodes
-
+            open_p, node, close_p = nodes
+            assert open_p.content == '('
+            assert close_p.content == ')'
+        else:
+            node = nodes
+        return node
     
-    def visitSigned_clock(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if not isinstance(nodes, Node):
-            nodes = self.strip_whitespace(nodes)
-        if isinstance(nodes, list):
-            if len(nodes) == 1:
-                nodes = nodes[0]
-            else:
-                assert len(nodes) == 2
-                if nodes[0].content == '-':
-                    nodes = NegativeNaiveClock(nodes[1])
-                else:
-                    assert nodes[0].content == '+'
-                    nodes = nodes[1]
-        return nodes
-
     def strip_whitespace(self, nodes):
         return [n for n in nodes if (isinstance(n, Node) and not (isinstance(n, Leaf) and n.content is None))]
 
-    def visitJuxtaposed_multiplication(self, ctx):
-        nodes = self.visitChildren(ctx)
-        lhs, rhs = self.strip_whitespace(nodes)
-        return BinaryOp(Operand('*'), lhs, rhs)
 
-    def visitPower_spec(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if isinstance(nodes, list):
-            last = nodes[-1]
-            new = []
-            # Walk the nodes backwards applying raise to each successivelyi.
-            for node in nodes[:-1][::-1]:
-                last = BinaryOp(Operand('^'), node, last)
-            nodes = last
-#            if len(nodes) == 2:
-#                nodes = BinaryOp(Operand('^'), *nodes)
-        return nodes
-
-    def visitMult(self, ctx):
-        nodes = self.visitChildren(ctx)
-        lhs, op, rhs = self.strip_whitespace(nodes)
-        return BinaryOp(Operand('*'), lhs, rhs)
-
-    def visitDiv(self, ctx):
-        nodes = self.visitChildren(ctx)
-        lhs, op, rhs = self.strip_whitespace(nodes)
-        return BinaryOp(Operand('/'), lhs, rhs)
-
-    def visitProduct_spec(self, ctx):
+    def visitProduct(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
-        print("PROD:", nodes)
         op = Operand('*')
-        if isinstance(nodes, list):
+        if isinstance(nodes, Node):
+            node = nodes
+        else:
             nodes = self.strip_whitespace(nodes)
+
             last = nodes[-1]
-            # Walk the nodes backwards applying mult to each successively.
+
+            # Walk the nodes backwards applying the operand to each node successively.
+            # i.e. 1*2*3*4*5 = 1*(2*(3*(4*5)))
             for node in nodes[:-1][::-1]:
                 if isinstance(node, Operand):
                     op = node
-#                    # Happens because we don't have a specific visitor for the multiplication rule.
-#                    assert node.content in ['*', '·', '-', '.'], 'Wasn\'t expecting {}'.format(node)
-#                    pass
                 else:
-                    if isinstance(node, Leaf) and node.content == '.':
-                        continue  # m.2
                     last = BinaryOp(op, node, last)
                     op = Operand('*')
-            nodes = last
-
-        return nodes
-    visitProduct = visitProduct_spec
-
-    def visitMulti_product(self, ctx):
-        return self.visitProduct_spec(ctx)
-
-    def visitDivide(self, ctx):
-        nodes = self.visitChildren(ctx)  # noqa: F841
-        return Operand('/')
-
-    def visitMultiply(self, ctx):
-        _ = self.visitChildren(ctx)  # noqa: F841
-        # Multiply is just the symbol (for now), so reach out to the parent.
-        return Operand('*')
-
-    def visitNegative_exponent(self, ctx):
-        nodes = self.visitChildren(ctx)
-        return BinaryOp(Operand('^-'), nodes[0], nodes[2])
-
-    def visitShift(self, ctx):
-        nodes = self.visitChildren(ctx)
-        [operand] = self.strip_whitespace(nodes)
-        return operand
+            node = last
+        return node
 
     def visitTimestamp(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -441,56 +347,18 @@ class ExprVisitor(LabeledExprVisitor):
                 for node in nodes:
                     print(node)
                 raise RuntimeError('Unhandled timestamp form {}.'.format(types))
-
         return nodes
 
-    def visitJuxtaposed_raise(self, ctx):
-        nodes = self.visitChildren(ctx)
-        lhs, rhs = self.strip_whitespace(nodes)
-        return BinaryOp(Operand('^'), lhs, rhs)
-
-    def visitExponent_unicode(self, ctx):
-        nodes = self.visitChildren(ctx)
-        lhs, rhs = nodes
-        return BinaryOp(Operand('^'), lhs, rhs)
-
-    def visitSci_number(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if isinstance(nodes, Leaf):
-            number = nodes
-        else:  
-            assert isinstance(nodes, list)
-            assert len(nodes) == 2
-            sign, number = nodes
-            number = number.content
-            if sign.content == '-':
-                if isinstance(number, str):
-                    number = '-' + number
-                else:
-                    number = -number
-            number = Leaf(number)
-        return number
-
-    visitAny_unsigned_number = visitSci_number
-    visitAny_signed_number = visitSci_number
-
-    def visitExponent(self, ctx):
+    def visitPower(self, ctx):
         nodes = self.visitChildren(ctx)
         if isinstance(nodes, Node):
-            return nodes
-        print('EXP:', nodes)
-        if len(nodes) == 1:
-            return nodes[0]
-        if len(nodes) == 2:
-            return BinaryOp(Operand('^'), nodes[0], nodes[1])
-        else:
-            return BinaryOp(Operand('^'), nodes[0], nodes[2])
-
-    visitPower = visitExponent
-
-    def visitShift(self, ctx):
-        _ = self.visitChildren(ctx)  # noqa: F841
-        return '@'
+            node = nodes
+        elif len(nodes) == 2:
+            node = BinaryOp(Operand('^'), nodes[0], nodes[1])
+        elif len(nodes) == 3:
+            assert nodes[1].content == '^'
+            node = BinaryOp(Operand('^'), nodes[0], nodes[2])
+        return node
 
     def visitShift_spec(self, ctx):
         nodes = self.visitChildren(ctx)
@@ -519,7 +387,7 @@ def repr_walk_ast(node):
     if isinstance(node, Leaf):
         return str(node)
     elif isinstance(node, BinaryOp):
-        return [repr_walk_ast(n) for n in node._items()]
+        return [repr_walk_ast(n) for n in node.children()]
     else:
         # A string.
         return node

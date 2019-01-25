@@ -88,6 +88,9 @@ mode SHIFT_MODE;
 
 // S_WS: ' ' -> skip;
 
+
+TIMEZONE: 'UTC' | 'Z' | 'GMT';
+
 fragment SIGN:
     PLUS | MINUS
 ;

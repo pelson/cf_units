@@ -132,7 +132,6 @@ invalid = [
     
     'hours from 1990-0-0 0:0:0',
     'hours since 1900-1 10:12 10:0 1',
-
 ]
 
 
@@ -172,6 +171,9 @@ known_issues = [
     ['s since +1990 +2:0:2.9', SyntaxError], # Disabled due to crazy results from UDUNITS.
     ['s since -1990 +2:0:2.9', SyntaxError],  # Disabled due to crazy results from UDUNITS.
 
+    ['hours since 2001-12-31 23:59:59.999UTC', SyntaxError], # Not yet implemented.
+    ['hours since 2001-12-31 23:59:59.999 Z', SyntaxError], # Not yet implemented.
+    ['hours since 2001-12-31 23:59:59.999 GMT', SyntaxError], # Not yet implemented.
 ]
 
 not_done = [

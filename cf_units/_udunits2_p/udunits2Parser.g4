@@ -9,8 +9,8 @@ unit_spec:
 
 shift_spec:
     product
-    | product shift number
-    | product shift timestamp
+    | product shift number    // Kelvin @ 273.15
+    | product shift timestamp // hours since 2001-12-31 23:59:59.999 +6
 ;
 
 product:
@@ -68,7 +68,7 @@ signed_clock:
 
 signed_hour_minute:
     // Second not allowed.
-    (((sign?)) (HOUR_MINUTE | INT))
+    (HOUR_MINUTE | integer)
     | (WS* SIGNED_INT)
 ;
 

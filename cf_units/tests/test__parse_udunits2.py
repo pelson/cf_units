@@ -277,7 +277,7 @@ def test_power_spec(_, unit_str, expected):
 @pytest.mark.parametrize("_, unit_str, expected", [[i, a, b] for i, (a, b) in enumerate([
     ['1.2', '1.2'],
     ['m', 'm'],
-    ['+1e12', '1e12'],
+    ['+1e12', '+1e12'],
 ])])
 def test_basic_spec(_, unit_str, expected):
     n = str(parse(unit_str, root='basic_spec'))

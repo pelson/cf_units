@@ -16,6 +16,13 @@ SEMICOLON: ':' ;
 INT : '0'..'9'+ ;
 
 E_POWER: ('E' | 'e') ANY_INT ;
+
+FLOAT:
+    (((ANY_INT PERIOD INT?)
+     |(ANY_INT? PERIOD INT)
+    ) E_POWER?)  // 1.2e-5, 1e2, 2.e4
+    | (ANY_INT E_POWER)
+;
 // NOTE: floats themselves are context sensitive, see the parser rules (especially float_t).
 
 
@@ -113,7 +120,7 @@ DT_T_CLOCK: DATE 'T' CLOCK; // UNDOCUMENTED
 
 mode ID_SEEN;
 EXTRA_MULTIPLY: '.' -> type(MULTIPLY), mode(DEFAULT_MODE);
-{% for TOKEN in tokens['DEFAULT_MODE'] -%}
+{% for TOKEN in tokens['DEFAULT_MODE'] if TOKEN not in ['FLOAT'] -%}
     ID_SEEN_{{ TOKEN }}: {{TOKEN}} -> type({{TOKEN}}), mode(DEFAULT_MODE);
 {% endfor %}
 // inherit // from DEFAULT_MODE: *;

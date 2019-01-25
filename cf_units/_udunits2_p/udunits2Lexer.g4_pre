@@ -53,6 +53,10 @@ RAISE :
   )
 ;
 
+LOG: 'log' | 'lg' | 'ln' | 'lb';
+
+LOGREF: '(' WS* ('RE' | 're') ':'? WS*;
+
 //ID: one of
 //        <id>
 //        '%'
@@ -117,7 +121,7 @@ fragment DAY:
 ;
 
 fragment YEAR:
-    SIGN? INT INT? INT? INT?
+    SIGN? INT INT? INT? INT?  // e.g. 9, 0001, 150, +2001 (=year 200 in UDUNITS2 implementation)
 ;
 
 HOUR_MINUTE_SECOND: HOUR ':' MINUTE ':' SECOND;

@@ -174,6 +174,8 @@ known_issues = [
     ['hours since 2001-12-31 23:59:59.999UTC', SyntaxError], # Not yet implemented.
     ['hours since 2001-12-31 23:59:59.999 Z', SyntaxError], # Not yet implemented.
     ['hours since 2001-12-31 23:59:59.999 GMT', SyntaxError], # Not yet implemented.
+
+    ['0.1 lg(re 1 mW)', SyntaxError], # Not yet implemented.
 ]
 
 not_done = [

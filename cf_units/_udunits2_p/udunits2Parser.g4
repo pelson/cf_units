@@ -59,7 +59,7 @@ timestamp: WS?
 
 //    | (date WS+ clock WS+ ID) // UNKNOWN!
 //    | (TIMESTAMP WS+ INT) // UNKNOWN!
-//    | (TIMESTAMP WS+ ID) // UNKNOWN!
+//    | (TIMESTAMP WS+ ID) // TIMEZONE (UNDOCUMENTED)!
 ;
 
 signed_clock:

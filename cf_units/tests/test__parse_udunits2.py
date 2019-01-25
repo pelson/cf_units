@@ -106,6 +106,8 @@ testdata = [
 
     'seconds from 1990-1-1 0:0:0 +2550',
     's since 1990-1-2+5:2:2',
+    'hours from 1990-1-1 0:1:60',
+    'hours from 1990-1-1 0:1:62',
 ]
 
 invalid = [
@@ -120,14 +122,13 @@ invalid = [
     '$',
     '£',  # TODO: What if udunits has this defined in its XML, does it work?
     
-    #        'hours from 1990-1-1 0:1:60',
-    #    'hours from 1990-0-0 0:0:0',
+    'hours from 1990-0-0 0:0:0',
 ]
 
 
 not_udunits = [
     ['foo', 'foo'],
-#    ['mfrom1', 'mfrom^1'],
+    ['mfrom1', 'mfrom^1'],
     ['m⁴', 'm^4'],  # udunits bug.
     ['2¹²³⁴⁵⁶⁷⁸⁹⁰', '2^1234567890'],
 ]
@@ -173,7 +174,8 @@ def test_invalid_units(_, unit_str):
         cf_valid = False
 
     # Double check that udunits2 can't parse this.
-    assert cf_valid is False
+    assert cf_valid is False, \
+        'Unit {!r} is unexpectedly valid in UDUNITS2'.format(unit_str)
 
     try:
         unit_expr = normalize(unit_str)

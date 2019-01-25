@@ -78,6 +78,9 @@ testdata = [
     'm from2',
     'm from2e-1',
 
+    # '(m @ 10) (s @ 10)' # TODO: Nasty behaviour.
+
+
     's from 1990',
     'minutes since 1990',
     'hour@1990',

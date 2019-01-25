@@ -89,6 +89,18 @@ class UnaryOp(Node):
         # Probably "-" or "~"
         return f'{self.op}{self.operand}'
 
+
+class Shift(Node):
+    def __init__(self, unit, shift_from):
+        self.unit = unit  # AKA Gregorian in the udunits2 codebase.
+        self.shift_from = shift_from
+
+    def _items(self):
+        return self.unit, self.shift_from
+
+    def __str__(self):
+        return f'{self.unit} @ {self.shift_from}'
+
 class Timestamp(Node):
     def __init__(self, date, clock, tz_offset=0):
         self.date = date
@@ -467,6 +479,12 @@ class ExprVisitor(LabeledExprVisitor):
     def visitShift(self, ctx):
         _ = self.visitChildren(ctx)  # noqa: F841
         return '@'
+
+    def visitShift_spec(self, ctx):
+        nodes = self.visitChildren(ctx)
+        if not isinstance(nodes, Node):
+            nodes = Shift(nodes[0], nodes[2])
+        return nodes
 
     def visitUnit_spec(self, ctx):
         nodes = self.visitChildren(ctx)

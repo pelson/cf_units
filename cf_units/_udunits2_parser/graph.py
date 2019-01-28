@@ -30,10 +30,10 @@ class Node:
 
         """
         # Since this is py>=36, the order of the attributes is well defined.
-        return self.attrs.values()
+        return self._attrs.values()
 
     def __getattr__(self, name):
-        # Allow this to raise KeyError if missing.
+        # Allow the dictionary to raise KeyError if the key doesn't exist.
         return self._attrs[name]
 
     def _repr_ctx(self):
@@ -52,9 +52,8 @@ class Root(Node):
     The first node in the expression graph.
 
     """
-    # TODO: Is this being used?
     def __init__(self, *units):
-        self.units = units
+        super().__init__(units=units)
 
     def children(self):
         return self.units
@@ -99,6 +98,21 @@ class BinaryOp(Node):
         return f'{self.lhs}{self.op}{self.rhs}'
 
 
+class Raise(BinaryOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs=lhs, op=Operand('^'), rhs=rhs)
+
+
+class Multiply(BinaryOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs=lhs, op=Operand('·'), rhs=rhs)
+
+
+class Divide(BinaryOp):
+    def __init__(self, lhs, rhs):
+        super().__init__(lhs=lhs, op=Operand('/'), rhs=rhs)
+
+
 class Shift(Node):
     def __init__(self, unit, shift_from):
         # The product unit to be shifted.
@@ -108,47 +122,8 @@ class Shift(Node):
         return f'({self.unit} @ {self.shift_from})'
 
 
-class Timestamp(Node):
-    def __init__(self, date, clock, tz_offset=0):
-        super().__init__(date=date, clock=clock, tz_offset=tz_offset)
+class Timestamp(Terminal):
+    # Currently we do not try to interpret the timestamp.
+    # This is likely to change in the future.
+    pass
 
-    def __str__(self):
-        return f'{self.date} {self.clock} {self.tz_offset}'
-
-
-class NaiveClock(Node):
-    def __init__(self, hour=0, minute=0, second=0):
-        # A timezone unaware timestamp.
-        super().__init__(hour=hour, minute=minute, second=second)
-
-    def __str__(self):
-        clock = f'{self.hour}:{self.minute}'
-        if self.second != 0:
-            clock += f':{self.second}'
-        return clock
-
-
-class Date(Node):
-    def __init__(self, year, month=1, day=1):
-        super().__init__(year=year, month=month, day=day)
-
-    def __str__(self):
-        return f'{self.year}-{self.month}-{self.day}'
-
-
-class PackedDate(Node):
-    # Udunits supports integers that look a bit like YYYYMMDD.
-    # Problem is, they are also allowed to exceed, so 1990234 is actually
-    #    Y: 1990 + M//12, M: 23%12, D: 4 + the number of days that adding
-    #    extra months requires.
-    # Furthermore, +1990 miraculously reaches y: 198, m: 12, d: 01...
-    # 
-    # Rather than try to reverse engineer this, let's encapsualte it and
-    # pass it on to UDUNITS to handle. Sorry if you are looking for this
-    # value to be decoded here.
-    #
-    def __init__(self, datestamp):
-        super().__init__(datestamp=datestamp)
-
-    def __str__(self):
-        return f'{self.datestamp}'

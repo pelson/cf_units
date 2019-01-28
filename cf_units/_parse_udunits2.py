@@ -15,21 +15,35 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with cf-units.  If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import (absolute_import, division, print_function)
-from six.moves import (filter, input, map, range, zip)  # noqa
+import unicodedata
 
 from antlr4 import InputStream, CommonTokenStream
 from antlr4.error.ErrorListener import ErrorListener
 
-from ._udunits2_p.udunits2Lexer import udunits2Lexer as LabeledExprLexer
-from ._udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
-from ._udunits2_p.udunits2ParserVisitor import udunits2ParserVisitor as LabeledExprVisitor
-
-
+from ._udunits2_p.udunits2Lexer import udunits2Lexer
+from ._udunits2_p.udunits2Parser import udunits2Parser
+from ._udunits2_p.udunits2ParserVisitor import udunits2ParserVisitor
 from ._udunits2_parser import graph
 
 
-class ExprVisitor(LabeledExprVisitor):
+# Dictionary mapping token rule id to token name.
+TOKEN_ID_NAMES = {getattr(udunits2Lexer, rule, -1): rule
+                  for rule in udunits2Lexer.ruleNames}
+
+
+def handle_UNICODE_EXPONENT(string):
+    # Convert unicode to compatibility form, replacing unicode minus with
+    # ascii minus (which is actually a less good version
+    # of unicode minus).
+    normd = unicodedata.normalize('NFKC', string).replace('−', '-')
+    return int(normd)
+
+
+class UnitParseVisitor(udunits2ParserVisitor):
+    """
+    A visitor which converts the parse tree into an abstract expression graph.
+
+    """
     def defaultResult(self):
         # Called once per ``visitChildren`` call.
         return []
@@ -45,265 +59,173 @@ class ExprVisitor(LabeledExprVisitor):
         # If there is only a single item in the visitChildren's list,
         # return the item. The list itself has no semantics.
         result = super().visitChildren(node)
-        if len(result) == 1:
-            return result[0]
-        else:
-            return result
+        while isinstance(result, list) and len(result) == 1:
+            result = result[0]
+        return result
+
+    TERM_HANDLERS = {
+            'CLOSE_PAREN': None,
+            'DATE': str,
+            'DIVIDE': graph.Operand('/'),  # Drop context, such as " per ".
+            'E_POWER': str,
+            'FLOAT': graph.Number,  # Preserve precision as str.
+            'HOUR_MINUTE_SECOND': str,
+            'HOUR_MINUTE': str,
+            'ID': graph.Identifier,
+            'INT': lambda c: graph.Number(int(c)),
+            'MULTIPLY': graph.Operand('*'),
+            'OPEN_PAREN': None,
+            'PERIOD': str,
+            'RAISE': graph.Operand,
+            'TIMESTAMP': graph.Timestamp,
+            'SIGNED_INT': lambda c: graph.Number(int(c)),
+            'SHIFT_OP': None,
+            'WS': None,
+            'UNICODE_EXPONENT': handle_UNICODE_EXPONENT,
+    }
 
     def visitTerminal(self, ctx):
-        r = ctx.getText()
+        content = ctx.getText()
 
         symbol_idx = ctx.symbol.type
-        if symbol_idx < 0:
-            # EOF
-            pass
-        else:
-            lexer = ctx.symbol.source[0]
+        if symbol_idx == -1:
+            # EOF, and all unmatched characters (which will have
+            # already raised a SyntaxError).
+            result = None
 
-            import unicodedata
-            consumers = {lexer.INT: lambda string: graph.Number(int(string)),
-                         lexer.SIGNED_INT: lambda string: graph.Number(int(string)),
-                         lexer.WS: lambda n: None,
-                         lexer.ID: graph.Identifier,
-                         # Convert unicode to compatibility form
-                         lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
-                         #                          lexer.MINUS: graph.Operand,
-                         lexer.DIVIDE: graph.Operand,
-                         lexer.MULTIPLY: lambda op: graph.Operand('*'),
-                         lexer.RAISE: graph.Operand,
-                         lexer.SHIFT_OP: str,
-                         lexer.HOUR_MINUTE_SECOND: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
-                         lexer.HOUR_MINUTE: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
-                         lexer.TIMESTAMP: self.prepareTIMESTAMP,
-                         lexer.PERIOD: str,
-                         lexer.E_POWER: str,
-                         lexer.DATE: lambda arg: graph.Date(*arg.strip().rsplit('-', 2)),  # TODO: Handle -1-3
-                         lexer.OPEN_PAREN: str,
-                         lexer.CLOSE_PAREN: str,
-                         #                          lexer.SIGNED_INT: str,
-                         }
-            if symbol_idx in consumers:
-                r = consumers[symbol_idx](r)
+        else:
+            name = TOKEN_ID_NAMES[symbol_idx]
+            handler = self.TERM_HANDLERS[name]
+
+            if callable(handler):
+                result = handler(content)
             else:
-                print('UNHANDLED TERMINAL:', repr(r))
+                result = handler
 
-        if not isinstance(r, graph.Node):
-            r = graph.Terminal(r)
-        return r
-
-    def visitDate(self, ctx):
-        nodes = self.visitChildren(ctx)
-        return graph.Date(*[node.content for node in nodes if node.content != '-'])
-
-    def prepareCLOCK(self, string):
-        return graph.NaiveClock(*string.split(':'))
-
-    def prepareTIMESTAMP(self, string):
-        packed_date, packed_clock = string.split('T')
-
-
-        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L243-L252
-        packed_date = graph.PackedDate(packed_date)
-
-        # REF: https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L113-L126
-        negative_hr = packed_clock[0] == '-'
-
-        # NB: This is NOT what the grammar states, but is what udunits appears to do.
-        h, m, s = packed_clock[:2], packed_clock[2:4], packed_clock[4:6]
-
-        h, m, s = int(h or 0), int(m or 0), int(s or 0)
-        if negative_hr:
-            h = -h
-
-        node = graph.Timestamp(packed_date, graph.NaiveClock(h, m, s))
-        return node
-
-    def visitBasic_spec(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if isinstance(nodes, list):
-            open_p, node, close_p = nodes
-            assert open_p.content == '('
-            assert close_p.content == ')'
-        else:
-            node = nodes
-        return node
-    
-    def strip_whitespace(self, nodes):
-        return [n for n in nodes if (isinstance(n, graph.Node) and not (isinstance(n, graph.Terminal) and n.content is None))]
-
+        if result is None:
+            return None
+        elif not isinstance(result, graph.Node):
+            result = graph.Terminal(result)
+        return result
 
     def visitProduct(self, ctx):
-        # UDUNITS grammar makes no parse distinction for these types,
-        # so we have to do the grunt work here.
+        # UDUNITS grammar makes no parse distinction for Product
+        # types ('/' and '*'), so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
-        op = graph.Operand('*')
-        if isinstance(nodes, graph.Node):
-            node = nodes
-        else:
-            nodes = self.strip_whitespace(nodes)
 
+        op_type = graph.Multiply
+
+        if isinstance(nodes, list):
             last = nodes[-1]
 
-            # Walk the nodes backwards applying the operand to each node successively.
-            # i.e. 1*2*3*4*5 = 1*(2*(3*(4*5)))
+            # Walk the nodes backwards applying the appropriate binary
+            # operation to each node successively.
+            # e.g. 1*2/3*4*5 = 1*(2/(3*(4*5)))
             for node in nodes[:-1][::-1]:
                 if isinstance(node, graph.Operand):
-                    op = node
+                    if node.content == '/':
+                        op_type = graph.Divide
+                    else:
+                        op_type = graph.Multiply
                 else:
-                    last = graph.BinaryOp(op, node, last)
-                    op = graph.Operand('*')
+                    last = op_type(node, last)
             node = last
+        else:
+            node = nodes
         return node
 
     def visitTimestamp(self, ctx):
-        nodes = self.visitChildren(ctx)
-        #if isinstance(nodes, graph.Terminal):
-        #    nodes = graph.Timestamp(*nodes.content)
-
-        if not isinstance(nodes, graph.Node):
-            nodes = self.strip_whitespace(nodes)
-
-            types = [type(n) for n in nodes]
-
-            def matches(specs):
-                if len(specs) != len(types):
-                    return False
-
-                return all(
-                    issubclass(node_type, spec)
-                    for spec, node_type in zip(specs, types)) 
-
-            if matches([graph.Date, graph.Terminal]):
-                # DATE + packed_time
-                return graph.Timestamp(nodes[0], graph.NaiveClock(nodes[1].content))
-            elif matches([graph.Terminal, graph.NaiveClock]):
-                # Int Clock
-                return graph.Timestamp(graph.Date(nodes[0]), nodes[1])
-            elif matches([graph.Date, graph.NaiveClock]):
-                return graph.Timestamp(*nodes)
-            elif matches([graph.Date, graph.NaiveClock, graph.Terminal]):
-                return graph.Timestamp(*nodes)
-            elif matches([graph.Date, graph.NaiveClock, graph.NaiveClock]) or matches([graph.Date, graph.Terminal, graph.NaiveClock]):
-                # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
-                # Ref
-                return graph.Timestamp(nodes[0], nodes[1], nodes[2])
-            elif matches([graph.Date, graph.Terminal, graph.Terminal]):
-                # graph.Date + packed_clock + tz_offset
-                hour = nodes[1].content
-                hour = graph.NaiveClock(hour)
-                return graph.Timestamp(nodes[0], hour, nodes[2])
-            else:
-                for node in nodes:
-                    print(node)
-                raise RuntimeError('Unhandled timestamp form {}.'.format(types))
-        return nodes
+        # For now, we simply amalgamate timestamps into a single Terminal.
+        # More work is needed to turn this into a good date/time/timezone
+        # representation.
+        return graph.Terminal(ctx.getText())
 
     def visitPower(self, ctx):
-        nodes = self.visitChildren(ctx)
-        if isinstance(nodes, graph.Node):
-            node = nodes
-        elif len(nodes) == 2:
-            node = graph.BinaryOp(graph.Operand('^'), nodes[0], nodes[1])
-        elif len(nodes) == 3:
-            assert nodes[1].content == '^'
-            node = graph.BinaryOp(graph.Operand('^'), nodes[0], nodes[2])
+        node = self.visitChildren(ctx)
+        if isinstance(node, list):
+            if len(node) == 3:
+                # node[1] is the operator, so ignore it.
+                node = graph.Raise(node[0], node[2])
+            else:
+                node = graph.Raise(*node)
         return node
 
     def visitShift_spec(self, ctx):
         nodes = self.visitChildren(ctx)
-        if not isinstance(nodes, graph.Node):
+        if isinstance(nodes, list):
             nodes = graph.Shift(nodes[0], nodes[2])
         return nodes
 
     def visitUnit_spec(self, ctx):
-        nodes = self.visitChildren(ctx)
-        
-        # Drop the EOF
-        if isinstance(nodes, graph.Node):
-            node = graph.Root()
-            assert str(nodes) == '<EOF>'
-        else:
-            assert len(nodes) == 2
-            assert isinstance(nodes, list)
-            if isinstance(nodes[0], graph.Node):
-                node = graph.Root(nodes[0])
-            else:
-                node = graph.Root(*nodes[0])
+        node = self.visitChildren(ctx)
+        if not node:
+            node = graph.Terminal('')
         return node
 
 
-def repr_walk_ast(node):
-    if isinstance(node, graph.Terminal):
-        return str(node)
-    elif isinstance(node, graph.BinaryOp):
-        return [repr_walk_ast(n) for n in node.children()]
-    else:
-        # A string.
-        return node
-        #            print("DEAL WITH:", node)
+class SyntaxErrorRaiser(ErrorListener):
+    """
+    Turn any parse errors into sensible SyntaxErrors.
 
-
-class ErrorListener(ErrorListener):
-    def __init__(self, the_string):
-        # At the time of writing, I didn't find a better way of getting
-        # the string being parsed. There definitely will be though.
-        self.the_string = the_string
+    """
+    def __init__(self, unit_string):
+        self.unit_string = unit_string
         super(ErrorListener, self).__init__()
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         # https://stackoverflow.com/a/36367357/741316
-
-        context = ("inline", line, column+2, "'{}'".format(self.the_string))
+        context = ("inline", line, column+2, "'{}'".format(self.unit_string))
         syntax_error = SyntaxError(msg, context)
         raise syntax_error from None
 
 
-def normalize(unit_str):
-    return str(parse(unit_str))
+def _debug_tokens(unit_string):
+    """
+    A really handy way of printing the tokens produced for a given input.
 
-
-def parse(unit_str, root='unit_spec'):
-    # nb: The definition (C code) says to strip the unit string first.
-    unit_str = unit_str.strip()
-    lexer = LabeledExprLexer(InputStream(unit_str))
+    """
+    unit_str = unit_string.strip()
+    lexer = udunits2Lexer(InputStream(unit_str))
     stream = CommonTokenStream(lexer)
-    parser = LabeledExprParser(stream)
+    parser = udunits2Parser(stream)
 
-    parser._listeners = [ErrorListener(unit_str)]
+    # Actually do the parsing so that we can go through the identified tokens.
+    parser.unit_spec()
+
+    for token in stream.tokens:
+        if token.text == '<EOF>':
+            continue
+        token_type_idx = token.type
+        rule = TOKEN_ID_NAMES[token_type_idx]
+        print("%s: %s" % (token.text, rule))
 
 
-    token_lookup = {getattr(lexer, rule, -1): rule for rule in lexer.ruleNames}
-#    print(token_lookup)
+def normalize(unit_string):
+    """
+    Parse the given unit string, and return its string representation.
 
-    if True:
-        lexer2 = LabeledExprLexer(InputStream(unit_str))
-        stream2 = CommonTokenStream(lexer2)
+    No standardisation of units, nor simplification of expressions is done,
+    but some tokens and operators will be converted to their canonical form.
 
-        parser2 = LabeledExprParser(stream2)
-        # The top level concept.
-        tree = getattr(parser2, root)()
+    """
+    return str(parse(unit_string))
 
-        # NOTE, because of the parser._listeners error handler, this only works if we have a valid grammar in the first place.
-        print()
-        for token in stream2.tokens:
-            if token.text != '<EOF>':
-                token_type_idx = token.type 
-                rule = token_lookup[token_type_idx]
-                print("%s: %s" % (token.text, rule))
 
-    # The top level concept.
-    tree = getattr(parser, root)()
+def parse(unit_str):
+    # The udunits2 definition (C code) says to strip the unit string
+    # first.
+    unit_str = unit_str.strip()
+    lexer = udunits2Lexer(InputStream(unit_str))
+    stream = CommonTokenStream(lexer)
+    parser = udunits2Parser(stream)
 
-    visitor = ExprVisitor()
+    # Raise a SyntaxError if we encounter an issue when parsing.
+    parser.removeErrorListeners()
+    parser.addErrorListener(SyntaxErrorRaiser(unit_str))
+
+    # Get the top level concept.
+    tree = parser.unit_spec()
+
+    visitor = UnitParseVisitor()
+    # Return the graph representation.
     return visitor.visit(tree)
-
-
-def main(argv):
-    ast = parse(argv[1])
-    print('AST:', repr(repr_walk_ast(ast)))
-    print(ast)
-
-
-if __name__ == '__main__':
-    import sys
-    main(sys.argv)

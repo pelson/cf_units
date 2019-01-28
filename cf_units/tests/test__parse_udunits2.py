@@ -41,6 +41,9 @@ testdata = [
     # TODO: add some tests with brackets.
     'm(2.3)',
     'm(2.3m)',
+    '(1.2)(2.4)',
+    '(5m(6s-1))',
+    '2*3*4/5m/6*7*8',
 
 
     'm/2',
@@ -115,7 +118,7 @@ testdata = [
     # Unicode / constants
     'π',
     'e',
-    '°C'
+    '°C',
 ]
 
 invalid = [

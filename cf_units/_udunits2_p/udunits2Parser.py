@@ -8,7 +8,7 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\34")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\35")
         buf.write("\u0094\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\3\2")
         buf.write("\5\2\34\n\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3")
@@ -22,7 +22,7 @@ def serializedATN():
         buf.write("\13\16\13\u0080\13\13\3\13\5\13\u0083\n\13\3\f\3\f\3\r")
         buf.write("\7\r\u0088\n\r\f\r\16\r\u008b\13\r\3\r\3\r\7\r\u008f\n")
         buf.write("\r\f\r\16\r\u0092\13\r\3\r\2\3\6\16\2\4\6\b\n\f\16\20")
-        buf.write("\22\24\26\30\2\5\4\2\3\3\13\13\4\2\13\13\32\32\3\2\30")
+        buf.write("\22\24\26\30\2\5\4\2\3\3\13\13\4\2\13\13\33\33\3\2\30")
         buf.write("\31\2\u00a4\2\33\3\2\2\2\4(\3\2\2\2\6*\3\2\2\2\bL\3\2")
         buf.write("\2\2\nT\3\2\2\2\fV\3\2\2\2\16Z\3\2\2\2\20p\3\2\2\2\22")
         buf.write("u\3\2\2\2\24\u0082\3\2\2\2\26\u0084\3\2\2\2\30\u0089\3")
@@ -46,8 +46,8 @@ def serializedATN():
         buf.write("\3\2\2\2^_\3\2\2\2_q\t\3\2\2`b\t\3\2\2ac\7\25\2\2ba\3")
         buf.write("\2\2\2bc\3\2\2\2cd\3\2\2\2di\5\22\n\2eg\7\25\2\2fe\3\2")
         buf.write("\2\2fg\3\2\2\2gh\3\2\2\2hj\5\24\13\2if\3\2\2\2ij\3\2\2")
-        buf.write("\2jq\3\2\2\2kq\7\34\2\2ln\7\25\2\2ml\3\2\2\2mn\3\2\2\2")
-        buf.write("no\3\2\2\2oq\7\33\2\2p]\3\2\2\2p`\3\2\2\2pk\3\2\2\2pm")
+        buf.write("\2jq\3\2\2\2kq\7\35\2\2ln\7\25\2\2ml\3\2\2\2mn\3\2\2\2")
+        buf.write("no\3\2\2\2oq\7\34\2\2p]\3\2\2\2p`\3\2\2\2pk\3\2\2\2pm")
         buf.write("\3\2\2\2q\21\3\2\2\2rv\7\30\2\2sv\7\31\2\2tv\5\f\7\2u")
         buf.write("r\3\2\2\2us\3\2\2\2ut\3\2\2\2v\23\3\2\2\2wz\7\31\2\2x")
         buf.write("z\5\f\7\2yw\3\2\2\2yx\3\2\2\2z\u0083\3\2\2\2{}\7\25\2")
@@ -75,14 +75,18 @@ class udunits2Parser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "<INVALID>", "'+'", "<INVALID>", "<INVALID>", 
-                     "'.'", "'('", "')'", "':'" ]
+                     "'.'", "'('", "')'", "':'", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
+                     "<INVALID>", "'-'" ]
 
     symbolicNames = [ "<INVALID>", "SIGNED_INT", "PLUS", "MULTIPLY", "DIVIDE", 
                       "PERIOD", "OPEN_PAREN", "CLOSE_PAREN", "SEMICOLON", 
                       "INT", "E_POWER", "FLOAT", "SHIFT_OP", "UNICODE_EXPONENT", 
                       "RAISE", "LOG", "LOGREF", "ID", "LATIN_SUBSET", "WS", 
                       "ERRORCHARACTER", "TIMEZONE", "HOUR_MINUTE_SECOND", 
-                      "HOUR_MINUTE", "DATE", "TIMESTAMP", "DT_T_CLOCK" ]
+                      "HOUR_MINUTE", "M_MINUS", "DATE", "TIMESTAMP", "DT_T_CLOCK" ]
 
     RULE_unit_spec = 0
     RULE_shift_spec = 1
@@ -125,9 +129,10 @@ class udunits2Parser ( Parser ):
     TIMEZONE=21
     HOUR_MINUTE_SECOND=22
     HOUR_MINUTE=23
-    DATE=24
-    TIMESTAMP=25
-    DT_T_CLOCK=26
+    M_MINUS=24
+    DATE=25
+    TIMESTAMP=26
+    DT_T_CLOCK=27
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)

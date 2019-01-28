@@ -13,4 +13,4 @@ python -c "import cf_units; u = cf_units.Unit(\"${command}\"); print('cf_units: 
 echo -n "${command}" | ${DIR}/pygrun udunits2 unit_spec -a -k -t
 
 
-python -m cf_units._parse_udunits2 "$command"
+python -c "import cf_units._parse_udunits2 as up; up._debug_tokens(\"$command\"); print(up.parse(\"$command\"));"

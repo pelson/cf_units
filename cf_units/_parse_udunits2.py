@@ -26,158 +26,7 @@ from ._udunits2_p.udunits2Parser import udunits2Parser as LabeledExprParser
 from ._udunits2_p.udunits2ParserVisitor import udunits2ParserVisitor as LabeledExprVisitor
 
 
-class Node:
-    """
-    Represents a node in an expression graph.
-
-    """
-    def children(self):
-        """
-        Return the children of this node.
-
-        """
-        return []
-
-    def __repr__(self):
-        return '<{}>'.format(self)
-
-
-
-class Root(Node):
-    """
-    The first node in the expression graph.
-
-    """
-    def __init__(self, *units):
-        self.units = units
-
-    def children(self):
-        return self.units
-
-    def __str__(self):
-        return ' '.join(str(u) for u in self.units)
-
-
-class Leaf(Node):
-    """
-    A generic terminal node in an expression graph.
-
-    """
-    def __init__(self, content):
-        self.content = content
-
-    def __str__(self):
-        return '{}'.format(self.content)
-
-
-class Operand(Leaf):
-    pass
-
-
-class Number(Leaf):
-    pass
-
-
-class Identifier(Leaf):
-    """The unit itself (e.g. meters, m, km and π)"""
-    pass
-
-
-class BinaryOp(Node):
-    def __init__(self, op, lhs, rhs):
-        self.lhs = lhs
-        self.rhs = rhs
-        self.op = op
-
-    def children(self):
-        return self.lhs, self.op, self.rhs
-
-    def __str__(self):
-        return '{self.lhs}{self.op}{self.rhs}'.format(self=self)
-
-
-class Shift(Node):
-    def __init__(self, unit, shift_from):
-        self.unit = unit  # AKA Gregorian in the udunits2 codebase.
-        self.shift_from = shift_from
-
-    def children(self):
-        return self.unit, self.shift_from
-
-    def __str__(self):
-        return f'({self.unit} @ {self.shift_from})'
-
-class Timestamp(Node):
-    def __init__(self, date, clock, tz_offset=0):
-        self.date = date
-        self.clock = clock
-        self.tz_offset = tz_offset
-
-    def children(self):
-        return self.date, self.clock, self.tz_offset
-
-    def __str__(self):
-        return f'{self.date} {self.clock} {self.tz_offset}'
-
-
-class NaiveClock(Node):
-    def __init__(self, hour=0, minute=0, second=0):
-        self.hour = hour
-        self.minute = minute
-        self.second = second
-
-    def children(self):
-        return self.hour, self.minute, self.second
-
-    def __str__(self):
-        if self.second != 0:
-            return f'{self.hour}:{self.minute}:{self.second}'
-        else:
-            return f'{self.hour}:{self.minute}'
-
-
-class NegativeNaiveClock(NaiveClock):
-    # Inheritance makes checks in the codebase for approximate types easier.
-    # There is test coverage if you choose to break this inheritance in the future.
-    def __init__(self, clock):
-        # NOTE: The implementation of this can be found at
-        # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L49-L71
-        self.clock = clock
-
-    def children(self):
-        return (self.clock, )
-
-    def __str__(self):
-        return f'-{self.clock}'
-
-
-class Date(Node):
-    def __init__(self, year, month=1, day=1):
-        self.year = year
-        self.month = month
-        self.day = day
-
-    def children(self):
-        return self.year, month, self.day
-
-    def __str__(self):
-        return f'{self.year}-{self.month}-{self.day}'
-
-
-class PackedDate(Date):
-    # Udunits supports integers that look a bit like YYYYMMDD. Problem is, they are also allowed to exceed, so
-    # 1990234 is actually Y: 1990 + M//12, M: 23%12, D: 4 + the number of days that adding extra months requires.
-    # Additionally, +1990 miraculously reaches y: 198, m: 12, d: 01
-
-    # Rather than try to reverse engineer this, let's encapsualte it and pass it on to UDUNITS if we possibly can.
-    def __init__(self, datestamp):
-        self.datestamp = datestamp
-
-    def children(self):
-        return (self.datestamp,)
-
-    def __str__(self):
-        return f'{self.datestamp}'
+from ._udunits2_parser import graph
 
 
 class ExprVisitor(LabeledExprVisitor):
@@ -212,23 +61,23 @@ class ExprVisitor(LabeledExprVisitor):
             lexer = ctx.symbol.source[0]
 
             import unicodedata
-            consumers = {lexer.INT: lambda string: Number(int(string)),
-                         lexer.SIGNED_INT: lambda string: Number(int(string)),
+            consumers = {lexer.INT: lambda string: graph.Number(int(string)),
+                         lexer.SIGNED_INT: lambda string: graph.Number(int(string)),
                          lexer.WS: lambda n: None,
-                         lexer.ID: Identifier,
+                         lexer.ID: graph.Identifier,
                          # Convert unicode to compatibility form
                          lexer.UNICODE_EXPONENT: lambda n: int(unicodedata.normalize('NFKC', n).replace('−', '-')),
-                         #                          lexer.MINUS: Operand,
-                         lexer.DIVIDE: Operand,
-                         lexer.MULTIPLY: lambda op: Operand('*'),
-                         lexer.RAISE: Operand,
+                         #                          lexer.MINUS: graph.Operand,
+                         lexer.DIVIDE: graph.Operand,
+                         lexer.MULTIPLY: lambda op: graph.Operand('*'),
+                         lexer.RAISE: graph.Operand,
                          lexer.SHIFT_OP: str,
                          lexer.HOUR_MINUTE_SECOND: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.HOUR_MINUTE: self.prepareCLOCK,  #lambda arg: arg.split(':'), #lambda *args: ' '.join(args),
                          lexer.TIMESTAMP: self.prepareTIMESTAMP,
                          lexer.PERIOD: str,
                          lexer.E_POWER: str,
-                         lexer.DATE: lambda arg: Date(*arg.strip().rsplit('-', 2)),  # TODO: Handle -1-3
+                         lexer.DATE: lambda arg: graph.Date(*arg.strip().rsplit('-', 2)),  # TODO: Handle -1-3
                          lexer.OPEN_PAREN: str,
                          lexer.CLOSE_PAREN: str,
                          #                          lexer.SIGNED_INT: str,
@@ -238,23 +87,23 @@ class ExprVisitor(LabeledExprVisitor):
             else:
                 print('UNHANDLED TERMINAL:', repr(r))
 
-        if not isinstance(r, Node):
-            r = Leaf(r)
+        if not isinstance(r, graph.Node):
+            r = graph.Terminal(r)
         return r
 
     def visitDate(self, ctx):
         nodes = self.visitChildren(ctx)
-        return Date(*[node.content for node in nodes if node.content != '-'])
+        return graph.Date(*[node.content for node in nodes if node.content != '-'])
 
     def prepareCLOCK(self, string):
-        return NaiveClock(*string.split(':'))
+        return graph.NaiveClock(*string.split(':'))
 
     def prepareTIMESTAMP(self, string):
         packed_date, packed_clock = string.split('T')
 
 
         # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/scanner.l#L243-L252
-        packed_date = PackedDate(packed_date)
+        packed_date = graph.PackedDate(packed_date)
 
         # REF: https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L113-L126
         negative_hr = packed_clock[0] == '-'
@@ -266,7 +115,7 @@ class ExprVisitor(LabeledExprVisitor):
         if negative_hr:
             h = -h
 
-        node = Timestamp(packed_date, NaiveClock(h, m, s))
+        node = graph.Timestamp(packed_date, graph.NaiveClock(h, m, s))
         return node
 
     def visitBasic_spec(self, ctx):
@@ -280,15 +129,15 @@ class ExprVisitor(LabeledExprVisitor):
         return node
     
     def strip_whitespace(self, nodes):
-        return [n for n in nodes if (isinstance(n, Node) and not (isinstance(n, Leaf) and n.content is None))]
+        return [n for n in nodes if (isinstance(n, graph.Node) and not (isinstance(n, graph.Terminal) and n.content is None))]
 
 
     def visitProduct(self, ctx):
         # UDUNITS grammar makes no parse distinction for these types,
         # so we have to do the grunt work here.
         nodes = self.visitChildren(ctx)
-        op = Operand('*')
-        if isinstance(nodes, Node):
+        op = graph.Operand('*')
+        if isinstance(nodes, graph.Node):
             node = nodes
         else:
             nodes = self.strip_whitespace(nodes)
@@ -298,20 +147,20 @@ class ExprVisitor(LabeledExprVisitor):
             # Walk the nodes backwards applying the operand to each node successively.
             # i.e. 1*2*3*4*5 = 1*(2*(3*(4*5)))
             for node in nodes[:-1][::-1]:
-                if isinstance(node, Operand):
+                if isinstance(node, graph.Operand):
                     op = node
                 else:
-                    last = BinaryOp(op, node, last)
-                    op = Operand('*')
+                    last = graph.BinaryOp(op, node, last)
+                    op = graph.Operand('*')
             node = last
         return node
 
     def visitTimestamp(self, ctx):
         nodes = self.visitChildren(ctx)
-        #if isinstance(nodes, Leaf):
-        #    nodes = Timestamp(*nodes.content)
+        #if isinstance(nodes, graph.Terminal):
+        #    nodes = graph.Timestamp(*nodes.content)
 
-        if not isinstance(nodes, Node):
+        if not isinstance(nodes, graph.Node):
             nodes = self.strip_whitespace(nodes)
 
             types = [type(n) for n in nodes]
@@ -324,25 +173,25 @@ class ExprVisitor(LabeledExprVisitor):
                     issubclass(node_type, spec)
                     for spec, node_type in zip(specs, types)) 
 
-            if matches([Date, Leaf]):
+            if matches([graph.Date, graph.Terminal]):
                 # DATE + packed_time
-                return Timestamp(nodes[0], NaiveClock(nodes[1].content))
-            elif matches([Leaf, NaiveClock]):
+                return graph.Timestamp(nodes[0], graph.NaiveClock(nodes[1].content))
+            elif matches([graph.Terminal, graph.NaiveClock]):
                 # Int Clock
-                return Timestamp(Date(nodes[0]), nodes[1])
-            elif matches([Date, NaiveClock]):
-                return Timestamp(*nodes)
-            elif matches([Date, NaiveClock, Leaf]):
-                return Timestamp(*nodes)
-            elif matches([Date, NaiveClock, NaiveClock]) or matches([Date, Leaf, NaiveClock]):
+                return graph.Timestamp(graph.Date(nodes[0]), nodes[1])
+            elif matches([graph.Date, graph.NaiveClock]):
+                return graph.Timestamp(*nodes)
+            elif matches([graph.Date, graph.NaiveClock, graph.Terminal]):
+                return graph.Timestamp(*nodes)
+            elif matches([graph.Date, graph.NaiveClock, graph.NaiveClock]) or matches([graph.Date, graph.Terminal, graph.NaiveClock]):
                 # https://github.com/Unidata/UDUNITS-2/blob/v2.2.27.6/lib/parser.y#L442
                 # Ref
-                return Timestamp(nodes[0], nodes[1], nodes[2])
-            elif matches([Date, Leaf, Leaf]):
-                # Date + packed_clock + tz_offset
+                return graph.Timestamp(nodes[0], nodes[1], nodes[2])
+            elif matches([graph.Date, graph.Terminal, graph.Terminal]):
+                # graph.Date + packed_clock + tz_offset
                 hour = nodes[1].content
-                hour = NaiveClock(hour)
-                return Timestamp(nodes[0], hour, nodes[2])
+                hour = graph.NaiveClock(hour)
+                return graph.Timestamp(nodes[0], hour, nodes[2])
             else:
                 for node in nodes:
                     print(node)
@@ -351,42 +200,42 @@ class ExprVisitor(LabeledExprVisitor):
 
     def visitPower(self, ctx):
         nodes = self.visitChildren(ctx)
-        if isinstance(nodes, Node):
+        if isinstance(nodes, graph.Node):
             node = nodes
         elif len(nodes) == 2:
-            node = BinaryOp(Operand('^'), nodes[0], nodes[1])
+            node = graph.BinaryOp(graph.Operand('^'), nodes[0], nodes[1])
         elif len(nodes) == 3:
             assert nodes[1].content == '^'
-            node = BinaryOp(Operand('^'), nodes[0], nodes[2])
+            node = graph.BinaryOp(graph.Operand('^'), nodes[0], nodes[2])
         return node
 
     def visitShift_spec(self, ctx):
         nodes = self.visitChildren(ctx)
-        if not isinstance(nodes, Node):
-            nodes = Shift(nodes[0], nodes[2])
+        if not isinstance(nodes, graph.Node):
+            nodes = graph.Shift(nodes[0], nodes[2])
         return nodes
 
     def visitUnit_spec(self, ctx):
         nodes = self.visitChildren(ctx)
         
         # Drop the EOF
-        if isinstance(nodes, Node):
-            node = Root()
+        if isinstance(nodes, graph.Node):
+            node = graph.Root()
             assert str(nodes) == '<EOF>'
         else:
             assert len(nodes) == 2
             assert isinstance(nodes, list)
-            if isinstance(nodes[0], Node):
-                node = Root(nodes[0])
+            if isinstance(nodes[0], graph.Node):
+                node = graph.Root(nodes[0])
             else:
-                node = Root(*nodes[0])
+                node = graph.Root(*nodes[0])
         return node
 
 
 def repr_walk_ast(node):
-    if isinstance(node, Leaf):
+    if isinstance(node, graph.Terminal):
         return str(node)
-    elif isinstance(node, BinaryOp):
+    elif isinstance(node, graph.BinaryOp):
         return [repr_walk_ast(n) for n in node.children()]
     else:
         # A string.
